@@ -28,6 +28,6 @@ class colors:
         orange = '\033[43m'
         blue = '\033[44m'
 
-print(colors.bg.green, "SKk",colors.fg.red,"Amartya",colors.reset)
-print(colors.bg.green, "SKk",colors.fg.red,"Amartya")
-print(colors.bg.lightgrey, "SKk", colors.fg.red, "Amartya")
+#print(colors.bg.green, "SKk",colors.fg.red,"Amartya",colors.reset)
+#print(colors.bg.green, "SKk",colors.fg.red,"Amartya")
+#print(colors.bg.lightgrey, "SKk", colors.fg.red, "Amartya")

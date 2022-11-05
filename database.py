@@ -16,6 +16,7 @@ def initiate(connection,cursor):
     param cursor: pass a cursor to execute sql commands
     :return: nothing
     """
+    # Note the data type DATE denotes the format of "YYYY-MM-YDD" in a string form
     cursor.execute("PRAGMA foreign_keys = 1") # VALIDATE FOREIGN CONSTRAINTS
     try:
         emergency_plan = """CREATE TABLE IF NOT EXISTS emergency_plan(
@@ -23,8 +24,8 @@ def initiate(connection,cursor):
                 plan_type          TEXT,
                 plan_description   TEXT,
                 geo_area           TEXT,
-                start_date         TEXT,
-                close_date         TEXT,
+                start_date         DATE DEFAULT (date('now','localtime')),
+                close_date         DATE DEFAULT null,
                 PRIMARY KEY(plan_name)
                 )"""
         cursor.execute(emergency_plan)
@@ -58,9 +59,9 @@ def initiate(connection,cursor):
                 FOREIGN KEY(plan_name,camp_name) REFERENCES camp(plan_name,camp_name) ON UPDATE CASCADE ON DELETE CASCADE
                 )"""
         cursor.execute(volunteer)
-
         # initialize admin
         cursor.execute("INSERT INTO volunteer VALUES(null,null,null,null,null,null,'admin','111',null,null)")
+        cursor.execute("INSERT INTO volunteer VALUES(null,null,null,null,null,null,'guest','111',null,null)")
         connection.commit()
 
         refugee_profile = """CREATE TABLE IF NOT EXISTS refugee_profile(
@@ -82,6 +83,24 @@ def initiate(connection,cursor):
         cursor.execute("DELETE FROM refugee_profile WHERE profile_id=1")
         connection.commit()
 
+        # admin_exclusive ['TRUE','FALSE']. True means the msg only visible to admins
+        # admin_announced ['TRUE','FALSE']. True means the msg is posted by admin as public msgs to visible by all volunteers.
+        # By combining the two attributes, the proposed features [1. plan/camp channel communications,
+        # 2. admin public announcements 3. send a msg as a 'guest'] are implemented.
+        message = """CREATE TABLE IF NOT EXISTS message(
+                message_id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                time                TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                plan_name           TEXT, 
+                camp_name           TEXT,
+                username            TEXT,
+                admin_announced     TEXT,
+                admin_exclusive     TEXT,
+                content             TEXT,
+                FOREIGN KEY(username) REFERENCES volunteer(username) ON UPDATE CASCADE ON DELETE NO ACTION,
+                FOREIGN KEY(plan_name,camp_name) REFERENCES camp(plan_name,camp_name) ON UPDATE CASCADE ON DELETE CASCADE
+                )"""
+        cursor.execute(message)
+
         # create trigger for updating camp volunteer number, insertion prevention has already been implemented in other way
         camp_add_volnum_trigger = """CREATE TRIGGER camp_add_volnum_trigger BEFORE INSERT ON volunteer
                 WHEN EXISTS(
@@ -95,7 +114,7 @@ def initiate(connection,cursor):
                 """
         cursor.execute(camp_add_volnum_trigger)
 
-
+        # create trigger for updating camp volunteer number at a deletion
         camp_del_volnum_trigger = """CREATE TRIGGER camp_del_volnum_trigger AFTER DELETE ON volunteer
                 WHEN EXISTS(
                     SELECT * FROM camp
@@ -122,11 +141,25 @@ def initiate(connection,cursor):
                 """
         cursor.execute(camp_update_volnum_trigger)
 
+        # create a trigger to update the num of volunteers and the campes
+        archived_camp_update_volnum_trigger = """CREATE TRIGGER archived_camp_update_volnum_trigger BEFORE UPDATE OF plan_name ON volunteer
+                WHEN EXISTS(
+                    SELECT * FROM camp
+                    WHERE camp_name = old.camp_name and archived = 'TRUE'
+                )
+                BEGIN
+                    UPDATE camp SET num_of_volunteers = num_of_volunteers + 1 WHERE plan_name= new.plan_name and camp_name = new.camp_name;
+                    UPDATE volunteer SET reassignable = 'FALSE', plan_name= new.plan_name, camp_name = new.camp_name WHERE username=new.username;
+                END
+                ;
+                """
+        cursor.execute(archived_camp_update_volnum_trigger)
+
         # create archived trigger to prevent updates in refugee_profile
         archived_prevent_camp_update_trigger = """CREATE TRIGGER archived_prevent_camp_update_trigger Before UPDATE ON camp
                 WHEN old.archived = 'TRUE'
                 BEGIN
-                     SELECT RAISE(ABORT, 'The camp registered in a closed plan so that it can not be edited');
+                     SELECT RAISE(ABORT, '* The camp registered in a closed plan so that it can not be edited');
                 END
                 ;
                 """
@@ -141,7 +174,7 @@ def initiate(connection,cursor):
                     WHERE old.username = 'admin'
                 )
                 BEGIN
-                    SELECT RAISE(ABORT,'Admin can not be deleted');
+                    SELECT RAISE(ABORT,'* Admin can not be deleted');
                 END
                 ;
                 """
@@ -151,10 +184,10 @@ def initiate(connection,cursor):
         prevent_update_closed_plan_trigger = """CREATE TRIGGER prevent_update_closed_plan_trigger BEFORE update ON emergency_plan
                 WHEN EXISTS(
                     SELECT * FROM emergency_plan
-                    WHERE old.close_date != 'NULL'
+                    WHERE old.close_date != null
                 )
                 BEGIN
-                    SELECT RAISE(ABORT,'Closed plans can not be edited');
+                    SELECT RAISE(ABORT,'* Closed plans can not be edited');
                 END
                 ;
                 """
@@ -203,7 +236,7 @@ def initiate(connection,cursor):
         archived_prevent_ref_update_trigger = """CREATE TRIGGER archived_prevent_ref_update_trigger Before UPDATE ON refugee_profile
                 WHEN old.archived = 'TRUE'
                 BEGIN
-                     SELECT RAISE(ABORT, 'The refugee file registered in a closed plan so that it can not be edited');
+                     SELECT RAISE(ABORT, '* The refugee file registered in a closed plan so that it can not be edited');
                 END
                 ;
                 """
@@ -211,7 +244,7 @@ def initiate(connection,cursor):
 
         # create trigger for closed plans to free volunteers for reassignment
         close_plan_update_volunteer = """CREATE TRIGGER close_plan_update_volunteer AFTER UPDATE OF close_date ON emergency_plan
-                WHEN new.close_date != 'NULL'
+                WHEN new.close_date != null
                 BEGIN
                     UPDATE volunteer SET reassignable = 'TRUE' WHERE plan_name= old.plan_name;
                     UPDATE refugee_profile SET archived = 'TRUE' WHERE plan_name= old.plan_name;
@@ -236,13 +269,14 @@ def test_initiate(connection,cursor):
     :param cursor:
     :return:
     """
+
     try:
         emergency_plan_list = [
-            ("plan1", "earthquake", "bigone", "japan", "2022-08-01", "NULL"),
-            ("plan2", "typhoon", "smailone", "tokyo", "2022-08-01", "NULL"),
-            ("plan3", "earthquake", "bigone", "korea", "2022-08-01", "NULL")
+            ("plan1", "earthquake", "bigone", "japan"),
+            ("plan2", "typhoon", "smailone", "tokyo"),
+            ("plan3", "earthquake", "bigone", "korea")
         ]
-        cursor.executemany("INSERT INTO emergency_plan VALUES(?,?,?,?,?,?)", emergency_plan_list)
+        cursor.executemany("INSERT INTO emergency_plan(plan_name,plan_type,plan_description,geo_area) VALUES(?,?,?,?)", emergency_plan_list)
         connection.commit()
         camp_list = [
             ("plan1", "camp1"),
@@ -261,15 +295,25 @@ def test_initiate(connection,cursor):
         cursor.executemany("INSERT INTO volunteer VALUES(?,?,?,?,?,?,?,?,?,?)", volunter_list)
         connection.commit()
         refugee_profile_list = [
-            ("plan1", "camp1", "lily", "h", 5, "cold","FALSE"),
-            ("plan2", "camp1", "tom", "y", 4, "cold","FALSE"),
-            ("plan1", "camp2", "eat", "f", 3, "cold","FALSE"),
-            ("plan1", "camp1", "sfw", "fas", 2, "cold","FALSE")
+            ("plan1", "camp1", "lily", "h", 5, "cold"),
+            ("plan2", "camp1", "tom", "y", 4, "cold"),
+            ("plan1", "camp2", "eat", "f", 3, "cold"),
+            ("plan1", "camp1", "sfw", "fas", 2, "cold")
 
         ]
         cursor.executemany(
-            "INSERT INTO refugee_profile(plan_name,camp_name,first_name,last_name,family_num,medical_condition,archived) VALUES(?,?,?,?,?,?,?)",
+            "INSERT INTO refugee_profile(plan_name,camp_name,first_name,last_name,family_num,medical_condition) VALUES(?,?,?,?,?,?)",
             refugee_profile_list)
+        connection.commit()
+        message_list = [
+            (None, None, "guest", "FALSE","TRUE", "[I FORGET MY PASSWORD, MY ACCOUNT NAME IS 'HEY'.]"),
+            (None, None, "admin", "TRUE","TRUE","[WELCOME TO THIS PROGRAM, VOLUNTEERS]"),
+            ("plan1", "camp2", "vol3", "FALSE", "TRUE","[COULD YOU HELP ME REMOVE TO ANOTHER PLAN, admin]"),
+            ("plan1", "camp2", "vol3", "FALSE", "FALSE","[nice to see you guys]"),
+        ]
+        cursor.executemany(
+            "INSERT INTO message(plan_name,camp_name,username,admin_announced,admin_exclusive,content) VALUES(?,?,?,?,?,?)",
+            message_list)
         connection.commit()
 
     except sqlite3.IntegrityError as e:

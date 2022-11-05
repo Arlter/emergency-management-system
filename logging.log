@@ -1,185 +1,37 @@
-2022-11-02 22:33:42,925 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:33:42,925 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:34:18,977 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:34:18,977 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:34:29,520 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:34:29,520 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:34:51,190 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:34:58,429 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:35:39,605 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:37:11,408 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:37:11,408 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:37:59,272 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:37:59,272 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:38:30,303 - (admin) - ERROR - Admin can not be deleted
-2022-11-02 22:38:42,875 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:41:45,659 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:42:15,214 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:42:22,521 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:42:29,776 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:44:20,700 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:51:00,657 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:53:16,976 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:53:43,443 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:54:13,047 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:54:31,710 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:54:55,400 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:55:00,934 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:57:15,182 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:57:49,114 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:58:00,160 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:58:29,963 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:58:34,312 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:59:11,656 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 22:59:21,101 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 23:00:36,807 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 23:00:50,196 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 23:01:20,462 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 23:04:05,531 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 23:04:53,911 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 23:04:59,929 -   - INFO - Welcome To The System
-More help instructions are waited to be added.
+2022-11-05 00:09:53,768 -  (Admin)  - INFO : * The close operation of the plan plan2 is successful 
+2022-11-05 00:09:53,771 -  (Admin)  - INFO : 
+     Plan Name        Type      Description    Affected Area     Start Date     Close Date
+         plan1  earthquake           bigone            japan      2022-11-04          None
+         plan2     typhoon         smailone            tokyo      2022-11-04    2022-11-05
+         plan3  earthquake           bigone            korea      2022-11-04          None
 
+2022-11-05 00:09:53,772 -  (Admin)  - INFO : 
+        Camp Name      Volunteers Number     Refugees Number
+            camp2                      0                   0
+            camp3                      2                   8
 
+2022-11-05 00:09:53,773 -  (Admin)  - INFO : * The deactivation of the volunteer account vol1 is successful 
+2022-11-05 00:09:53,773 -  (Admin)  - ERROR : * Admin can not be deleted
+2022-11-05 00:09:53,773 -  (Admin)  - ERROR : * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
+2022-11-05 00:09:53,773 -  (Admin)  - INFO : * No messages are found given the plan name and camp name 
+2022-11-05 00:09:53,777 -  (Admin)  - INFO : [42m* No messages are found given the plan name and camp name [0m
+2022-11-05 00:09:53,781 -  (Admin)  - INFO : * The operation is successful. The logs will be displayed below 
 
+2022-11-05 00:09:53,781 -  (Admin)  - INFO : 2022-11-05 00:09:53,768 -  (Admin)  - INFO : * The close operation of the plan plan2 is successful 
+2022-11-05 00:09:53,771 -  (Admin)  - INFO : 
+     Plan Name        Type      Description    Affected Area     Start Date     Close Date
+         plan1  earthquake           bigone            japan      2022-11-04          None
+         plan2     typhoon         smailone            tokyo      2022-11-04    2022-11-05
+         plan3  earthquake           bigone            korea      2022-11-04          None
 
+2022-11-05 00:09:53,772 -  (Admin)  - INFO : 
+        Camp Name      Volunteers Number     Refugees Number
+            camp2                      0                   0
+            camp3                      2                   8
 
+2022-11-05 00:09:53,773 -  (Admin)  - INFO : * The deactivation of the volunteer account vol1 is successful 
+2022-11-05 00:09:53,773 -  (Admin)  - ERROR : * Admin can not be deleted
+2022-11-05 00:09:53,773 -  (Admin)  - ERROR : * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
+2022-11-05 00:09:53,773 -  (Admin)  - INFO : * No messages are found given the plan name and camp name 
+2022-11-05 00:09:53,777 -  (Admin)  - INFO : [42m* No messages are found given the plan name and camp name [0m
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-2022-11-02 23:04:59,939 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 23:06:04,746 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 23:07:17,578 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 23:07:23,061 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 23:07:51,589 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 23:08:37,628 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 23:09:52,522 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 23:10:19,476 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 23:10:23,111 - (Admin) - ERROR - Admin can not be deleted
-2022-11-02 23:15:03,441 - (Admin) - ERROR - Admin can not be deleted
-2022-11-03 10:57:31,571 - (Admin) - ERROR - Admin can not be deleted
-2022-11-03 12:44:40,914 - (Admin) - ERROR - UNIQUE constraint failed: camp.plan_name, camp.camp_name
-2022-11-03 12:44:57,941 - (Admin) - ERROR - UNIQUE constraint failed: camp.plan_name, camp.camp_name
-2022-11-03 12:47:57,811 - (Admin) - ERROR - UNIQUE constraint failed: camp.plan_name, camp.camp_name
-2022-11-03 12:48:27,297 - (Admin) - ERROR - UNIQUE constraint failed: camp.plan_name, camp.camp_name
-2022-11-03 13:53:13,116 - (Admin) - ERROR - UNIQUE constraint failed: camp.plan_name, camp.camp_name
-2022-11-03 13:54:59,582 - (Admin) - ERROR - UNIQUE constraint failed: camp.plan_name, camp.camp_name
-2022-11-03 13:57:32,310 - (Admin) - ERROR - UNIQUE constraint failed: camp.plan_name, camp.camp_name
-2022-11-03 16:45:20,007 - (Admin) - ERROR - UNIQUE constraint failed: camp.plan_name, camp.camp_name
-2022-11-03 17:03:11,047 - (Admin) - ERROR - Closed Plans Can Not Be Edited
-2022-11-03 17:10:56,005 - (Admin) - ERROR - Closed Plans Can Not Be Edited
-2022-11-03 18:24:33,174 - (Admin) - ERROR - Closed Plans Can Not Be Edited
-2022-11-03 18:24:48,932 - (Admin) - ERROR - Closed Plans Can Not Be Edited
-2022-11-03 18:25:17,103 - (Admin) - ERROR - Closed Plans Can Not Be Edited
-2022-11-03 18:53:34,329 - (Admin) - ERROR - Closed Plans Can Not Be Edited
-2022-11-03 18:56:35,407 - (Admin) - ERROR - Closed Plans Can Not Be Edited
-2022-11-03 18:56:35,410 - (Admin) - ERROR - unrecognized token: "{"
-2022-11-03 18:57:10,764 - (Admin) - ERROR - unrecognized token: "{"
-2022-11-03 18:57:52,247 - (Admin) - ERROR - unrecognized token: "{"
-2022-11-03 18:59:36,973 - (Admin) - ERROR -  The Row With the value camp1,plan1 Has Existed. Please Try Another One 
-2022-11-03 19:01:23,569 - (Admin) - ERROR -  The tuple with the value camp1,plan1 has existed. Please enter another.
-2022-11-03 19:02:16,548 - (Admin) - ERROR - * The tuple with the value camp1,plan1 has existed. Please enter another.
-2022-11-03 19:02:39,515 - (Admin)  - ERROR - * The tuple with the value camp1,plan1 has existed. Please enter another.
-2022-11-03 19:02:45,561 - (Admin)   - ERROR - * The tuple with the value camp1,plan1 has existed. Please enter another.
-2022-11-03 19:02:55,365 -  (Admin)  - ERROR - * The tuple with the value camp1,plan1 has existed. Please enter another.
-2022-11-03 19:05:27,638 -  (Admin)  - ERROR - * The tuple with the value camp1,plan1 has existed. Please enter another.
-2022-11-03 19:08:20,616 -  (Admin)  - ERROR - * The tuple with the value camp1,plan1 has existed in the table camp. Please enter another.
-2022-11-03 19:08:20,616 -  (Admin)  - ERROR - * The tuple with the value camp1,plan1 has existed in the table volunteer. Please enter another.
-2022-11-03 19:08:48,908 -  (Admin)  - ERROR - * The tuple with the value camp1,plan1 has existed in the table volunteer. Please enter another.
-2022-11-03 22:13:29,256 -  (Admin)  - ERROR - no such column: plan2
-2022-11-03 22:16:24,835 -  (Admin)  - ERROR - no such column: plan2
-2022-11-03 22:17:12,987 -  (Admin)  - ERROR - no such column: plan2
-2022-11-03 22:21:04,905 -  (Admin)  - ERROR - no such column: plan2
-2022-11-03 22:22:32,346 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-03 22:26:15,248 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-03 22:26:15,248 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-03 23:40:59,166 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-03 23:40:59,166 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-03 23:43:15,065 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-03 23:43:15,065 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-03 23:46:19,806 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-03 23:46:19,806 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-03 23:47:16,906 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-03 23:47:16,906 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-03 23:48:07,677 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-03 23:48:07,677 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-03 23:48:36,750 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-03 23:48:36,750 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-03 23:49:32,571 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-03 23:49:32,571 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-03 23:50:23,437 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-03 23:50:23,437 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-03 23:51:34,121 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-03 23:51:34,121 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 00:22:41,473 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 00:22:41,473 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 00:23:27,041 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 00:23:27,041 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 00:25:43,269 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 00:25:43,269 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 00:27:52,236 -  (Admin)  - ERROR - Closed Plans Can Not Be Edited
-2022-11-04 00:27:52,241 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 00:27:52,241 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 00:31:24,797 -  (Admin)  - ERROR - Closed Plans Can Not Be Edited
-2022-11-04 00:31:24,801 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 00:31:24,802 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 00:32:08,892 -  (Admin)  - ERROR - Closed Plans Can Not Be Edited
-2022-11-04 00:32:08,898 -  (Admin)  - ERROR - Admin Can Not Be Deleted
-2022-11-04 00:32:08,898 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 00:32:08,898 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 00:46:10,909 -  (Admin)  - ERROR - no such column: old.archived
-2022-11-04 00:46:10,910 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 00:46:10,910 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 00:50:20,688 -  (Admin)  - ERROR - Admin can not be deleted
-2022-11-04 00:50:20,688 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 00:50:20,688 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 00:51:11,248 -  (Admin)  - ERROR - Closed Plans Can Not Be Edited
-2022-11-04 00:51:11,253 -  (Admin)  - ERROR - Admin can not be deleted
-2022-11-04 00:51:11,253 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 00:51:11,253 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 00:52:29,765 -  (Admin)  - ERROR - Closed Plans Can Not Be Edited
-2022-11-04 00:52:29,769 -  (Admin)  - ERROR - Admin can not be deleted
-2022-11-04 00:52:29,769 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 00:52:29,769 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 00:52:43,327 -  (Admin)  - ERROR - Closed Plans Can Not Be Edited
-2022-11-04 00:52:43,332 -  (Admin)  - ERROR - Admin can not be deleted
-2022-11-04 00:52:43,332 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 00:52:43,332 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 01:09:12,334 -  (Admin)  - ERROR - Admin can not be deleted
-2022-11-04 01:09:12,334 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 01:09:12,334 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 01:15:04,532 -  (Admin)  - ERROR - Admin can not be deleted
-2022-11-04 01:15:04,532 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 01:15:04,533 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 01:16:54,168 -  (Admin)  - ERROR - Closed plans can not be edited
-2022-11-04 01:16:54,172 -  (Admin)  - ERROR - Admin can not be deleted
-2022-11-04 01:16:54,172 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 01:16:54,172 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 01:17:02,512 -  (Admin)  - ERROR - Closed plans can not be edited
-2022-11-04 01:17:02,518 -  (Admin)  - ERROR - Admin can not be deleted
-2022-11-04 01:17:02,518 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 01:17:02,518 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 01:17:15,176 -  (Admin)  - ERROR - Closed plans can not be edited
-2022-11-04 01:17:15,181 -  (Admin)  - ERROR - Admin can not be deleted
-2022-11-04 01:17:15,182 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 01:17:15,182 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 01:17:22,430 -  (Admin)  - ERROR - Closed plans can not be edited
-2022-11-04 01:17:22,434 -  (Admin)  - ERROR - Admin can not be deleted
-2022-11-04 01:17:22,435 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 01:17:22,435 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-04 01:18:07,866 -  (Admin)  - ERROR - Closed plans can not be edited
-2022-11-04 01:18:07,869 -  (Admin)  - ERROR - Admin can not be deleted
-2022-11-04 01:18:07,869 -  (Admin)  - ERROR - * The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   
-2022-11-04 01:18:07,869 -  (Admin)  - ERROR - * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
