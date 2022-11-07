@@ -84,7 +84,47 @@ class volunteer:
         else:
             return True
 
-    def edit_personal_profile(self, username: str, logger: logging.Logger, **kwargs) -> bool:
+    def edit_emergency_profile(self, attribute_name, new_val, refugee_ID):
+        try:
+            self.cursor.execute(update_sql_generation("refugee_profile", attribute_name, new_val, refugee_ID))
+            self.connection.commit()
+        except sqlite3.Error as e:
+            log_volunteer.error(e)
+        else:
+            return True
+
+    def list_emergency_profile(self, camp_name):
+        try:
+            sql_cmd = select_sql_generation('refugee_profile', '*', camp_name = camp_name)
+            res = self.cursor.execute(sql_cmd).fetchall()
+            if len(res) != 0:
+                df = pd.DataFrame(res, columns = [''])
+                df.index = ['']*len(df)
+                log_volunteer.info(f"\n{df}\n")
+            else:
+                log_volunteer.info(f'*No refugee profiles found in the current camp {camp_name}')
+        except sqlite3.Error as e:
+            log_volunteer.error(e)
+        else:
+            return True
+
+    def display_emergency_profile(self, camp_name, first_name ='*', last_name ='*', family_num = '*', medical_condition= '*'):
+        try:
+            sql_cmd = select_sql_generation('refugee_profile', '*', camp_name = camp_name, first_name = first_name, last_name = last_name, family_num = family_num, medical_condition = medical_condition)
+            res = self.cursor.execute(sql_cmd).fetchall()
+            if len(res) != 0:
+                df = pd.DataFrame(res, columns = [''])
+                df.index = ['']*len(df)
+                log_volunteer.info(f'\n{df}\n')
+            else:
+                log_volunteer.info(f'No profiles found.')
+        except sqlite3.Error as e:
+                log_volunteer.error(e)
+        else:
+            return True
+
+
+def edit_personal_profile(self, username: str, logger: logging.Logger, **kwargs) -> bool:
         """
         Collect the info and update the volunteer table
         example: edit_personal_profile("vol4", plan_name="plan1", camp_name="camp2")
