@@ -1,6 +1,6 @@
 import sqlite3
 from database_utilities import *
-from logging_configure import log_volunteer
+from logging_configure import *
 import pandas as pd
 import logging
 from exceptions import *
