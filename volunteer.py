@@ -11,7 +11,7 @@ class volunteer:
     def __init__(self, cursor, connection):
         """
         pass the connection and cursor to complete the operations on the db.
-        :param connection: connection to db
+        :param connection: connection 
         :param cursor: cursor
         """
         # self.connection = connection
