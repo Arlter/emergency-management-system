@@ -98,7 +98,7 @@ class volunteer:
             sql_cmd = select_sql_generation('refugee_profile', '*', camp_name = camp_name)
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res) != 0:
-                df = pd.DataFrame(res, columns = [''])
+                df = pd.DataFrame(res, columns = ['Camp name', 'First name', 'Last name', 'Number of family members', 'Medical condition(s)'])
                 df.index = ['']*len(df)
                 log_volunteer.info(f"\n{df}\n")
             else:
@@ -113,7 +113,7 @@ class volunteer:
             sql_cmd = select_sql_generation('refugee_profile', '*', camp_name = camp_name, first_name = first_name, last_name = last_name, family_num = family_num, medical_condition = medical_condition)
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res) != 0:
-                df = pd.DataFrame(res, columns = [''])
+                df = pd.DataFrame(res, columns = ['Camp name', 'First name', 'Last name', 'Number of family members', 'Medical condition(s)'])
                 df.index = ['']*len(df)
                 log_volunteer.info(f'\n{df}\n')
             else:
