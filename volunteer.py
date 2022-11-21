@@ -6,8 +6,8 @@ import logging
 from exceptions import *
 
 # functions available: (name - corresponding function)
-# 1. create refugee profile - create_emergency_profile
-# 2. edit refugee profile - edit_emergency_profile
+# 1. create refugee profile - create_refugee_profile
+# 2. edit refugee profile - update_refugee_profile
 # 3. display all information about certain camp name - list_emergency_profile
 # 4. display all information about certain refugee - display_emergency_profile
 # 5. edit volunteer's personal profile - edit_personal_profile
@@ -83,7 +83,7 @@ class volunteer:
         else:
             return True
 
-    def create_emergency_profile(self, plan_name, camp_name, first_name, last_name, family_number, medical_condition,
+    def create_refugee_profile(self, plan_name, camp_name, first_name, last_name, family_number, medical_condition,
                                  profile_ID):
         try:
             self.cursor.execute(
@@ -95,7 +95,7 @@ class volunteer:
         else:
             return True
 
-    def edit_emergency_profile(self, attribute_name, new_val, refugee_ID):
+    def update_refugee_profile(self, attribute_name, new_val, refugee_ID):
         try:
             self.cursor.execute(update_sql_generation("refugee_profile", attribute_name, new_val, refugee_ID))
             self.connection.commit()
@@ -109,7 +109,7 @@ class volunteer:
             sql_cmd = select_sql_generation('refugee_profile', '*', camp_name = camp_name)
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res) != 0:
-                df = pd.DataFrame(res, columns = [''])
+                df = pd.DataFrame(res, columns = ['Camp name', 'First name', 'Last name', 'Number of family members', 'Medical condition(s)'])
                 df.index = ['']*len(df)
                 log_volunteer.info(f"\n{df}\n")
             else:
@@ -124,7 +124,7 @@ class volunteer:
             sql_cmd = select_sql_generation('refugee_profile', '*', camp_name = camp_name, first_name = first_name, last_name = last_name, family_num = family_num, medical_condition = medical_condition)
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res) != 0:
-                df = pd.DataFrame(res, columns = [''])
+                df = pd.DataFrame(res, columns = ['Camp name', 'First name', 'Last name', 'Number of family members', 'Medical condition(s)'])
                 df.index = ['']*len(df)
                 log_volunteer.info(f'\n{df}\n')
             else:
