@@ -4,7 +4,6 @@ from logging_configure import *
 import pandas as pd
 import logging
 from exceptions import *
-from datetime import datetime
 
 
 class volunteer:
@@ -12,11 +11,12 @@ class volunteer:
     def __init__(self, cursor, connection):
         """
         pass the connection and cursor to complete the operations on the db.
-        :param connection: connection
+        :param connection: connection to db
         :param cursor: cursor
         """
         # self.connection = connection
         # self.cursor = cursor
+
         self.connection = sqlite3.connect('db.db')
         self.cursor = self.connection.cursor()
 
