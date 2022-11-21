@@ -72,7 +72,6 @@ class volunteer:
         else:
             return True
 
-
     def create_emergency_profile(self, plan_name, camp_name, first_name, last_name, family_number, medical_condition,
                                  profile_ID):
         try:
