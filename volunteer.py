@@ -5,6 +5,17 @@ import pandas as pd
 import logging
 from exceptions import *
 
+# functions available: (name - corresponding function)
+# 1. create refugee profile - create_emergency_profile
+# 2. edit refugee profile - edit_emergency_profile
+# 3. display all information about certain camp name - list_emergency_profile
+# 4. display all information about certain refugee - display_emergency_profile
+# 5. edit volunteer's personal profile - edit_personal_profile
+# 6. create volunteer's personal profiel - create_personal_profile
+# 7. check availability over certain period and certain camp or plan (if possible) - availability
+# 8. send message as a volunteer (to other vols or to the admin) - vols_send_message
+# 9. display message of other vols or announcements of admin - vols_display_message
+
 
 class volunteer:
 
@@ -42,7 +53,7 @@ class volunteer:
         else:
             return True
 
-    def raise_error_for_inexistence(self, table_name: str, edit_check=False, **kwargs) -> bool:
+    def __raise_error_for_inexistence(self, table_name: str, edit_check=False, **kwargs) -> bool:
         """
         This method is called when you want to verify existence of a tuple. It will raise an error if
         the tuple has not existed and return False.This method also adds a prohibitor(edit_check)to prevent attempts on editting
@@ -123,6 +134,26 @@ class volunteer:
         else:
             return True
 
+    def create_personal_profile(self, *attr):
+        """
+        Create a new personal profile
+        :param *attr: the new volunteer information, with the order as: 
+                    $plan_name, $camp_name, $first_name, $last_name, $phone_num, $availability, $username, $password, $activated, $reassignable
+        NOTE: if you would like to specify availability, make sure that the string
+              is formatted as "$which_day,$start_time-$end_time" without any space
+              like "Monday,8-16"
+        """
+        try:
+            if not self.raise_error_for_existence("volunteer", username=attr[6]):
+                return False
+            sql = insert_sql_generation("volunteer", *attr)
+            res = self.cursor.execute(sql)
+        except sqlite3.Error as e:
+            log_volunteer.error(e)
+            return False
+        else:
+            return True
+
 
     def edit_personal_profile(self, username: str, logger: logging.Logger, **kwargs) -> bool:
         """
@@ -157,7 +188,7 @@ class volunteer:
         # self.cursor.execute(sql)
         # self.connection.commit()
 
-    def availability(self, time: str, logger: logging.Logger, plan_name=None, camp_name=None) -> list:
+    def availability(self, time: str, logger=log_volunteer, plan_name=None, camp_name=None) -> list:
         """
         the function searches for volunteers fully available in a time period
         :param time: a string that should be formatted like "$which_day,$start_time-$end_time"
@@ -269,7 +300,7 @@ class volunteer:
         elif admin_excl and len(kwargs) != 0:
             log_volunteer.error("Please do not specify the camp_name (or plan_name) and the admin_excl at the same time!")
             return False
-        print(sql)
+        # print(sql)
         try:
             result = self.cursor.execute(sql).fetchall()
             self.connection.commit()
@@ -278,7 +309,7 @@ class volunteer:
             log_volunteer.error(e)
             return False
         
-    def err_for_inexst(self, table_name:str, edit_check = False, **kwargs) -> bool:
+    def err_for_inexst(self, table_name:str, edit_check = False, logger = log_volunteer, **kwargs) -> bool:
         """
         (copied from admin.py)
         This method is called when you want to verify existence of a tuple. It will raise an error if
@@ -296,13 +327,13 @@ class volunteer:
             if res == 0: # does not exist, raise an exception
                 raise absent(table_name,**kwargs)
         except closed_plan as e:
-            log_admin.error(e)
+            logger.error(e)
             return False
         except absent as e:
-            log_admin.error(e)
+            logger.error(e)
             return False
         except sqlite3.Error as e:
-            log_volunteer.error(e)
+            logger.error(e)
             return False
         else:
             return True
@@ -313,7 +344,6 @@ if __name__ == "__main__":
     connection = sqlite3.connect('db.db')
     cursor = connection.cursor()
     vol1 = volunteer(connection, cursor)
-    vol1.vols_display_message(plan_name="plan1", camp_name="camp2")
-    vol1.vols_display_message(True)
+    vol1.create_personal_profile("", "", "", "", "", "", "vol1", "", "", "")
     # vol1.vols_send_message('vol1', "i love you too", True)
     # vol1.vols_send_message('vol1', "Art is a rolling king", plan_name="plan1", camp_name="camp2")
