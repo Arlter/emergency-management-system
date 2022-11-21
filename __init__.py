@@ -14,7 +14,7 @@ if __name__ == "__main__":
         log_general.info(''.join(contents))
     # set up pandas for display
     pd.options.display.max_columns = None
-    pd.options.display.width = 1000
+    pd.options.display.width = 200
 
     # initialize database
     connection = sqlite3.connect('db.db', detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     admin.raise_error_for_existence("emergency_plan",plan_name = "plan1")
     admin.display_admin_exclusive_messages()
     admin.create_admin_announcement("i love you all")
-    admin.delete_admin_exclusive_messages()
+    #admin.delete_admin_exclusive_messages()
     admin.display_messages_from_a_camp("plan1","camp1")
-    #admin.display_logs()
+    #.display_logs()
     cursor.close()
