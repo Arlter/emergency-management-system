@@ -184,7 +184,7 @@ def initiate(connection,cursor):
         prevent_update_closed_plan_trigger = """CREATE TRIGGER prevent_update_closed_plan_trigger BEFORE update ON emergency_plan
                 WHEN EXISTS(
                     SELECT * FROM emergency_plan
-                    WHERE old.close_date != null
+                    WHERE old.close_date IS NOT NULL
                 )
                 BEGIN
                     SELECT RAISE(ABORT,'* Closed plans can not be edited');
@@ -244,7 +244,7 @@ def initiate(connection,cursor):
 
         # create trigger for closed plans to free volunteers for reassignment
         close_plan_update_volunteer = """CREATE TRIGGER close_plan_update_volunteer AFTER UPDATE OF close_date ON emergency_plan
-                WHEN new.close_date != null
+                WHEN new.close_date IS NOT NULL
                 BEGIN
                     UPDATE volunteer SET reassignable = 'TRUE' WHERE plan_name= old.plan_name;
                     UPDATE refugee_profile SET archived = 'TRUE' WHERE plan_name= old.plan_name;

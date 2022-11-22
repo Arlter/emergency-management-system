@@ -1,37 +1,17 @@
-2022-11-05 00:09:53,768 -  (Admin)  - INFO : * The close operation of the plan plan2 is successful 
-2022-11-05 00:09:53,771 -  (Admin)  - INFO : 
+2022-11-22 12:51:26,874 -  (Admin)  - ERROR : * Closed plans can not be edited
+2022-11-22 12:51:26,877 -  (Admin)  - INFO : 
      Plan Name        Type      Description    Affected Area     Start Date     Close Date
-         plan1  earthquake           bigone            japan      2022-11-04          None
-         plan2     typhoon         smailone            tokyo      2022-11-04    2022-11-05
-         plan3  earthquake           bigone            korea      2022-11-04          None
+         plan1  earthquake           bigone            japan      2022-11-22          None
+         plan2     typhoon         smailone            tokyo      2022-11-22    2022-11-22
+         plan3  earthquake           bigone            korea      2022-11-22          None
 
-2022-11-05 00:09:53,772 -  (Admin)  - INFO : 
+2022-11-22 12:51:26,878 -  (Admin)  - INFO : 
         Camp Name      Volunteers Number     Refugees Number
+            camp1                      1                   4
             camp2                      0                   0
-            camp3                      2                   8
 
-2022-11-05 00:09:53,773 -  (Admin)  - INFO : * The deactivation of the volunteer account vol1 is successful 
-2022-11-05 00:09:53,773 -  (Admin)  - ERROR : * Admin can not be deleted
-2022-11-05 00:09:53,773 -  (Admin)  - ERROR : * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-05 00:09:53,773 -  (Admin)  - INFO : * No messages are found given the plan name and camp name 
-2022-11-05 00:09:53,777 -  (Admin)  - INFO : [42m* No messages are found given the plan name and camp name [0m
-2022-11-05 00:09:53,781 -  (Admin)  - INFO : * The operation is successful. The logs will be displayed below 
-
-2022-11-05 00:09:53,781 -  (Admin)  - INFO : 2022-11-05 00:09:53,768 -  (Admin)  - INFO : * The close operation of the plan plan2 is successful 
-2022-11-05 00:09:53,771 -  (Admin)  - INFO : 
-     Plan Name        Type      Description    Affected Area     Start Date     Close Date
-         plan1  earthquake           bigone            japan      2022-11-04          None
-         plan2     typhoon         smailone            tokyo      2022-11-04    2022-11-05
-         plan3  earthquake           bigone            korea      2022-11-04          None
-
-2022-11-05 00:09:53,772 -  (Admin)  - INFO : 
-        Camp Name      Volunteers Number     Refugees Number
-            camp2                      0                   0
-            camp3                      2                   8
-
-2022-11-05 00:09:53,773 -  (Admin)  - INFO : * The deactivation of the volunteer account vol1 is successful 
-2022-11-05 00:09:53,773 -  (Admin)  - ERROR : * Admin can not be deleted
-2022-11-05 00:09:53,773 -  (Admin)  - ERROR : * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
-2022-11-05 00:09:53,773 -  (Admin)  - INFO : * No messages are found given the plan name and camp name 
-2022-11-05 00:09:53,777 -  (Admin)  - INFO : [42m* No messages are found given the plan name and camp name [0m
-
+2022-11-22 12:51:26,878 -  (Admin)  - INFO : * The deactivation of the volunteer account vol1 is successful 
+2022-11-22 12:51:26,879 -  (Admin)  - ERROR : * Admin can not be deleted
+2022-11-22 12:51:26,879 -  (Admin)  - ERROR : * The tuple with the value plan1 has existed in the table emergency_plan. Please enter another.
+2022-11-22 12:51:26,879 -  (Admin)  - INFO : * No messages are found given the plan name and camp name 
+2022-11-22 12:51:26,889 -  (Admin)  - INFO : [42m* No messages are found given the plan name and camp name [0m

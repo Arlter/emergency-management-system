@@ -1,6 +1,6 @@
 import sqlite3
 from database_utilities import *
-from logging_configure import *
+from logging_configure import log_volunteer
 import pandas as pd
 import logging
 from exceptions import *
@@ -19,19 +19,16 @@ from exceptions import *
 
 class volunteer:
 
-    def __init__(self, cursor, connection):
+    def __init__(self, connection, cursor):
         """
         pass the connection and cursor to complete the operations on the db.
         :param connection: connection 
         :param cursor: cursor
         """
-        # self.connection = connection
-        # self.cursor = cursor
+        self.connection = connection
+        self.cursor = cursor
 
-        self.connection = sqlite3.connect('db.db')
-        self.cursor = self.connection.cursor()
-
-    def raise_error_for_existence(self, table_name, **kwargs) -> bool:
+    def raise_error_for_existence(self, table_name,logger = log_volunteer, **kwargs) -> bool:
         """
         This method is called when you want to verify inexistence of a tuple. It will raise an exception if
         the tuple has existed and return False.
@@ -45,10 +42,10 @@ class volunteer:
             if res != 0:  # exists, raise an exception
                 raise already_exists(table_name, **kwargs)
         except already_exists as e:
-            log_volunteer.error(e)
+            logger.error(e)
             return False
         except sqlite3.Error as e:
-            log_volunteer.error(e)
+            logger.error(e)
             return False
         else:
             return True
@@ -156,7 +153,7 @@ class volunteer:
             return True
 
 
-    def edit_personal_profile(self, username: str, logger: logging.Logger, **kwargs) -> bool:
+    def edit_personal_profile(self, username: str, logger= log_volunteer, **kwargs) -> bool:
         """
         Collect the info and update the volunteer table
         example: edit_personal_profile("vol4", plan_name="plan1", camp_name="camp2")
