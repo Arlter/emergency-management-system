@@ -148,6 +148,7 @@ class volunteer:
                 return False
             sql = insert_sql_generation("volunteer", *attr)
             res = self.cursor.execute(sql)
+            self.connection.commit()
         except sqlite3.Error as e:
             log_volunteer.error(e)
             return False
@@ -344,6 +345,6 @@ if __name__ == "__main__":
     connection = sqlite3.connect('db.db')
     cursor = connection.cursor()
     vol1 = volunteer(connection, cursor)
-    vol1.create_personal_profile("", "", "", "", "", "", "vol1", "", "", "")
+    vol1.create_personal_profile("plan1", "camp1", "bill", "liu", "1234567", "Monday,1-12", "vol111", "111", "TRUE", "FALSE")
     # vol1.vols_send_message('vol1', "i love you too", True)
     # vol1.vols_send_message('vol1', "Art is a rolling king", plan_name="plan1", camp_name="camp2")
