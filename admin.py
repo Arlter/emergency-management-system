@@ -76,8 +76,8 @@ class admin(volunteer):
         :return: true if the operation is successful; error msg otherwise
         """
         try:
-            super.cursor.execute(insert_sql_generation("emergency_plan",plan_name=plan_name,plan_type=type,plan_description=description,geo_area=geo_affected_area))
-            super.connection.commit()
+            self.cursor.execute(insert_sql_generation("emergency_plan",plan_name=plan_name,plan_type=type,plan_description=description,geo_area=geo_affected_area))
+            self.connection.commit()
         except sqlite3.Error as e:
             log_admin.error(e)
             return False
