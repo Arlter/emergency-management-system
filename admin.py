@@ -23,7 +23,7 @@ class admin(volunteer):
         :param kwargs:  pass in the form of attr_name = attr_value
         :return:true if the value does not exist, false otherwise.
         """
-        super(admin,self).raise_error_for_existence(table_name,logger = log_admin, **kwargs)
+        return super(admin,self).raise_error_for_existence(table_name,logger = log_admin, **kwargs)
 
     def raise_error_for_inexistence(self, table_name:str, edit_check = False, **kwargs) -> bool:
         """
