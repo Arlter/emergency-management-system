@@ -1,4 +1,5 @@
 import logging
+import sys
 # create three loggers for admin, volunteer and general. Only the msg>=error from both admin and volunteer
 # will be saved to the "logging.log".
 
@@ -6,9 +7,9 @@ def logger_creator(name,level,writelog=True):
     logger = logging.getLogger(name)
     logger.setLevel(level)
     # create console handler and set level to debug
-    ch = logging.StreamHandler()
+    ch = logging.StreamHandler(sys.stdout)
     ch.setLevel(level)
-    ch.setFormatter(logging.Formatter('%(name)s - %(levelname)s : %(message)s'))
+    ch.setFormatter(logging.Formatter('%(levelname)s : %(message)s'))
         # add ch to logger
     logger.addHandler(ch)
     if writelog:
