@@ -288,7 +288,7 @@ class volunteer:
         sends message from admin
         NOTE: please do not set true to admin_anno and specify **kwargs at the same time
         """
-        if not self.err_for_inexst("volunteer", username=vol_usrname):
+        if not self.__raise_error_for_inexistence("volunteer", username=vol_usrname):
             return False
         if not admin_excl:
             sql = f"""INSERT INTO message(plan_name,camp_name,username,admin_announced,admin_exclusive,content) 
@@ -307,34 +307,7 @@ class volunteer:
             log_volunteer.error(e)
             return False
         
-    def err_for_inexst(self, table_name:str, edit_check = False, logger = log_volunteer, **kwargs) -> bool:
-        """
-        (copied from admin.py)
-        This method is called when you want to verify existence of a tuple. It will raise an error if
-        the tuple has not existed and return False.This method also adds a prohibitor(edit_check)to prevent attempts on editting
-        a closed emergency plan.
-        :param table_name: table name
-        :param kwargs:  pass in the form of attr_name = attr_value
-        :return:true if the value does not exist, false otherwise.
-        """
-        try:
-            if edit_check and table_name == "emergency_plan" and "plan_name" in kwargs.keys() and self.cursor.execute(f"SELECT COUNT(*) FROM emergency_plan WHERE close_date <> null and plan_name = '{kwargs['plan_name']}'").fetchall()[0][0] > 0 :
-                raise closed_plan()
-            sql_cmd = select_sql_generation(table_name, "COUNT(*)", **kwargs)
-            res = self.cursor.execute(sql_cmd).fetchall()[0][0]
-            if res == 0: # does not exist, raise an exception
-                raise absent(table_name,**kwargs)
-        except closed_plan as e:
-            logger.error(e)
-            return False
-        except absent as e:
-            logger.error(e)
-            return False
-        except sqlite3.Error as e:
-            logger.error(e)
-            return False
-        else:
-            return True
+
 
 
 if __name__ == "__main__":
@@ -342,6 +315,6 @@ if __name__ == "__main__":
     connection = sqlite3.connect('db.db')
     cursor = connection.cursor()
     vol1 = volunteer(connection, cursor)
-    vol1.create_personal_profile("plan1", "camp1", "bill", "liu", "1234567", "Monday,1-12", "vol111", "111", "TRUE", "FALSE")
+    # vol1.create_personal_profile("plan1", "camp1", "bill", "liu", "1234567", "Monday,1-12", "vol111", "111", "TRUE", "FALSE")
     # vol1.vols_send_message('vol1', "i love you too", True)
-    # vol1.vols_send_message('vol1', "Art is a rolling king", plan_name="plan1", camp_name="camp2")
+    vol1.vols_send_message('vol9', "Art is a rolling king", plan_name="plan1", camp_name="camp2")
