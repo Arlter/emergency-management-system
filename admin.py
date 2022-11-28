@@ -204,10 +204,7 @@ class admin(volunteer):
         :return boolean value
         """
         try:
-            if not self.raise_error_for_existence("volunteer", username=attr[6]):
-                return False
-            sql = insert_sql_generation("volunteer", *attr)
-            res = self.cursor.execute(sql)
+            self.cursor.execute(insert_sql_generation("volunteer", *attr))
             self.connection.commit()
         except sqlite3.Error as e:
             log_admin.error(e)
@@ -433,4 +430,4 @@ class admin(volunteer):
     # A method for logging system to be implemented
     def reset_logs(self)-> bool:
         #Method[23]  basically just remove all the content in the file logging.log
-        pass
+        pass        pass
