@@ -30,6 +30,7 @@ class volunteer:
 
     def raise_error_for_existence(self, table_name,logger = log_volunteer, **kwargs) -> bool:
         """
+        method [25]
         This method is called when you want to verify inexistence of a tuple. It will raise an exception if
         the tuple has existed and return False.
         :param table_name: table name
@@ -52,6 +53,7 @@ class volunteer:
 
     def __raise_error_for_inexistence(self, table_name: str, edit_check=False, **kwargs) -> bool:
         """
+        method[26]
         This method is called when you want to verify existence of a tuple. It will raise an error if
         the tuple has not existed and return False.This method also adds a prohibitor(edit_check)to prevent attempts on editting
         a closed emergency plan.
@@ -82,6 +84,7 @@ class volunteer:
 
     def create_refugee_profile(self, plan_name, camp_name, first_name, last_name, family_number, medical_condition,
                                  profile_ID):
+        """method[27]"""
         try:
             self.cursor.execute(
                 insert_sql_generation("refugee_profile", plan_name, camp_name, first_name, last_name, family_number,
@@ -93,6 +96,7 @@ class volunteer:
             return True
 
     def update_refugee_profile(self, attribute_name, new_val, refugee_ID):
+        """method[28]"""
         try:
             self.cursor.execute(update_sql_generation("refugee_profile", attribute_name, new_val, refugee_ID))
             self.connection.commit()
@@ -102,6 +106,7 @@ class volunteer:
             return True
 
     def list_emergency_profile(self, camp_name):
+        """method[29]"""
         try:
             sql_cmd = select_sql_generation('refugee_profile', '*', camp_name = camp_name)
             res = self.cursor.execute(sql_cmd).fetchall()
@@ -117,6 +122,7 @@ class volunteer:
             return True
 
     def display_emergency_profile(self, camp_name, first_name ='*', last_name ='*', family_num = '*', medical_condition= '*'):
+        """method[30]"""
         try:
             sql_cmd = select_sql_generation('refugee_profile', '*', camp_name = camp_name, first_name = first_name, last_name = last_name, family_num = family_num, medical_condition = medical_condition)
             res = self.cursor.execute(sql_cmd).fetchall()
@@ -133,6 +139,7 @@ class volunteer:
 
     def create_personal_profile(self, *attr):
         """
+        method[31]
         Create a new personal profile
         :param *attr: the new volunteer information, with the order as: 
                     $plan_name, $camp_name, $first_name, $last_name, $phone_num, $availability, $username, $password, $activated, $reassignable
@@ -153,13 +160,17 @@ class volunteer:
             return True
 
     def display_personal_profile(self, username_: str, logger=log_volunteer) -> bool:
+        """method[32]"""
         if not self.__raise_error_for_inexistence("volunteer", username=username_):
             return False
         sql = select_sql_generation("volunteer", "*", username=username_)
         try:
-            self.cursor.execute(sql).fetchall()
-            # print(result)
+            res = self.cursor.execute(sql).fetchall()
             self.connection.commit()
+            df = pd.DataFrame(res, columns = ['Plan name', 'Camp name', 'First name', 'Last name', 'Phone number', 'availability', 'username', 'password', 'activated', 'reassignable'])
+            df.index = ['']*len(df)
+            logger.info(f'\n{df}\n')
+            # print(result)
         except sqlite3.Error as e:
             logger.error(e)
             return False
@@ -169,6 +180,7 @@ class volunteer:
 
     def edit_personal_profile(self, username: str, logger= log_volunteer, **kwargs) -> bool:
         """
+        method[33]
         Collect the info and update the volunteer table
         example: edit_personal_profile("vol4", plan_name="plan1", camp_name="camp2")
                  update plan name and camp name to be 'plan1' and 'camp2' respectively
@@ -200,8 +212,9 @@ class volunteer:
         # self.cursor.execute(sql)
         # self.connection.commit()
 
-    def availability(self, time: str, logger=log_volunteer, plan_name=None, camp_name=None) -> list:
+    def availability(self, time: str, plan_name=None, camp_name=None, logger=log_volunteer) -> list:
         """
+        method[34]
         the function searches for volunteers fully available in a time period
         :param time: a string that should be formatted like "$which_day,$start_time-$end_time"
                      start time and end time can be same to make immediate sampling
@@ -261,9 +274,9 @@ class volunteer:
 
     def vols_display_message(self, admin_anno = False, **kwargs) -> bool:
         """
+        method[35]
         :param **kwargs: bindings that specify message from which channel.
         :param admin_anno: default false, if want to display announcements from admin, set it to true
-        :param vol_usrname: the sender volunteer's username
         example: vols_display_message(plan_name = 'plan1', camp_name = 'camp1')
         displays message from camp1 and plan1
         example2: vols_display_message(admin_anno = True)
@@ -294,12 +307,15 @@ class volunteer:
     
     def vols_send_message(self, vol_usrname: str, content: str, admin_excl=False, **kwargs) -> bool:
         """
-        :param **kwargs: bindings that specify message from which channel. (plan_name and camp_name)
+        method[36]
+        :param vol_usrname: the volunteer who would like to send message
+        :param content: the content you would like to send
         :param admin_excl: default false, if want to send message to admin, set it to true
-        example: vols_send_message(plan_name = 'plan1', camp_name = 'camp1')
-        sends message from camp1 and plan1
-        example2: vols_send_message(admin_anno = True)
-        sends message from admin
+        :param **kwargs: bindings that specify message from which channel. (plan_name and camp_name)
+        example: vols_send_message("vol1", "I love u art", plan_name="plan1", camp_name="camp1")
+        sends message to camp1 and plan1 from vol1
+        example2: vols_send_message(admin_excl = True)
+        sends message to admin
         NOTE: please do not set true to admin_anno and specify **kwargs at the same time
         """
         if not self.__raise_error_for_inexistence("volunteer", username=vol_usrname):
@@ -332,4 +348,4 @@ if __name__ == "__main__":
     # vol1.create_personal_profile("plan1", "camp1", "bill", "liu", "1234567", "Monday,1-12", "vol111", "111", "TRUE", "FALSE")
     # vol1.vols_send_message('vol1', "i love you too", True)
     # vol1.vols_send_message('vol9', "Art is a rolling king", plan_name="plan1", camp_name="camp2")
-    vol1.display_personal_profile("vol1")
+    # vol1.display_personal_profile("vol1")
