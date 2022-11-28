@@ -192,20 +192,38 @@ class admin(volunteer):
 
 ##########################The following Methods are for volunteer management system####################################
     # A method to be implemented
-    def create_volunteer(self)-> bool:
+    def create_volunteer(self, *attr)-> bool:
         """
         Method[11]: with all infor collected, create a volunteer account and insert into database
-        :return:
+        Create a new personal profile
+        :param *attr: the new volunteer information, with the order as: 
+                    $plan_name, $camp_name, $first_name, $last_name, $phone_num, $availability, $username, $password, $activated, $reassignable
+        NOTE: if you would like to specify availability, make sure that the string
+              is formatted as "$which_day,$start_time-$end_time" without any space
+              like "Monday,8-16"
+        :return boolean value
         """
-        pass
+        try:
+            if not self.raise_error_for_existence("volunteer", username=attr[6]):
+                return False
+            sql = insert_sql_generation("volunteer", *attr)
+            res = self.cursor.execute(sql)
+            self.connection.commit()
+        except sqlite3.Error as e:
+            log_admin.error(e)
+            return False
+        else:
+            return True
 
     # A method to be implemented
-    def view_volunteer_details(self)-> bool:
+    def view_volunteer_details(self, username: str)-> bool:
         """
         Method[12]: with all infor collected, view a volunteer's details. Consider the usage of pandas
         :return:
         """
-        pass
+        return super(admin,self).display_personal_profile(username,logger = log_admin)
+
+        
 
     # A method to edit volunteer details
     def edit_volunteer_details(self, username: str, **kwargs) -> bool:

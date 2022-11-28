@@ -152,6 +152,20 @@ class volunteer:
         else:
             return True
 
+    def display_personal_profile(self, username_: str, logger=log_volunteer) -> bool:
+        if not self.__raise_error_for_inexistence("volunteer", username=username_):
+            return False
+        sql = select_sql_generation("volunteer", "*", username=username_)
+        try:
+            self.cursor.execute(sql).fetchall()
+            # print(result)
+            self.connection.commit()
+        except sqlite3.Error as e:
+            logger.error(e)
+            return False
+        else:
+            return True
+
 
     def edit_personal_profile(self, username: str, logger= log_volunteer, **kwargs) -> bool:
         """
@@ -317,4 +331,5 @@ if __name__ == "__main__":
     vol1 = volunteer(connection, cursor)
     # vol1.create_personal_profile("plan1", "camp1", "bill", "liu", "1234567", "Monday,1-12", "vol111", "111", "TRUE", "FALSE")
     # vol1.vols_send_message('vol1', "i love you too", True)
-    vol1.vols_send_message('vol9', "Art is a rolling king", plan_name="plan1", camp_name="camp2")
+    # vol1.vols_send_message('vol9', "Art is a rolling king", plan_name="plan1", camp_name="camp2")
+    vol1.display_personal_profile("vol1")
