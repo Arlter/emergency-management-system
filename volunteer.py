@@ -192,7 +192,6 @@ class volunteer:
               like "Monday,8-16"
         """
         args = []
-        n = len(self.time_slots)
         for key, value in kwargs.items():
             args.append(key)
             args.append(value)
