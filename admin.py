@@ -55,12 +55,22 @@ class admin(volunteer):
 
 ####################################The following for account management system #######################################
     # Method to be implemented,  change passwords of the account  either with accountId, or username
-    def password_change(self)-> bool:
+    def password_change(self, username: str, password: str) -> bool:
         """
-        Method[3]
-        :return:
+        Method [3]
+        Change volunteer's password
+        :param username: volunteer's username
+        :param password: new password 
         """
-        pass
+        try:
+            sql = self.cursor.execute(update_sql_generation("volunteer", "password", password, username = username))
+            self.connection.commit()
+        except sqlite3.Error as e:
+            log_admin.error(e)
+            return False
+        else:
+            log_admin.info(f"* Password successfully changed ")
+            return True
 
 #################################The following Methods are for plan & camp management system############################
 
