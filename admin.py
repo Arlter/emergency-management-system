@@ -35,7 +35,7 @@ class admin(volunteer):
         :return:true if the value does not exist, false otherwise.
         """
         try:
-            if edit_check and table_name == "emergency_plan" and "plan_name" in kwargs.keys() and self.cursor.execute(f"SELECT COUNT(*) FROM emergency_plan WHERE close_date <> null and plan_name = '{kwargs['plan_name']}'").fetchall()[0][0] > 0 :
+            if edit_check and table_name == "emergency_plan" and "plan_name" in kwargs.keys() and self.cursor.execute(f"SELECT COUNT(*) FROM emergency_plan WHERE close_date <> '{'null'}' and plan_name = '{kwargs['plan_name']}'").fetchall()[0][0] > 0 :
                 raise closed_plan()
             sql_cmd = select_sql_generation(table_name, "COUNT(*)", **kwargs)
             res = self.cursor.execute(sql_cmd).fetchall()[0][0]
@@ -65,14 +65,13 @@ class admin(volunteer):
 #################################The following Methods are for plan & camp management system############################
 
     # A method for plan management system
-    def add_emergency_plan(self, plan_name:str,type:str,description:str,geo_affected_area:str,start_date:str) -> bool:
+    def add_emergency_plan(self, plan_name:str,type:str,description:str,geo_affected_area:str) -> bool:
         """
         Method[4] used to add emergency_plan. The last parameter from the table "close_date" is set to "NULL" by default.
         :param plan_name: plan name
         :param type: emergency type
         :param description: description
         :param geo_affected_area: location
-        :param start_date: plan start date
         :return: true if the operation is successful; error msg otherwise
         """
         try:
@@ -323,7 +322,7 @@ class admin(volunteer):
         :return:True if the operation encounters no exceptions, false otherwise.
         """
         try:
-            sql_cmd = f"{select_sql_generation('message', 'time','username','plan_name','content', plan_name = plan_name,admin_exclusive='FALSE', admin_announced='FALSE')} ORDER BY message_id ASC"
+            sql_cmd = f"{select_sql_generation('message', 'time','username','plan_name','content', plan_name = plan_name,admin_exclusive='FALSE')} ORDER BY message_id ASC"
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res) != 0:
                 df = pd.DataFrame(res,
@@ -430,4 +429,4 @@ class admin(volunteer):
     # A method for logging system to be implemented
     def reset_logs(self)-> bool:
         #Method[23]  basically just remove all the content in the file logging.log
-        pass        pass
+        pass
