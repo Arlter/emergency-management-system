@@ -247,7 +247,7 @@ class admin(volunteer):
         :return:true if the operation is successful false otherwise
         """
         try:
-            self.cursor.execute(update_sql_generation("volunteer","activated","False",username = vol_usrname))
+            self.cursor.execute(update_sql_generation("volunteer","activated","FALSE",username = vol_usrname))
             self.connection.commit()
         except sqlite3.Error as e:
             log_admin.error(e)

@@ -26,16 +26,12 @@ if __name__ == "__main__":
 
 
     # following are just some tests
-    admin.close_emergency_plan("plan2")
-    admin.list_existing_plans()
-    admin.display_plan_summary("plan2")
-    admin.deactivate_volunteer("vol1")
-    admin.delete_volunteer("admin")
-    admin.raise_error_for_inexistence("emergency_plan",edit_check=True,plan_name="plan2")
-    admin.raise_error_for_existence("emergency_plan",plan_name = "plan1")
-    admin.display_admin_exclusive_messages()
-    admin.create_admin_announcement("i love you all")
-    admin.delete_admin_exclusive_messages()
-    admin.display_messages_from_a_camp("plan1","camp1")
+    #$plan_name, $camp_name, $first_name, $last_name, $phone_num, $availability, $username, $password, $activated, $reassignable
+    #admin.create_volunteer("plan1", "camp2", "kien", "hang", 1234, "Monday,8-16", "kien", "password", "activated", "reassignable")
+    #admin.edit_personal_profile("kien", plan_name="plan1", camp_name="camp1")
+    admin.password_change("kien","newpass")
+    admin.view_volunteer_details("kien")
+    # admin.list_existing_plans()
+    # admin.display_plan_summary("plan2")
     #.display_logs()
     cursor.close()
