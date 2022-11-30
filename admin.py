@@ -192,12 +192,22 @@ class admin(volunteer):
             return True
 
     # A method for camp management system
-    def edit_camp_name(self)-> bool:
+    def edit_camp_name(self, pl_name:str, camp_name:str, new_camp_name: str)-> bool:
         """
         Method[10]: This method is used to change the name of a camp under a plan.
-        :return:
+        :param pl_name: Plan name 
+        :param camp_name: Camp name to be changed
+        :param new_camp_name: New camp name 
         """
-        pass
+        try:
+            sql = self.cursor.execute(update_sql_generation("camp", "camp_name", new_camp_name, plan_name = pl_name, camp_name = camp_name))
+            self.connection.commit()
+        except sqlite3.Error as e:
+            log_admin.error(e)
+            return False
+        else:
+            log_admin.info(f"* Camp name successfully changed ")
+            return True
 
 ##########################The following Methods are for volunteer management system####################################
     # A method to be implemented
