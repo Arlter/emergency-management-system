@@ -449,4 +449,5 @@ class admin(volunteer):
     # A method for logging system to be implemented
     def reset_logs(self)-> bool:
         #Method[23]  basically just remove all the content in the file logging.log
-        pass
+        with open('logging.log', 'w'):
+            pass
