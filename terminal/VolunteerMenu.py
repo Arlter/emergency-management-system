@@ -1,3 +1,4 @@
+import sqlite3
 from volunteer import *
 from exceptions import *
 from logging_configure import *
@@ -194,8 +195,13 @@ class VolunteerMenu:
     def display_admin_announcements(self):
         try: 
             volunteer.vols_display_message(admin_anno = True)
-            # maybe insert press b to go back?
-            self.queue.append('self.messaging_system()')
+            # insert "press b to go back" to avoid menu automatically popping up when displaying message?
+            go_back = input("Enter b to go back to the messaging system menu: ")
+            if go_back == "b":
+                # self.Ifback = True
+                self.queue.append('self.messaging_system()')
+            else:
+                pass  # or use while true loop? test later
         except Exception as e:
             print("Error, please try again")
             log_volunteer.error(e) 
@@ -226,8 +232,13 @@ class VolunteerMenu:
     def display_camp_messages(self):
         try:
             volunteer.vols_display_message(plan_name = self.plan, camp_name = self.camp)
-            # maybe insert press b to go back?
-            self.queue.append('self.messaging_system()')
+            # insert "press b to go back" to avoid menu automatically popping up when displaying message?
+            go_back = input("Enter b to go back to the messaging system menu: ")
+            if go_back == "b":
+                # self.Ifback = True
+                self.queue.append('self.messaging_system()')
+            else:
+                pass  # or use while true loop? test later
         except Exception as e:
             print("Error, please try again")
             log_volunteer.error(e) 
@@ -241,24 +252,25 @@ class VolunteerMenu:
         """)
         try:
             if volunteer.__raise_error_for_inexistence("camp", plan_name = self.plan, camp_name = self.camp):
-                    message_to_camp = input("Please enter your message to your camp: ")
-
-                    if message_to_camp == "b":
-                        self.Ifback = True  # how to use this?
-                        pass
-                    else:
-                        try:
-                            volunteer.vols_send_message(self.username, message_to_camp, plan_name = self.plan, camp_name = self.camp)
-                            print("Message sent to camp")
-                            self.queue.append('self.messaging_system()')
-                        except Exception as e:
-                            print("Error, please try again")
-                            log_volunteer.error(e) 
-                            self.queue.append('self.send_message_to_camp()')
+                message_to_camp = input("Please enter your message to your camp: ")
+                if message_to_camp == "b":
+                    self.Ifback = True  # how to use this?
+                    pass
+                else:
+                    try:
+                        volunteer.vols_send_message(self.username, message_to_camp, plan_name = self.plan, camp_name = self.camp)
+                        print("Message sent to camp")
+                        self.queue.append('self.messaging_system()')
+                    except Exception as e:
+                        print("Error, please try again")
+                        log_volunteer.error(e) 
+                        self.queue.append('self.send_message_to_camp()')
             else:
                 raise absent("camp", plan_name = self.plan, camp_name = self.camp)
         except absent as e:
-            log_volunteer.error(e) 
+            log_volunteer.error(e)
+            print("Camp is not found or closed")
+            self.queue.append('self.messaging_system()')
 
 
     """
@@ -315,3 +327,13 @@ class VolunteerMenu:
             print("Error, please try again")
             log_volunteer.error(e) 
             self.queue.append('self.manage_personal_profile()')
+
+
+
+if __name__ == "__main__":
+    # test for edit_personal_profile and availability
+    connection = sqlite3.connect('db.db')
+    cursor = connection.cursor()
+    #vol1 = volunteer(connection, cursor)
+    #vol1.create_personal_profile("plan1", "camp1", "bill", "liu", "1234567", "Monday,1-12", "vol111", "111", "TRUE", "FALSE")
+    
