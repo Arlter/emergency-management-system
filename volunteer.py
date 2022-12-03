@@ -82,13 +82,10 @@ class volunteer:
         else:
             return True
 
-    def create_refugee_profile(self, plan_name, camp_name, first_name, last_name, family_number, medical_condition,
-                                 profile_ID):
+    def create_refugee_profile(self, **kwargs):
         """method[27]"""
         try:
-            self.cursor.execute(
-                insert_sql_generation("refugee_profile", plan_name, camp_name, first_name, last_name, family_number,
-                                      medical_condition, profile_ID))
+            self.cursor.execute(insert_sql_generation("refugee_profile", **kwargs))
             self.connection.commit()
         except sqlite3.Error as e:
             log_volunteer.error(e)
@@ -344,6 +341,7 @@ if __name__ == "__main__":
     connection = sqlite3.connect('db.db')
     cursor = connection.cursor()
     vol1 = volunteer(connection, cursor)
+    vol1.create_refugee_profile(plan_name="plan1", camp_name="camp2", first_name="art", last_name="wang", family_num="999", medical_condition="cold", archived="TRUE")
     # vol1.create_personal_profile("plan1", "camp1", "bill", "liu", "1234567", "Monday,1-12", "vol111", "111", "TRUE", "FALSE")
     # vol1.vols_send_message('vol1', "i love you too", True)
     # vol1.vols_send_message('vol9', "Art is a rolling king", plan_name="plan1", camp_name="camp2")
