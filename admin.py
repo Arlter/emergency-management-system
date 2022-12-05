@@ -7,13 +7,6 @@ from exceptions import *
 from terminal.color_utilities import  *
 from volunteer import volunteer
 class admin(volunteer):
-    def __init__(self,connection,cursor):
-        """
-        Call the init method from volunteer
-        :param connection: connection
-        :param cursor: cursor
-        """
-        super(admin, self).__init__(connection,cursor)
 
 #################################The following two methods for general single-value check ##############################
     def raise_error_for_existence(self,table_name,**kwargs) -> bool:

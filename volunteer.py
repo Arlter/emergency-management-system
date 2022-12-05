@@ -19,14 +19,12 @@ from exceptions import *
 
 class volunteer:
 
-    def __init__(self, connection, cursor):
+    def __init__(self):
         """
-        pass the connection and cursor to complete the operations on the db.
-        :param connection: connection 
-        :param cursor: cursor
+        initialize
         """
-        self.connection = connection
-        self.cursor = cursor
+        self.connection = sqlite3.connect('db.db', detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+        self.cursor = self.connection.cursor()
 
     def raise_error_for_existence(self, table_name,logger = log_volunteer, **kwargs) -> bool:
         """
