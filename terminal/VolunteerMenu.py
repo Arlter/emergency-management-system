@@ -2,6 +2,8 @@ import sqlite3
 from volunteer import *
 from exceptions import *
 from logging_configure import *
+import database_utilities
+
 
 """
 Assumptions:
@@ -81,18 +83,16 @@ In every menu:
 [b] Back (except in main menu)
 
 
-
 """
 
-
 class VolunteerMenu:
-    def __init__(self):
+    def __init__(self, vol usrname):
         self.Ifback = False
         self.queue = []
         # have to add new attributes?
-        self.username = None
-        self.plan = None
-        self.camp = None
+        self.username = username
+        self.plan = select_sql_generation("volunteer", "plan_name", username = vol.volunteer_username)
+        self.camp = select_sql_generation("volunteer", "camp_name", username = vol.volunteer_username)
 
         self.volunteer_menu_dict = {
             "1": "self.display_camp()",
@@ -107,31 +107,27 @@ class VolunteerMenu:
             self.queue = self.queue[1:]
 
     def volunteer_menu(self):
-        print("""
-        Welcome! Your role is Volunteer
-        [1] Display camp information
-        [2] Manage refugee profile
-        [3] Messaging System
-        [4] Manage personal profile
-        [q] Logout
-        """)
         
-        user_input = input("Please select an option: ")
+        user_input = input("""
+Volunteer Menu
+[1] Display camp information
+[2] Manage refugee profile
+[3] Messaging System
+[4] Manage personal profile
+[q] Logout
+
+Please select an option: """)
 
         if user_input == "q":
-            print("Goodbye!")
+            log_volunteer.info("Goodbye!")
             pass  # always pass
-
         elif user_input == "b": #used for relogin
             self.Ifback = True
+        elif user_input in self.volunteer_menu_dict:
+            self.queue.append(self.volunteer_menu_dict[user_input])
         else:
-            try:
-                self.queue.append(self.volunteer_menu_dict[user_input])
-
-            except:
-                print("Invalid option!")
-                self.queue.append('self.volunteer_menu()')
-
+            log_volunteer.error("Invalid option, please try again")
+            self.queue.append('self.volunteer_menu()')
 
 
 
@@ -163,30 +159,29 @@ class VolunteerMenu:
             "2": "self.send_message_to_admin()",
             "3": "self.display_camp_messages()",
             "4": "self.send_message_to_camp()"}
-
-        print("""
-        Messaging System
-        [1] Display admin announcements
-        [2] Send message to admin
-        [3] Display messages from your camp
-        [4] Send message to your camp
-        [b] Go back to previous page
-        [q] Logout
-        """)
         
-        user_input = input("Please select an option: ")
+        user_input = input("""
+Messaging System
+[1] Display admin announcements
+[2] Send message to admin
+[3] Display messages from your camp
+[4] Send message to your camp
+[b] Go back to previous page
+[q] Logout
+
+Please select an option: """)
 
         if user_input == "q":
-            print("Goodbye!")
+            log_volunteer.info("Goodbye!")
             pass  # always pass
         elif user_input == "b":
-            self.Ifback = True  # how to use this?
+            self.queue.append('self.volunteer_menu()')
             pass
         else:
             try:
                 self.queue.append(self.messaging_system_dict[user_input])
             except Exception as e:  # what exception to use?
-                print("Invalid option!")
+                log_volunteer.info("Invalid option!")
                 log_volunteer.error("Invalid input to messaging menu") 
                 self.queue.append('self.messaging_system()')
         pass
@@ -194,82 +189,64 @@ class VolunteerMenu:
     # 3.1 Display admin announcements
     def display_admin_announcements(self):
         try: 
-            volunteer.vols_display_message(admin_anno = True)
+            vol.vols_display_message(admin_anno = True)
             # insert "press b to go back" to avoid menu automatically popping up when displaying message?
             go_back = input("Enter b to go back to the messaging system menu: ")
             if go_back == "b":
-                # self.Ifback = True
                 self.queue.append('self.messaging_system()')
             else:
-                pass  # or use while true loop? test later
+                pass  # use while true loop? test later
         except Exception as e:
-            print("Error, please try again")
             log_volunteer.error(e) 
             self.queue.append('self.messaging_system()')
 
     # 3.2 Send message to admin
     def send_message_to_admin(self):
-        print("""
-        Send message to admin
-        (Enter b to go back)
-        """)
 
-        message_to_admin = input("Please enter your message for the admin: ")
+        message_to_admin = input("""
+Send message to admin
+(Enter b to go back)
+
+Please enter your message for the admin: """)
 
         if message_to_admin == "b":
-            self.Ifback = True  # how to use this?
+            self.queue.append('self.messaging_system()')
         else:
             try:
                 volunteer.vols_send_message(self.username, message_to_admin, admin_excl=True)
-                print("Message sent to admin")
+                log_volunteer.info("Message sent to admin")
                 self.queue.append('self.messaging_system()')
             except Exception as e:
-                print("Error, please try again")
                 log_volunteer.error(e) 
                 self.queue.append('self.send_message_to_admin()')
 
     # 3.3 Display messages from your camp
     def display_camp_messages(self):
-        try:
-            volunteer.vols_display_message(plan_name = self.plan, camp_name = self.camp)
-            # insert "press b to go back" to avoid menu automatically popping up when displaying message?
-            go_back = input("Enter b to go back to the messaging system menu: ")
-            if go_back == "b":
-                # self.Ifback = True
-                self.queue.append('self.messaging_system()')
-            else:
-                pass  # or use while true loop? test later
-        except Exception as e:
-            print("Error, please try again")
-            log_volunteer.error(e) 
+        volunteer.vols_display_message(plan_name = self.plan, camp_name = self.camp)
+        # insert "press b to go back" to avoid menu automatically popping up when displaying message?
+        go_back = input("Enter b to go back to the messaging system menu: ")
+        if go_back == "b":
+            self.queue.append('self.messaging_system()')
+        else:
             self.queue.append('self.display_camp_messages()')
 
     # 3.4 Send message to your camp
     def send_message_to_camp(self):
-        print("""
-        Send message to your camp
-        (Enter b to go back)
-        """)
-        try:
-            if volunteer.__raise_error_for_inexistence("camp", plan_name = self.plan, camp_name = self.camp):
-                message_to_camp = input("Please enter your message to your camp: ")
-                if message_to_camp == "b":
-                    self.Ifback = True  # how to use this?
-                    pass
-                else:
-                    try:
-                        volunteer.vols_send_message(self.username, message_to_camp, plan_name = self.plan, camp_name = self.camp)
-                        print("Message sent to camp")
-                        self.queue.append('self.messaging_system()')
-                    except Exception as e:
-                        print("Error, please try again")
-                        log_volunteer.error(e) 
-                        self.queue.append('self.send_message_to_camp()')
+        if vol.__raise_error_for_inexistence("camp", plan_name = self.plan, camp_name = self.camp):
+            message_to_camp = input("""
+Send message to your camp
+(Enter b to go back)
+
+Please enter your message to your camp: """)
+            if message_to_camp == "b":
+                self.queue.append('self.messaging_system()')
+                pass
             else:
-                raise absent("camp", plan_name = self.plan, camp_name = self.camp)
-        except absent as e:
-            log_volunteer.error(e)
-            print("Camp is not found or closed")
+                vol.vols_send_message(self.username, message_to_camp, plan_name = self.plan, camp_name = self.camp)
+                log_volunteer.info("Message sent to camp")
+                self.queue.append('self.messaging_system()')
+            self.queue.append('self.send_message_to_camp()')
+
             self.queue.append('self.messaging_system()')
 
 
@@ -286,28 +263,26 @@ class VolunteerMenu:
         self.personal_profile_dict = {
             "1": "self.display_vol_profile()",
             "2": "self.edit_vol_profile()"}
-
-        print("""
-        Manage personal profile
-        [1] Display personal profile
-        [2] Edit personal profile
-        [b] Go back to previous page
-        [q] Logout
-        """)
         
-        user_input = input("Please select an option: ")
+        user_input = input("""
+Manage personal profile
+[1] Display personal profile
+[2] Edit personal profile
+[b] Go back to previous page
+[q] Logout
+
+Please select an option: """)
 
         if user_input == "q":
-            print("Goodbye!")
+            log_volunteer.info("Goodbye!")
             pass  # always pass
         elif user_input == "b":
-            self.Ifback = True  # how to use this?
+            self.queue.append('self.volunteer_menu()')
             pass
         else:
             try:
                 self.queue.append(self.personal_profile_dict[user_input])
             except Exception as e:  # what exception to use?
-                print("Invalid option!")
                 log_volunteer.error("Invalid input to manauge personal profile menu") 
                 self.queue.append('self.manage_personal_profile()')
         pass
@@ -316,7 +291,7 @@ class VolunteerMenu:
         try:
             volunteer.display_personal_profile(self.username)
         except Exception as e:
-            print("Error, please try again")
+            log_volunteer.error(e) 
             self.queue.append('self.manage_personal_profile()')
         pass
 
@@ -324,16 +299,5 @@ class VolunteerMenu:
         try:
             volunteer.edit_personal_profile(self.username)
         except Exception as e:
-            print("Error, please try again")
             log_volunteer.error(e) 
             self.queue.append('self.manage_personal_profile()')
-
-
-
-if __name__ == "__main__":
-    # test for edit_personal_profile and availability
-    connection = sqlite3.connect('db.db')
-    cursor = connection.cursor()
-    #vol1 = volunteer(connection, cursor)
-    #vol1.create_personal_profile("plan1", "camp1", "bill", "liu", "1234567", "Monday,1-12", "vol111", "111", "TRUE", "FALSE")
-    

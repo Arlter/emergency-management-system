@@ -1,18 +1,18 @@
-from color_utilities import *
-from Admin_and_Volun.admin import admin
-from AdminMenu import *
-from VolunteerMenu import *
+from terminal.color_utilities import *  # change path later
+# from Admin_and_Volun.admin import admin
+# from AdminMenu import *
+from terminal.VolunteerMenu import *  # change path later
 import sqlite3
 
 class login():
 
-    def __init__(self):
+    def __init__(self, vol):
         self.logqueue = []
         self.volunteer_username = None
 
         self.afterlogin = {
                 '0': "AdminMenu()",
-                '1': f"VolunteerMenu({self.volunteer_username})",
+                '1': f"VolunteerMenu({vol},{self.volunteer_username})",
                 '2': "GuestMenu()"}
 
 
@@ -30,7 +30,7 @@ class login():
     def trylogin(self):
         connection = sqlite3.connect('db.db', detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
         cursor = connection.cursor()
-        Admin = admin(connection,cursor)
+        # Admin = admin(connection,cursor) # change back later
 
 
 
