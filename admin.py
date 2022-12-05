@@ -141,12 +141,32 @@ class admin(volunteer):
             return True
 
     # Method to be implemented, Edit a plan's information. For example, name, description etc.
-    def edit_plan(self)-> bool:
+    def edit_plan(self, pl_name: str, logger=log_admin, **kwargs,)-> bool:
         """
         Method[7]: This method is used to edit unclosed plans with verified infomation
-        :return:
+        Collect the info and update the camp table
+            example: edit_plan(pl_name: "plan1", plan_name= "plan2", plan_type="earthquake", plan_description="new description", geo_area = "japan")
+            edit "plan1" to be named "plan2", change type to "earthquake", description to "new description" and geo_affected to "japan"
+        :param pl_name: plan name to be edited
+        :param **kwargs: attribute = values to be updated 
+        :param return: true edit successful, false otherwise
         """
-        pass
+        if not super(admin,self).raise_error_for_existence("camp", archived=True, plan_name=pl_name):
+            return False
+        args = []
+        for key, value in kwargs.items():
+            args.append(key)
+            args.append(value)
+        sql = update_sql_generation("emergency_plan", *args, plan_name=pl_name)
+        
+        try:
+            self.cursor.execute(sql).fetchall()
+            self.connection.commit()
+        except sqlite3.Error as e:
+            logger.error(e)
+            return False
+        else:
+            return True
 
     # A method for plan management system
     def close_emergency_plan(self,pl_name:str)-> bool:
