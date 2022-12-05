@@ -8,10 +8,11 @@ class login():
 
     def __init__(self):
         self.logqueue = []
+        self.volunteer_username = None
 
         self.afterlogin = {
                 '0': "AdminMenu()",
-                '1': "VolunteerMenu()",
+                '1': f"VolunteerMenu({self.volunteer_username})",
                 '2': "GuestMenu()"}
 
 
@@ -60,6 +61,7 @@ class login():
                 else:
                     print(colors.fg.green, "Welcome! Your role is Volunteer", colors.reset)
                     CurrentRole = '1'
+                    self.volunteer_username = UserNameinput
                     SuccessLog = True
 
             else:
