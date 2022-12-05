@@ -23,7 +23,7 @@ if __name__ == "__main__":
     initiate(connection,cursor)
     test_initiate(connection,cursor)
     # create an admin instance to use all the functionalities.
-    admin = admin(connection, cursor)
+    admin = admin()
 
 
     # following are just some tests
