@@ -127,11 +127,11 @@ def initiate(connection,cursor):
                 """
         cursor.execute(camp_del_volnum_trigger)
 
-        # create a trigger to update the num of volunteers and the campes
+        # create a trigger to update the num of volunteers and the camps
         camp_update_volnum_trigger = """CREATE TRIGGER camp_update_volnum_trigger BEFORE UPDATE OF camp_name ON volunteer
                 WHEN EXISTS(
                     SELECT * FROM camp
-                    WHERE camp_name = old.camp_name and archived = 'FALSE'
+                    WHERE camp_name = old.camp_name and archived = 'FALSE' and plan_name= old.plan_name
                 )
                 BEGIN
                     UPDATE camp SET num_of_volunteers = num_of_volunteers - 1 WHERE plan_name= old.plan_name and camp_name = old.camp_name;
@@ -145,7 +145,7 @@ def initiate(connection,cursor):
         archived_camp_update_volnum_trigger = """CREATE TRIGGER archived_camp_update_volnum_trigger BEFORE UPDATE OF plan_name ON volunteer
                 WHEN EXISTS(
                     SELECT * FROM camp
-                    WHERE camp_name = old.camp_name and archived = 'TRUE'
+                    WHERE camp_name = old.camp_name and archived = 'TRUE' and plan_name= old.plan_name
                 )
                 BEGIN
                     UPDATE camp SET num_of_volunteers = num_of_volunteers + 1 WHERE plan_name= new.plan_name and camp_name = new.camp_name;
