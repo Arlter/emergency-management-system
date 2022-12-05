@@ -7,12 +7,6 @@ from exceptions import *
 from terminal.color_utilities import  *
 from volunteer import volunteer
 class admin(volunteer):
-    def __init__(self):
-        """
-        initialize
-        """
-        self.connection = sqlite3.connect('db.db', detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
-        self.cursor = self.connection.cursor()
 
 #################################The following two methods for general single-value check ##############################
     def raise_error_for_existence(self,table_name,**kwargs) -> bool:
