@@ -49,7 +49,7 @@ class volunteer:
         else:
             return True
 
-    def __raise_error_for_inexistence(self, table_name: str, edit_check=False, **kwargs) -> bool:
+    def raise_error_for_inexistence(self, table_name: str, edit_check=False, **kwargs) -> bool:
         """
         method[26]
         This method is called when you want to verify existence of a tuple. It will raise an error if
@@ -63,6 +63,8 @@ class volunteer:
             if edit_check and table_name == "refugee_profile" and "profile_id" in kwargs.keys() and self.cursor.execute(
                     f"SELECT COUNT(*) FROM refugee_profile WHERE profile_id = '{kwargs['profile_id']}'").fetchall()[
                 0][0] > 0:
+                raise closed_plan()
+            if edit_check and table_name == "emergency_plan" and "plan_name" in kwargs.keys() and self.cursor.execute(f"SELECT COUNT(*) FROM emergency_plan WHERE close_date <> '{'null'}' and plan_name = '{kwargs['plan_name']}'").fetchall()[0][0] > 0 :
                 raise closed_plan()
             sql_cmd = select_sql_generation(table_name, "COUNT(*)", **kwargs)
             res = self.cursor.execute(sql_cmd).fetchall()[0][0]
@@ -156,7 +158,7 @@ class volunteer:
 
     def display_personal_profile(self, username_: str, logger=log_volunteer, no_extra=False) -> bool:
         """method[32]"""
-        if not self.__raise_error_for_inexistence("volunteer", username=username_):
+        if not self.raise_error_for_inexistence("volunteer", username=username_):
             return False
         if no_extra:
             sql = select_sql_generation("volunteer", "*", username=username_)
@@ -305,7 +307,7 @@ class volunteer:
             log_volunteer.info("* No messages are found given specified information.")
             return False
     
-    def vols_send_message(self, vol_usrname: str, content: str, admin_excl=False, **kwargs) -> bool:
+    def vols_send_message(self, vol_usrname: str, planname, content: str, admin_excl=False, **kwargs) -> bool:
         """
         method[36]
         :param vol_usrname: the volunteer who would like to send message
@@ -318,7 +320,9 @@ class volunteer:
         sends message to admin
         NOTE: please do not set true to admin_anno and specify **kwargs at the same time
         """
-        if not self.__raise_error_for_inexistence("volunteer", username=vol_usrname):
+        if not self.raise_error_for_inexistence("volunteer", edit_check=True, username=vol_usrname):
+            return False
+        if not admin_excl and not self.raise_error_for_inexistence("emergency_plan", edit_check=True, plan_name=planname):
             return False
         if not admin_excl:
             sql = f"""INSERT INTO message(plan_name,camp_name,username,admin_announced,admin_exclusive,content) 
