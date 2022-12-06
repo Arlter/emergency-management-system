@@ -379,11 +379,11 @@ class admin(volunteer):
         :return: True if the operation encounters no exceptions, false otherwise.
         """
         try:
-            sql_cmd = f"{select_sql_generation('message', 'time','username','plan_name','content', plan_name = plan_name, camp_name=camp_name,admin_exclusive='FALSE', admin_announced='FALSE')} ORDER BY message_id ASC"
+            sql_cmd = f"{select_sql_generation('message', 'time','username', 'plan_name', 'camp_name', 'content', plan_name = plan_name, camp_name=camp_name,admin_exclusive='FALSE', admin_announced='FALSE')} ORDER BY message_id ASC"
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res)!=0:
                 df = pd.DataFrame(res,
-                                  columns=['    Post Time','    Account','      Plan Name','  Camp Name' '            Message Content'])
+                                  columns=['    Post Time','    Account','      Plan Name','  Camp Name', '            Message Content'])
                 df.index = [''] * len(df)
                 log_admin.info(f"\n{df}\n")
             else:

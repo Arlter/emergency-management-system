@@ -6,13 +6,13 @@ import sqlite3
 
 class login():
 
-    def __init__(self, vol):
+    def __init__(self):
         self.logqueue = []
         self.volunteer_username = None
 
         self.afterlogin = {
                 '0': "AdminMenu()",
-                '1': f"VolunteerMenu({vol},{self.volunteer_username})",
+                '1': "VolunteerMenu(self.volunteer_username)",
                 '2': "GuestMenu()"}
 
 
