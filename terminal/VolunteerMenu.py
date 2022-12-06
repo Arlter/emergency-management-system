@@ -138,8 +138,87 @@ Please select an option: """)
             log_volunteer.error(f"{colors.bg.red}Invalid option, please try again{colors.reset}")
             self.queue.append('self.volunteer_menu()')
 
+    # Tim: display camp information, manage refugee profile
+    def display_camp_information(self):
+        """self.vol_instance.raise_error_for_inexistence("camp", True, self.camp)"""
+        day_of_week = input("Please enter a day of the week: ")
+        start_time = input("Please input the start time: ")
+        end_time = input("Please input the end time: ")
 
+        self.queue.append(f"self.vol_instance.availability(${day_of_week},${start_time}-${end_time}, plan_name={self.plan}, camp_name={self.camp})")
 
+    def manage_refugee_profile(self):
+        log_volunteer.info("[1] List all refugee profiles in your camp")
+        log_volunteer.info("[2] Find refugee profile")
+        log_volunteer.info("[3] Create refugee profile")
+        log_volunteer.info("[4] Update refugee profile")
+        log_volunteer.info("[b] Back")
+
+        option = input("Please select an option: ")
+
+        if option == "1":
+            '''List all refugee profiles in the camp'''
+            # Verify that the camp exists
+            '''self.vol_instance.raise_error_for_inexistence("camp", True, self.camp)'''
+            # List all refugee profiles in the camp
+            self.queue.append(f"self.vol_instance.list_emergency_profile({self.camp})")
+
+        elif option == "2":
+            '''Display a refugee profile according to chosen conditions'''
+            # Verify that the camp exists
+            '''self.vol_instance.__raise_error_for_inexistence("camp", True, self.camp)'''
+
+            # Display the refugee profile with the chosen conditions
+            first_name = input("Please input the refugee's first name (optional): ")
+            last_name = input("Please input the refugee's last name (optional): ")
+            family_num = input("Please input number of family members in refugee's family (optional): ")
+            medical_condition = input("Please input medical conditions (optional): ")
+
+            display_string = f"self.vol_instance.display_emergency_profile({self.camp}"
+            if len(first_name) != 0:
+                display_string += f",first_name = {first_name}"
+            if len(last_name) != 0:
+                display_string += f",last_name = {last_name}"
+            if len(family_num) != 0:
+                display_string += f",family_num = {family_num}"
+            if len(medical_condition) != 0:
+                display_string += f",{medical_condition}"
+            display_string += ")"
+
+            self.queue.append(display_string)
+
+        elif option == "3":
+            '''Create a refugee profile'''
+            # Verify that the camp and plan exists}
+            '''self.vol_instance.__raise_error_for_inexistence("camp", True, self.camp)'''
+            '''self.vol_instance.__raise_error_for_inexistence("plan", True, self.plan)'''
+
+            # Create a refugee profile
+            first_name = input("Enter the refugee's first name: ")
+            last_name = input("Enter the refugee's last name: ")
+            family_number = input("Enter the number of family members: ")
+            medical_condition = input("Enter a description of any medical health conditions: ")
+
+            self.queue.append(f"self.vol_instance.create_refugee_profile({self.plan}, {self.camp}, {first_name}), {last_name}, {family_number}, {medical_condition})")
+
+        elif option == "4":
+            '''Update a refugee profile'''
+            # Verify that the refugee profile exists
+            ref_ID = input("Please input the refugee's ID: ")
+            '''self.vol_instance.__raise_error_for_inexistence("profile", True, ref_ID)'''
+
+            # Update a refugee profile
+
+            attr_to_update = input("Please input the attribute you want updated: ")
+            new_value = input("Please provide the updated value: ")
+            self.queue.append(f"self.vol_instance.update_refugee_profile({attr_to_update},{new_value},{ref_ID})")
+
+        elif option == "b":
+            pass
+
+        else:
+            log_volunteer.error("Invalid input to messaging menu")
+            self.queue.append('self.manage_refugee_profile()')
 
 
 
