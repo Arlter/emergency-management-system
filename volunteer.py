@@ -154,15 +154,21 @@ class volunteer:
         else:
             return True
 
-    def display_personal_profile(self, username_: str, logger=log_volunteer) -> bool:
+    def display_personal_profile(self, username_: str, logger=log_volunteer, no_extra=False) -> bool:
         """method[32]"""
         if not self.__raise_error_for_inexistence("volunteer", username=username_):
             return False
-        sql = select_sql_generation("volunteer", "*", username=username_)
+        if no_extra:
+            sql = select_sql_generation("volunteer", "*", username=username_)
+        else:
+            sql = select_sql_generation("volunteer", "plan_name", "camp_name", "first_name", "last_name", "phone_num", "availability", "username", "password", username=username_)
         try:
             res = self.cursor.execute(sql).fetchall()
             self.connection.commit()
-            df = pd.DataFrame(res, columns = ['Plan name', 'Camp name', 'First name', 'Last name', 'Phone number', 'availability', 'username', 'password', 'activated', 'reassignable'])
+            if no_extra:
+                df = pd.DataFrame(res, columns = ['Plan name', 'Camp name', 'First name', 'Last name', 'Phone number', 'availability', 'username', 'password', 'activated', 'reassignable'])
+            else:
+                df = pd.DataFrame(res, columns = ['Plan name', 'Camp name', 'First name', 'Last name', 'Phone number', 'availability', 'username', 'password'])
             df.index = ['']*len(df)
             logger.info(f'\n{df}\n')
             # print(result)
@@ -279,9 +285,9 @@ class volunteer:
         """
         # print(not admin_anno)
         if not admin_anno:
-            sql = select_sql_generation("message", "time", "message_id", "username", "content", **kwargs)
+            sql = select_sql_generation("message", "message_id", "time", "username", "content", **kwargs)
         elif admin_anno and len(kwargs) == 0:
-            sql = select_sql_generation("message", "time", "message_id", "username", "content", admin_announced="TRUE", admin_exclusive="FALSE")
+            sql = select_sql_generation("message", "message_id", "time", "username", "content", admin_announced="TRUE", admin_exclusive="FALSE")
         elif admin_anno and len(kwargs) != 0:
             log_volunteer.error("Please do not specify the camp_name (or plan_name) and the admin_anno at the same time!")
             return False
@@ -291,7 +297,7 @@ class volunteer:
         except sqlite3.Error as e:
             log_volunteer.error(e)
         if len(result) != 0:
-            df = pd.DataFrame(result,columns=['    Message ID','       time','    username','    Message Content'])
+            df = pd.DataFrame(result,columns=['    Message ID','       Time','    username','    Message Content'])
             df.index = [''] * len(df)
             log_volunteer.info(f"\n{df}\n")
             return True
@@ -338,8 +344,9 @@ if __name__ == "__main__":
     # test for edit_personal_profile and availability
     connection = sqlite3.connect('db.db')
     cursor = connection.cursor()
-    vol1 = volunteer(connection, cursor)
-    vol1.create_refugee_profile(plan_name="plan1", camp_name="camp2", first_name="art", last_name="wang", family_num="999", medical_condition="cold", archived="TRUE")
+    vol1 = volunteer()
+    vol1.display_personal_profile("vol1")
+    # vol1.create_refugee_profile(plan_name="plan1", camp_name="camp2", first_name="art", last_name="wang", family_num="999", medical_condition="cold", archived="TRUE")
     # vol1.create_personal_profile("plan1", "camp1", "bill", "liu", "1234567", "Monday,1-12", "vol111", "111", "TRUE", "FALSE")
     # vol1.vols_send_message('vol1', "i love you too", True)
     # vol1.vols_send_message('vol9', "Art is a rolling king", plan_name="plan1", camp_name="camp2")
