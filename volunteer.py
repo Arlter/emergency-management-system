@@ -141,12 +141,21 @@ class volunteer:
         :param *attr: the new volunteer information, with the order as: 
                     $plan_name, $camp_name, $first_name, $last_name, $phone_num, $availability, $username, $password, $activated, $reassignable
         NOTE: if you would like to specify availability, make sure that the string
-              is formatted as "$which_day,$start_time-$end_time" without any space
-              like "Monday,8-16"
+              is formatted as "1,2,3", which is translated to "Monday, Tuesday, Wednesday"
+              in database. Split the string with comma and no space!
         """
         try:
             if not self.raise_error_for_existence("volunteer", username=attr[6]):
                 return False
+            attr_list = list(attr)
+            t = attr[5].split(',')
+            res = ''
+            matched = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+            for ch in t:
+                res += matched[int(ch) - 1] + ','
+            attr_list[5] = res[0:-1]
+            attr = tuple(attr_list)
+            # print(attr)
             sql = insert_sql_generation("volunteer", *attr)
             res = self.cursor.execute(sql)
             self.connection.commit()
@@ -191,14 +200,22 @@ class volunteer:
         :param username: the volunteer's username who would like to make the update
         :param **kwargs: attribute = value bindings you would like to update
         NOTE: if you would like to update availability, make sure that the string
-              is formatted as "$which_day,$start_time-$end_time" without any space
-              like "Monday,8-16"
+              is formatted as "1,2,3", which is translated to "Monday, Tuesday, Wednesday"
+              database. Split the string with comma and space!
         """
         args = []
         for key, value in kwargs.items():
-            args.append(key)
-            args.append(value)
+            if key != 'availability':
+                args.append(key)
+                args.append(value)
         # print(args)
+        t = kwargs['availability'].split(',')
+        res = ''
+        matched = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        for ch in t:
+            res += matched[int(ch) - 1] + ','
+        args.append("availability")
+        args.append(res[0:-1])
         sql = update_sql_generation("volunteer", *args, username=username)
         # print(sql)
         try:
@@ -214,35 +231,22 @@ class volunteer:
         # self.cursor.execute(sql)
         # self.connection.commit()
 
-    def availability(self, time: str, plan_name=None, camp_name=None, logger=log_volunteer) -> list:
+    def availability_(self, time: int, plan_name=None, camp_name=None, logger=log_volunteer) -> list:
         """
         method[34]
-        the function searches for volunteers fully available in a time period
-        :param time: a string that should be formatted like "$which_day,$start_time-$end_time"
-                     start time and end time can be same to make immediate sampling
-                     there should be no space in the string
+        the function searches for volunteers fully available in certain day
+        :param time: an integer that should be in range 1 - 7, for example, '1' for Monday, '2' for Tuesday
         :param plan_name: a string which specify the plan name, default none
         :param plan_name: a string which specify the camp name, default none
-        :return: a list containing available volunteer usernames in given period
+        :return: a list containing available volunteer usernames in given weekday
                  if there is error return false
         """
         res = []
-        if ' ' in time:  # there should be no space in the string
-            logger.error("Space detected in parameter 'time'")
+        if time < 1 or time > 7:
+            logger.error("Invalid time input, make sure it is in 1 - 7")
             return False
-        try:
-            t_day, c = time.split(',')
-            [t_start_time, t_end_time] = c.split('-')
-        except ValueError as e:
-            logger.error(e)
-        if int(t_start_time) > int(t_end_time):
-            logger.error("Invalid time period input")
-            return False
-        if t_day not in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']:
-            logger.error("Invalid day input")
-            return False
-        t_start_time = int(t_start_time)
-        t_end_time = int(t_end_time)
+        matched = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        day_str = matched[time - 1]
         dic = {}
         if plan_name != None:
             dic['plan_name'] = plan_name
@@ -259,13 +263,9 @@ class volunteer:
         # print(result)
         for tuples in result:
             vol = tuples[0]
-            day, d = tuples[1].split(',')
-            [start_time, end_time] = d.split('-')
-            start_time = int(start_time)
-            end_time = int(end_time)
-            # print("tup:", day, start_time, end_time)
-            # print("t:", t_day, t_start_time, t_end_time)
-            if day == t_day and start_time <= t_start_time and end_time >= t_end_time:
+            day = tuples[1].split(',')
+            # print(day)
+            if day_str in day:
                 res.append(vol)
         if len(res) == 0:
             logger.info("There is no satisfied volunteer in that period.")
@@ -349,7 +349,9 @@ if __name__ == "__main__":
     connection = sqlite3.connect('db.db')
     cursor = connection.cursor()
     vol1 = volunteer()
-    vol1.display_personal_profile("vol1")
+    vol1.create_personal_profile('plan1', 'camp1', 'bill', 'liu', '123', '1,2,3', 'vol8', '111', 'TRUE', "FALSE")
+    vol1.edit_personal_profile('vol8', availability="1,2,5")
+    vol1.availability_(1)
     # vol1.create_refugee_profile(plan_name="plan1", camp_name="camp2", first_name="art", last_name="wang", family_num="999", medical_condition="cold", archived="TRUE")
     # vol1.create_personal_profile("plan1", "camp1", "bill", "liu", "1234567", "Monday,1-12", "vol111", "111", "TRUE", "FALSE")
     # vol1.vols_send_message('vol1', "i love you too", True)
