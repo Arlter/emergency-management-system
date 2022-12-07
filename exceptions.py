@@ -12,3 +12,23 @@ class closed_plan(Exception):
     def __init__(self):
         self.message = f"* The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   "
         super().__init__(self.message)
+
+class option_not_existed(Exception):
+    def __init__(self):
+        self.message = f"* Invalid option. Please select from the Menu."
+        super().__init__(self.message)
+
+class Invalid_value(Exception):
+    def __init__(self):
+        self.message = f"* Invalid value. Please input in particular form. "
+        super().__init__(self.message)
+
+class unable_change_plan(Exception):
+    def __init__(self):
+        self.message = f"* The volunteer can not be reassigned as his plan is ongoing."
+        super().__init__(self.message)
+
+class unable_change_camp(Exception):
+    def __init__(self):
+        self.message = f"* The volunteer can not be reassigned to  as his plan has been closed."
+        super().__init__(self.message)

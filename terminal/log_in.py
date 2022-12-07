@@ -30,8 +30,6 @@ class login():
     def trylogin(self):
         connection = sqlite3.connect('db.db', detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
         cursor = connection.cursor()
-        Admin = admin(connection,cursor)
-
 
 
         SuccessLog = False
@@ -44,27 +42,32 @@ class login():
             Search = "SELECT * FROM volunteer WHERE username = " + "'" + UserNameinput + "'" + " and password = " + "'" + Passwordinput + "'"
             cursor.execute(Search)
 
+            try:
+                if cursor.fetchone():
 
-            if cursor.fetchone():
-
-                if UserNameinput == 'admin':
-                    print(colors.fg.green, "Welcome! Your role is Admin", colors.reset)
-                    CurrentRole = '0'
-                    SuccessLog = True
+                    if UserNameinput == 'admin':
+                        print(colors.fg.green, "Welcome! Your role is Admin", colors.reset)
+                        CurrentRole = '0'
+                        SuccessLog = True
 
 
-                elif UserNameinput == 'guest':
-                    print(colors.fg.green, "Welcome! Your role is Guest", colors.reset)
-                    CurrentRole = '2'
-                    SuccessLog = True
+                    elif UserNameinput == 'guest':
+                        print(colors.fg.green, "Welcome! Your role is Guest", colors.reset)
+                        CurrentRole = '2'
+                        SuccessLog = True
+
+                    else:
+                        print(colors.fg.green, "Welcome! Your role is Volunteer", colors.reset)
+                        CurrentRole = '1'
+                        self.volunteer_username = UserNameinput
+                        SuccessLog = True
 
                 else:
-                    print(colors.fg.green, "Welcome! Your role is Volunteer", colors.reset)
-                    CurrentRole = '1'
-                    self.volunteer_username = UserNameinput
-                    SuccessLog = True
+                    print(colors.fg.red, "Invalid login", colors.reset)
+                    raise option_not_existed
 
-            else:
-                print(colors.fg.red, "Invalid login", colors.reset)
+            except option_not_existed as e:
+                log_admin.error(e)
+
 
         self.logqueue.append(self.afterlogin[CurrentRole])
