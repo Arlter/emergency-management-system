@@ -295,6 +295,26 @@ class admin(volunteer):
         """
         return super(admin,self).display_personal_profile(username,logger = log_admin)
 
+    def list_all_volunteers(self) -> bool:
+        """
+        Method[x]: list all volunteers including accounts which have been decativated.
+        """
+        try:
+            sql = select_sql_generation("volunteer", "*")
+            res = self.cursor.execute(sql).fetchall()
+            if len(res) != 0:
+                df = pd.DataFrame(res,columns = ['Plan name','Camp name','First name','Last name','Phone number','availability', 'username', 'password','activated','reassignable'])
+                df.index = ['']*len(df)
+                log_admin.info(f'\n{df}\n')
+            else:
+                log_admin.info(f'* No volunteers found.')
+            # print(result)
+        except sqlite3.Error as e:
+            log_admin.error(e)
+            return False
+        else:
+            return True
+        
         
 
     # A method to edit volunteer details
