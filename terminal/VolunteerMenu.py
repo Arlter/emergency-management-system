@@ -341,8 +341,6 @@ Please enter your message to your camp: """)
             - edit personal profile [method 33: edit_personal_profile]
     """
 
-
-
     # 4. Personal profile
     def manage_personal_profile(self):
         self.personal_profile_dict = {
@@ -395,7 +393,6 @@ Please select an option: """)
         
         user_input = input("""
 Edit personal profile
-
 [1] First name
 [2] Last name
 [3] Phone number
@@ -445,22 +442,28 @@ Please choose the personal detail you want to edit (1-5): """)
         elif user_input == "4":
             valid_day = False
             while valid_day == False:
-                weekday = input("Please input your available week day: ")
-                weekday = weekday.capitalize()
-                if weekday not in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']:
+                weekday = input("""
+[1] Monday
+[2] Tuesday
+[3] Wednesday
+[4] Thursday
+[5] Friday
+[6] Saturday
+[7] Sunday
+Please select your available week day: """)
+                day_dict = {"1": "Monday", 
+                        "2": "Tuesday", 
+                        "3": "Wednesday", 
+                        "4": "Thursday", 
+                        "5": "Friday",
+                        "6": "Saturday",
+                        "7": "Sunday"}
+                if weekday not in day_dict:
                     log_volunteer.error(f"{colors.bg.red}Invalid day input, please try again{colors.reset}")
                 else:
                     valid_day = True
-            valid_time = False
-            while valid_time == False:
-                start_time = input("Please input the start time on your available day (0-24): ")
-                end_time = input("Please input the end time on your available day (0-24): ")
-                if (int(start_time) > int(end_time)) or (0 > int(start_time)) or (int(start_time) > 24) or (0 > int(end_time)) or (int(end_time) > 24):
-                    log_volunteer.error(f"{colors.bg.red}Invalid time input, please try again{colors.reset}")
-                elif int(start_time) < int(end_time):
-                    valid_time = True
-            availtime = f"{weekday},{start_time}-{end_time}"
-            if self.vol_instance.edit_personal_profile(self.username,availability = availtime):
+            avai_day = day_dict[weekday]
+            if self.vol_instance.edit_personal_profile(self.username,availability = avai_day):
                 log_volunteer.info(f"{colors.bg.green}Edit success!{colors.reset}")
             else:
                 log_volunteer.info(f"{colors.bg.red}Error, please try again{colors.reset}")
