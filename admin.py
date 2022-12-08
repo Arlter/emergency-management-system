@@ -422,7 +422,7 @@ class admin(volunteer):
         :return: True if the operation encounters no exceptions, false otherwise.
         """
         try:
-            sql_cmd = f"{select_sql_generation('message', 'time','username','plan_name','camp_name','content', plan_name = plan_name, camp_name=camp_name,admin_exclusive='FALSE', admin_announced='FALSE')} ORDER BY message_id ASC"
+            sql_cmd = f"{select_sql_generation('message', 'time','username','plan_name','camp_name','content', plan_name = plan_name, camp_name=camp_name,admin_exclusive='FALSE')} ORDER BY message_id ASC"
             # print(sql_cmd)
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res)!=0:
