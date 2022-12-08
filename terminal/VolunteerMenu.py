@@ -101,7 +101,7 @@ class VolunteerMenu:
         self.vol_instance.connection.commit()
 
         self.volunteer_menu_dict = {
-            "1": "self.display_camp()",
+            "1": "self.check_volunteer_availability()",
             "2": "self.manage_refugee_profile()",
             "3": "self.messaging_system()",
             "4": "self.manage_personal_profile()"}
@@ -118,7 +118,7 @@ class VolunteerMenu:
         # print(type(self.camp),self.camp)
         user_input = input("""
 Volunteer Menu
-[1] Display camp information
+[1] Check available volunteers on a given day
 [2] Manage refugee profile
 [3] Messaging System
 [4] Personal profile
@@ -139,29 +139,40 @@ Please select an option: """)
             self.queue.append('self.volunteer_menu()')
 
     # Tim: display camp information, manage refugee profile
-    def display_camp_information(self):
+    def check_volunteer_availability(self):
         """self.vol_instance.raise_error_for_inexistence("camp", True, self.camp)"""
-        day_of_week = input("Please enter a day of the week: ")
-        start_time = input("Please input the start time: ")
-        end_time = input("Please input the end time: ")
-
-        self.queue.append(f"self.vol_instance.availability(${day_of_week},${start_time}-${end_time}, plan_name={self.plan}, camp_name={self.camp})")
-
+        weekday = input("""
+[1] Monday
+[2] Tuesday
+[3] Wednesday
+[4] Thursday
+[5] Friday
+[6] Saturday
+[7] Sunday
+Please select the day to check: """)
+        if weekday in ('1','2','3','4', '5', '6', '7'):
+            self.vol_instance.availability(int(weekday), plan_name=self.plan, camp_name=self.camp)
+            #optional: only show volunteer menu when back key is used
+            self.queue.append("self.volunteer_menu()")
+        else:
+            log_volunteer.error(f"{colors.bg.red}Invalid option, please try again{colors.reset}")
+            self.queue.append("self.check_volunteer_availability()")
     def manage_refugee_profile(self):
-        log_volunteer.info("[1] List all refugee profiles in your camp")
-        log_volunteer.info("[2] Find refugee profile")
-        log_volunteer.info("[3] Create refugee profile")
-        log_volunteer.info("[4] Update refugee profile")
-        log_volunteer.info("[b] Back")
-
-        option = input("Please select an option: ")
+        option = input("""
+[1] List all refugee profiles in your camp
+[2] Find refugee profile
+[3] Create refugee profile
+[4] Update refugee profile
+[b] Back
+Please select an option: """)
 
         if option == "1":
             '''List all refugee profiles in the camp'''
             # Verify that the camp exists
             '''self.vol_instance.raise_error_for_inexistence("camp", True, self.camp)'''
             # List all refugee profiles in the camp
-            self.queue.append(f"self.vol_instance.list_emergency_profile({self.camp})")
+            self.vol_instance.list_emergency_profile(self.camp)
+            self.queue.append('self.manage_refugee_profile()')
 
         elif option == "2":
             '''Display a refugee profile according to chosen conditions'''
@@ -184,8 +195,9 @@ Please select an option: """)
             if len(medical_condition) != 0:
                 display_string += f",{medical_condition}"
             display_string += ")"
-
-            self.queue.append(display_string)
+            eval(display_string)
+            #optional: only show menu when back key is used
+            self.queue.append('self.manage_refugee_profile()')
 
         elif option == "3":
             '''Create a refugee profile'''
@@ -196,10 +208,21 @@ Please select an option: """)
             # Create a refugee profile
             first_name = input("Enter the refugee's first name: ")
             last_name = input("Enter the refugee's last name: ")
-            family_number = input("Enter the number of family members: ")
+            family_num = input("Enter the number of family members: ")
             medical_condition = input("Enter a description of any medical health conditions: ")
-
-            self.queue.append(f"self.vol_instance.create_refugee_profile({self.plan}, {self.camp}, {first_name}), {last_name}, {family_number}, {medical_condition})")
+            create_string = f"self.vol_instance.create_refugee_profile({self.plan}, {self.camp}"
+            if len(first_name) != 0:
+                create_string += f", first_name = {first_name}"
+            if len(last_name) != 0:
+                create_string += f", last_name = {last_name}"
+            if len(family_num) != 0:
+                create_string += f", family_num = {family_num}"
+            if len(medical_condition) != 0:
+                create_string += f", medical_condition = {medical_condition}"
+            create_string += ")"
+            eval(create_string)
+            # optional: only show menu when back key is used
+            self.queue.append('self.manage_refugee_profile()')
 
         elif option == "4":
             '''Update a refugee profile'''
@@ -211,13 +234,14 @@ Please select an option: """)
 
             attr_to_update = input("Please input the attribute you want updated: ")
             new_value = input("Please provide the updated value: ")
-            self.queue.append(f"self.vol_instance.update_refugee_profile({attr_to_update},{new_value},{ref_ID})")
+            eval(f"self.vol_instance.update_refugee_profile({attr_to_update},{new_value},{ref_ID})")
+            self.queue.append('self.manage_refugee_profile()')
 
         elif option == "b":
             pass
 
         else:
-            log_volunteer.error("Invalid input to messaging menu")
+            log_volunteer.error("Invalid input to refugee profile management menu")
             self.queue.append('self.manage_refugee_profile()')
 
 
@@ -440,8 +464,8 @@ Please choose the personal detail you want to edit (1-5): """)
             self.queue.append('self.edit_vol_profile()')
 
         elif user_input == "4":
-            valid_day = False
-            while valid_day == False:
+            weekdays = []
+            while True:
                 weekday = input("""
 [1] Monday
 [2] Tuesday
@@ -450,23 +474,18 @@ Please choose the personal detail you want to edit (1-5): """)
 [5] Friday
 [6] Saturday
 [7] Sunday
+[8] I've finished selecting my available days. Update my records.
 Please select your available week day: """)
-                day_dict = {"1": "Monday", 
-                        "2": "Tuesday", 
-                        "3": "Wednesday", 
-                        "4": "Thursday", 
-                        "5": "Friday",
-                        "6": "Saturday",
-                        "7": "Sunday"}
-                if weekday not in day_dict:
-                    log_volunteer.error(f"{colors.bg.red}Invalid day input, please try again{colors.reset}")
+                if weekday in ('1','2','3','4','5','6','7'):
+                    weekdays.append(str(weekday))
+                elif weekday == '8':
+                    break
                 else:
-                    valid_day = True
-            avai_day = day_dict[weekday]
-            if self.vol_instance.edit_personal_profile(self.username,availability = avai_day):
+                    log_volunteer.error(f"{colors.bg.red}Invalid day input, please try again{colors.reset}")
+            if len(weekdays) != 0:
+                self.vol_instance.edit_personal_profile(self.username, availability=','.join(sorted(list(set(weekdays)))))
                 log_volunteer.info(f"{colors.bg.green}Edit success!{colors.reset}")
-            else:
-                log_volunteer.info(f"{colors.bg.red}Error, please try again{colors.reset}")
+            #log_volunteer.info(f"{colors.bg.red}Error, please try again{colors.reset}")
             self.queue.append('self.edit_vol_profile()')
             
         elif user_input == "5":
