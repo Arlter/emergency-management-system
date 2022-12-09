@@ -152,8 +152,13 @@ Please select an option: """)
 Please select the day to check: """)
         if weekday in ('1','2','3','4', '5', '6', '7'):
             self.vol_instance.availability(int(weekday), plan_name=self.plan, camp_name=self.camp)
-            #optional: only show volunteer menu when back key is used
-            self.queue.append("self.volunteer_menu()")
+            # insert "press b to go back" to avoid menu automatically popping up
+            userinput = input("Enter b to go back to Volunteer menu: ")
+            while userinput != "b":
+                log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
+                userinput = input("Enter b to go back to Volunteer menu: ")
+            else:
+                self.queue.append("self.volunteer_menu()")
         else:
             log_volunteer.error(f"{colors.bg.red}Invalid option, please try again{colors.reset}")
             self.queue.append("self.check_volunteer_availability()")
@@ -172,7 +177,13 @@ Please select an option: """)
             '''self.vol_instance.raise_error_for_inexistence("camp", True, self.camp)'''
             # List all refugee profiles in the camp
             self.vol_instance.list_emergency_profile(self.camp)
-            self.queue.append('self.manage_refugee_profile()')
+            # insert "press b to go back" to avoid menu automatically popping up
+            userinput = input("Enter b to go back to Volunteer menu: ")
+            while userinput != "b":
+                log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
+                userinput = input("Enter b to go back to Manage refugee profile menu: ")
+            else:
+                self.queue.append('self.manage_refugee_profile()')
 
         elif option == "2":
             '''Display a refugee profile according to chosen conditions'''
@@ -196,8 +207,13 @@ Please select an option: """)
                 display_string += f",{medical_condition}"
             display_string += ")"
             eval(display_string)
-            #optional: only show menu when back key is used
-            self.queue.append('self.manage_refugee_profile()')
+            # insert "press b to go back" to avoid menu automatically popping up
+            userinput = input("Enter b to go back to Volunteer menu: ")
+            while userinput != "b":
+                log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
+                userinput = input("Enter b to go back to Manage refugee profile menu: ")
+            else:
+                self.queue.append('self.manage_refugee_profile()')
 
         elif option == "3":
             '''Create a refugee profile'''
@@ -221,8 +237,13 @@ Please select an option: """)
                 create_string += f", medical_condition = {medical_condition}"
             create_string += ")"
             eval(create_string)
-            # optional: only show menu when back key is used
-            self.queue.append('self.manage_refugee_profile()')
+            # insert "press b to go back" to avoid menu automatically popping up
+            userinput = input("Enter b to go back to Volunteer menu: ")
+            while userinput != "b":
+                log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
+                userinput = input("Enter b to go back to Manage refugee profile menu: ")
+            else:
+                self.queue.append('self.manage_refugee_profile()')
 
         elif option == "4":
             '''Update a refugee profile'''
@@ -235,13 +256,19 @@ Please select an option: """)
             attr_to_update = input("Please input the attribute you want updated: ")
             new_value = input("Please provide the updated value: ")
             eval(f"self.vol_instance.update_refugee_profile({attr_to_update},{new_value},{ref_ID})")
-            self.queue.append('self.manage_refugee_profile()')
+            # insert "press b to go back" to avoid menu automatically popping up
+            userinput = input("Enter b to go back to Volunteer menu: ")
+            while userinput != "b":
+                log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
+                userinput = input("Enter b to go back to Manage refugee profile menu: ")
+            else:
+                self.queue.append('self.manage_refugee_profile()')
 
         elif option == "b":
             pass
 
         else:
-            log_volunteer.error("Invalid input to refugee profile management menu")
+            log_volunteer.error("Invalid input to Manage refugee profile menu")
             self.queue.append('self.manage_refugee_profile()')
 
 
