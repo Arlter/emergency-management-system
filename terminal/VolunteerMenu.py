@@ -158,7 +158,7 @@ Please select an option: """)
             # List all refugee profiles in the camp
             self.vol_instance.list_emergency_profile(self.camp)
             # insert "press b to go back" to avoid menu automatically popping up
-            userinput = input("Enter b to go back to Volunteer menu: ")
+            userinput = input("Enter b to go back to Manage refugee profile menu: ")
             while userinput != "b":
                 log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
                 userinput = input("Enter b to go back to Manage refugee profile menu: ")
@@ -176,19 +176,27 @@ Please select an option: """)
             family_num = input("Please input number of family members in refugee's family (optional): ")
             medical_condition = input("Please input medical conditions (optional): ")
 
-            display_string = f"self.vol_instance.display_emergency_profile({self.camp}"
+            display_string = f"self.vol_instance.display_emergency_profile(self.camp"
             if len(first_name) != 0:
-                display_string += f",first_name = {first_name}"
+                display_string += f",first_name = first_name"
+            else:
+                display_string += f",first_name = '*'"
             if len(last_name) != 0:
-                display_string += f",last_name = {last_name}"
+                display_string += f",last_name = last_name"
+            else:
+                display_string += f",last_name = '*'"
             if len(family_num) != 0:
-                display_string += f",family_num = {family_num}"
+                display_string += f",family_num = family_num"
+            else:
+                display_string += f",family_num = '*'"
             if len(medical_condition) != 0:
-                display_string += f",{medical_condition}"
+                display_string += f",medical_condition = medical_condition"
+            else:
+                display_string += f",medical_condition = '*'"
             display_string += ")"
             eval(display_string)
             # insert "press b to go back" to avoid menu automatically popping up
-            userinput = input("Enter b to go back to Volunteer menu: ")
+            userinput = input("Enter b to go back to Manage refugee profile menu: ")
             while userinput != "b":
                 log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
                 userinput = input("Enter b to go back to Manage refugee profile menu: ")
@@ -206,19 +214,19 @@ Please select an option: """)
             last_name = input("Enter the refugee's last name: ")
             family_num = input("Enter the number of family members: ")
             medical_condition = input("Enter a description of any medical health conditions: ")
-            create_string = f"self.vol_instance.create_refugee_profile({self.plan}, {self.camp}"
+            create_string = f"self.vol_instance.create_refugee_profile(plan_name = self.plan, camp_name = self.camp"
             if len(first_name) != 0:
-                create_string += f", first_name = {first_name}"
+                create_string += f", first_name = first_name"
             if len(last_name) != 0:
-                create_string += f", last_name = {last_name}"
+                create_string += f", last_name = last_name"
             if len(family_num) != 0:
-                create_string += f", family_num = {family_num}"
+                create_string += f", family_num = family_num"
             if len(medical_condition) != 0:
-                create_string += f", medical_condition = {medical_condition}"
+                create_string += f", medical_condition = medical_condition"
             create_string += ")"
             eval(create_string)
             # insert "press b to go back" to avoid menu automatically popping up
-            userinput = input("Enter b to go back to Volunteer menu: ")
+            userinput = input("Enter b to go back to Manage refugee profile menu: ")
             while userinput != "b":
                 log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
                 userinput = input("Enter b to go back to Manage refugee profile menu: ")
@@ -235,9 +243,9 @@ Please select an option: """)
 
             attr_to_update = input("Please input the attribute you want updated: ")
             new_value = input("Please provide the updated value: ")
-            eval(f"self.vol_instance.update_refugee_profile({attr_to_update},{new_value},{ref_ID})")
+            self.vol_instance.update_refugee_profile(attr_to_update, new_value, ref_ID)
             # insert "press b to go back" to avoid menu automatically popping up
-            userinput = input("Enter b to go back to Volunteer menu: ")
+            userinput = input("Enter b to go back to Manage refugee profile menu: ")
             while userinput != "b":
                 log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
                 userinput = input("Enter b to go back to Manage refugee profile menu: ")
