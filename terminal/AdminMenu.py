@@ -1,4 +1,4 @@
-from color_utilities import *
+from terminal.color_utilities import *
 import re
 from admin import *
 from exceptions import *

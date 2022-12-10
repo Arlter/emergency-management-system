@@ -1,7 +1,7 @@
-from color_utilities import *
-from Admin_and_Volun.admin import admin
-from AdminMenu import *
-from VolunteerMenu import *
+from terminal.color_utilities import *
+from admin import admin
+from terminal.AdminMenu import *
+from terminal.VolunteerMenu import *
 import sqlite3
 
 class login():
@@ -12,7 +12,7 @@ class login():
 
         self.afterlogin = {
                 '0': "AdminMenu()",
-                '1': f"VolunteerMenu({self.volunteer_username})",
+                '1': "VolunteerMenu(self.volunteer_username)",
                 '2': "GuestMenu()"}
 
 
