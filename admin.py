@@ -257,7 +257,7 @@ class admin(volunteer):
             vol = tuples[0]
             day = tuples[1]
             # print(day)
-            if day == day_str:
+            if day_str in day:
                 res.append(vol)
         if len(res) == 0:
             logger.info("There is no satisfied volunteer in that period.")
@@ -544,3 +544,4 @@ if __name__ == "__main__":
     ad = admin()
     ad.display_messages_from_a_camp('plan1', 'camp2')
     ad.create_volunteer('plan1', 'camp1', 'bill', 'liu', '123', '1,2,3', 'vol9', '111', 'TRUE', "FALSE")
+    ad.availability(1)
