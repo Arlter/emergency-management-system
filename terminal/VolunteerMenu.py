@@ -113,6 +113,9 @@ class VolunteerMenu:
             eval(self.queue[0])
             self.queue = self.queue[1:]
 
+    def quit(self):
+        self.vol_instance.connection.close()
+
     def volunteer_menu(self):
         # print(type(self.username),self.username)
         # print(type(self.plan),self.plan)
@@ -124,12 +127,13 @@ Volunteer Menu
 [3] Messaging System
 [4] Personal profile
 [b] Go back to login menu
-[q] Logout
+[q] Quit
 
 Please select an option: """)
 
         if user_input == "q":
             log_volunteer.info(f"{colors.bg.green}Goodbye!{colors.reset}")
+            self.queue.append('self.quit()')
             pass  # always pass
         elif user_input == "b": #used for relogin
             self.Ifback = True
@@ -307,12 +311,13 @@ Messaging System
 [3] Display messages from your camp
 [4] Send message to your camp
 [b] Go back to previous page
-[q] Logout
+[q] Quit
 
 Please select an option: """)
 
         if user_input == "q":
             log_volunteer.info(f"{colors.bg.green}Goodbye!{colors.reset}")
+            self.queue.append('self.quit()')
         elif user_input == "b":
             self.queue.append('self.volunteer_menu()')
         elif user_input not in self.messaging_system_dict:
@@ -404,12 +409,13 @@ Personal profile
 [1] Display personal profile
 [2] Edit personal profile
 [b] Go back to Volunteer Menu
-[q] Logout
+[q] Quit
 
 Please select an option: """)
 
         if user_input == "q":
             log_volunteer.info(f"{colors.bg.green}Goodbye!{colors.reset}")
+            self.queue.append('self.quit()')
         elif user_input == "b":
             self.queue.append('self.volunteer_menu()')
         elif user_input not in self.personal_profile_dict:
@@ -452,13 +458,14 @@ Edit personal profile
 [5] Account password
 [6] Display personal profile
 [b] Go back to Personal Profile menu
-[q] Logout
+[q] Quit
 
 Please choose the personal detail you want to edit (1-5): """)
 
         
         if user_input == "q":
             log_volunteer.info(f"{colors.bg.green}Goodbye!{colors.reset}")
+            self.queue.append('self.quit()')
 
         elif user_input == "b":
             self.queue.append('self.manage_personal_profile()')
