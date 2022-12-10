@@ -177,7 +177,7 @@ class volunteer:
                 args.append(key)
                 args.append(value)
         # print(args)
-            else:
+            elif 'availability' in kwargs.keys():
                 t = kwargs['availability'].split(',')
                 res = ''
                 matched = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -275,8 +275,8 @@ if __name__ == "__main__":
     connection = sqlite3.connect('db.db')
     cursor = connection.cursor()
     vol1 = volunteer()
-    vol1.edit_personal_profile('vol8', availability="1,2,5")
-    vol1.availability_(1)
+    vol1.edit_personal_profile('vol8', first_name="123")
+    # vol1.availability_(1)
     # vol1.create_refugee_profile(plan_name="plan1", camp_name="camp2", first_name="art", last_name="wang", family_num="999", medical_condition="cold", archived="TRUE")
     # vol1.vols_send_message('vol1', "i love you too", True)
     # vol1.vols_send_message('vol9', "Art is a rolling king", plan_name="plan1", camp_name="camp2")
