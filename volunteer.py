@@ -107,7 +107,10 @@ class volunteer:
             sql_cmd = select_sql_generation('refugee_profile', '*', camp_name = camp_name)
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res) != 0:
-                df = pd.DataFrame(res, columns = ['Camp name', 'First name', 'Last name', 'Number of family members', 'Medical condition(s)'])
+                for i in range(len(res)):
+                    res[i] = list(res[i])
+                    res[i] = tuple(res[i][2:])
+                df = pd.DataFrame(res, columns = ['Camp name', 'First name', 'Last name', 'No. of family', 'Medical condition(s)', 'archived'])
                 df.index = ['']*len(df)
                 log_volunteer.info(f"\n{df}\n")
             else:
@@ -276,6 +279,7 @@ if __name__ == "__main__":
     cursor = connection.cursor()
     vol1 = volunteer()
     vol1.edit_personal_profile('vol8', first_name="123")
+    vol1.list_emergency_profile("camp1")
     # vol1.availability_(1)
     # vol1.create_refugee_profile(plan_name="plan1", camp_name="camp2", first_name="art", last_name="wang", family_num="999", medical_condition="cold", archived="TRUE")
     # vol1.vols_send_message('vol1', "i love you too", True)
