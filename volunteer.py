@@ -177,13 +177,14 @@ class volunteer:
                 args.append(key)
                 args.append(value)
         # print(args)
-        t = kwargs['availability'].split(',')
-        res = ''
-        matched = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-        for ch in t:
-            res += matched[int(ch) - 1] + ','
-        args.append("availability")
-        args.append(res[0:-1])
+            else:
+                t = kwargs['availability'].split(',')
+                res = ''
+                matched = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+                for ch in t:
+                    res += matched[int(ch) - 1] + ','
+                args.append("availability")
+                args.append(res[0:-1])
         sql = update_sql_generation("volunteer", *args, username=username)
         # print(sql)
         try:

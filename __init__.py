@@ -29,11 +29,13 @@ if __name__ == "__main__":
 
     admin.add_emergency_plan("plan4", "earthquake", "a big one", "UK")
     admin.add_emergency_plan("plan5", "storm", "a small one", "Somewhere")
-    admin.add_camp("plan1", "camp1")
+    admin.add_camp("plan4", "camp1")
+    admin.add_camp("plan5", "camp1")
     # plans 1,2,3 are currently created directly in database.py
     # either delete those, or start from plan4 when demonstrating
-    admin.create_volunteer("plan4", "camp1", "first", "last", "12345678", "Monday, Tuesday", "test", "1111", True, True)
-    admin.create_volunteer("plan5", "camp1", "closed", "plan", "99999999", "Wednesday, Thursday", "closed", "1111", True, True)
+    admin.create_volunteer("plan4", "camp1", "first", "last", "12345678", "1,2", "test", "1111", True, True)
+    admin.create_volunteer("plan5", "camp1", "closed", "plan", "99999999", "3,4", "closed", "1111", True, True)
+    admin.deactivate_volunteer("closed")
     vol.vols_send_message("closed", "plan2", "goodbye camp2!", plan_name = "plan2", camp_name = "camp1")
     admin.close_emergency_plan("plan2")
     admin.create_admin_announcement("I am admin")

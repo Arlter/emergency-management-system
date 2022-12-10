@@ -2,6 +2,7 @@ from terminal.color_utilities import *
 from admin import admin
 from terminal.AdminMenu import *
 from terminal.VolunteerMenu import *
+from terminal.deactivated import *
 import sqlite3
 
 class login():
@@ -13,7 +14,8 @@ class login():
         self.afterlogin = {
                 '0': "AdminMenu()",
                 '1': "VolunteerMenu(self.volunteer_username)",
-                '2': "GuestMenu()"}
+                '2': "GuestMenu()",
+                '3': "deactivatedMenu(self.volunteer_username)"}
 
 
         self.logqueue.append('self.trylogin()')
@@ -43,27 +45,35 @@ class login():
             cursor.execute(Search)
 
             try:
-                if cursor.fetchone():
-
-                    if UserNameinput == 'admin':
-                        print(colors.fg.green, "Welcome! Your role is Admin", colors.reset)
-                        CurrentRole = '0'
-                        SuccessLog = True
-
-
-                    elif UserNameinput == 'guest':
-                        print(colors.fg.green, "Welcome! Your role is Guest", colors.reset)
-                        CurrentRole = '2'
-                        SuccessLog = True
-
-                    else:
-                        print(colors.fg.green, "Welcome! Your role is Volunteer", colors.reset)
-                        CurrentRole = '1'
+                result = cursor.fetchone()
+                if result:
+                    if result[8] == "FALSE":
+                        log_general.info(f"{colors.fg.red}Your account is deactivated, please contact admin{colors.reset}")
+                        CurrentRole = '3'
                         self.volunteer_username = UserNameinput
                         SuccessLog = True
 
+                    else:
+
+                        if UserNameinput == 'admin':
+                            log_general.info(f"{colors.fg.green}Welcome! Your role is Admin{colors.reset}")
+                            CurrentRole = '0'
+                            SuccessLog = True
+
+
+                        elif UserNameinput == 'guest':
+                            log_general.info(f"{colors.fg.green}Welcome! Your role is Guest{colors.reset}")
+                            CurrentRole = '2'
+                            SuccessLog = True
+
+                        else:
+                            log_general.info(f"{colors.fg.green}Welcome! Your role is Volunteer{colors.reset}")
+                            CurrentRole = '1'
+                            self.volunteer_username = UserNameinput
+                            SuccessLog = True
+
                 else:
-                    print(colors.fg.red, "Invalid login", colors.reset)
+                    log_general.error(f"{colors.fg.red}Invalid login{colors.reset}")
                     raise option_not_existed
 
             except option_not_existed as e:
