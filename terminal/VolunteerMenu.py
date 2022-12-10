@@ -102,10 +102,9 @@ class VolunteerMenu:
 
 
         self.volunteer_menu_dict = {
-            "1": "self.check_volunteer_availability()",
-            "2": "self.manage_refugee_profile()",
-            "3": "self.messaging_system()",
-            "4": "self.manage_personal_profile()"}
+            "1": "self.manage_refugee_profile()",
+            "2": "self.messaging_system()",
+            "3": "self.manage_personal_profile()"}
 
         self.queue.append('self.volunteer_menu()')
 
@@ -122,10 +121,9 @@ class VolunteerMenu:
         # print(type(self.camp),self.camp)
         user_input = input("""
 Volunteer Menu
-[1] Check available volunteers on a given day
-[2] Manage refugee profile
-[3] Messaging System
-[4] Personal profile
+[1] Manage refugee profile
+[2] Messaging System
+[3] Personal profile
 [b] Go back to login menu
 [q] Quit
 
@@ -143,30 +141,7 @@ Please select an option: """)
             log_volunteer.error(f"{colors.bg.red}Invalid option, please try again{colors.reset}")
             self.queue.append('self.volunteer_menu()')
 
-    # Tim: display camp information, manage refugee profile
-    def check_volunteer_availability(self):
-        """self.vol_instance.raise_error_for_inexistence("camp", True, self.camp)"""
-        weekday = input("""
-[1] Monday
-[2] Tuesday
-[3] Wednesday
-[4] Thursday
-[5] Friday
-[6] Saturday
-[7] Sunday
-Please select the day to check: """)
-        if weekday in ('1','2','3','4', '5', '6', '7'):
-            self.vol_instance.availability(int(weekday), plan_name=self.plan, camp_name=self.camp)
-            # insert "press b to go back" to avoid menu automatically popping up
-            userinput = input("Enter b to go back to Volunteer menu: ")
-            while userinput != "b":
-                log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
-                userinput = input("Enter b to go back to Volunteer menu: ")
-            else:
-                self.queue.append("self.volunteer_menu()")
-        else:
-            log_volunteer.error(f"{colors.bg.red}Invalid option, please try again{colors.reset}")
-            self.queue.append("self.check_volunteer_availability()")
+    # Tim: manage refugee profile
     def manage_refugee_profile(self):
         option = input("""
 [1] List all refugee profiles in your camp
@@ -270,7 +245,7 @@ Please select an option: """)
                 self.queue.append('self.manage_refugee_profile()')
 
         elif option == "b":
-            pass
+            self.queue.append('self.volunteer_menu()')
 
         else:
             log_volunteer.error("Invalid input to Manage refugee profile menu")
