@@ -100,6 +100,7 @@ class VolunteerMenu:
         self.camp = self.vol_instance.cursor.execute(campsql).fetchall()[0][0]
         self.vol_instance.connection.commit()
 
+
         self.volunteer_menu_dict = {
             "1": "self.check_volunteer_availability()",
             "2": "self.manage_refugee_profile()",
@@ -423,7 +424,7 @@ Please select an option: """)
         userinput = input("Enter b to go back to the Personal Profile menu, or enter e to edit profile: ")
         while userinput != "b" and userinput != "e":
             log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
-            userinput = input("Enter b to go back to the personal profile management menu: ")
+            userinput = input("Enter b to go back to the Personal Profile menu, or enter e to edit profile: ")
         else:
             if userinput == "b": 
                 self.queue.append('self.manage_personal_profile()')
@@ -502,7 +503,7 @@ Please choose the personal detail you want to edit (1-5): """)
 [6] Saturday
 [7] Sunday
 [8] I've finished selecting my available days. Update my records.
-Please select your available week day: """)
+Please select your available week days. Input one at a time: """)
                 if weekday in ('1','2','3','4','5','6','7'):
                     weekdays.append(str(weekday))
                 elif weekday == '8':
