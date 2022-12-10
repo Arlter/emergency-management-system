@@ -88,6 +88,7 @@ class volunteer:
             self.connection.commit()
         except sqlite3.Error as e:
             log_volunteer.error(e)
+            return False
         else:
             return True
 
@@ -98,6 +99,7 @@ class volunteer:
             self.connection.commit()
         except sqlite3.Error as e:
             log_volunteer.error(e)
+            return False
         else:
             return True
 
@@ -118,6 +120,7 @@ class volunteer:
                 log_volunteer.info(f'*No refugee profiles found in the current camp {camp_name}')
         except sqlite3.Error as e:
             log_volunteer.error(e)
+            return False
         else:
             return True
 
