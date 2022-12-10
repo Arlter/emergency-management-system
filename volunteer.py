@@ -231,49 +231,6 @@ class volunteer:
         # self.cursor.execute(sql)
         # self.connection.commit()
 
-    def availability_(self, time: int, plan_name=None, camp_name=None, logger=log_volunteer) -> list:
-        """
-        method[34]
-        the function searches for volunteers fully available in certain day
-        :param time: an integer that should be in range 1 - 7, for example, '1' for Monday, '2' for Tuesday
-        :param plan_name: a string which specify the plan name, default none
-        :param plan_name: a string which specify the camp name, default none
-        :return: a list containing available volunteer usernames in given weekday
-                 if there is error return false
-        """
-        res = []
-        if time < 1 or time > 7:
-            logger.error("Invalid time input, make sure it is in 1 - 7")
-            return False
-        matched = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-        day_str = matched[time - 1]
-        dic = {}
-        if plan_name != None:
-            dic['plan_name'] = plan_name
-        if camp_name != None:
-            dic['camp_name'] = camp_name
-        sql = select_sql_generation("volunteer", "username", "availability", *dic)
-        # print(sql)
-        try:
-            result = self.cursor.execute(sql).fetchall()[2:]  # [2:] is to exclude admin row
-            self.connection.commit()
-        except sqlite3.Error as e:
-            logger.error(e)
-            return False
-        # print(result)
-        for tuples in result:
-            vol = tuples[0]
-            day = tuples[1].split(',')
-            # print(day)
-            if day_str in day:
-                res.append(vol)
-        if len(res) == 0:
-            logger.info("There is no satisfied volunteer in that period.")
-            return res
-        else:
-            logger.info(f"In that period, The satisfied volunteers are {res}.")
-            return res
-
     def vols_display_message(self, admin_anno = False, **kwargs) -> bool:
         """
         method[35]
