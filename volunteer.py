@@ -109,8 +109,9 @@ class volunteer:
             if len(res) != 0:
                 for i in range(len(res)):
                     res[i] = list(res[i])
-                    res[i] = tuple(res[i][2:])
-                df = pd.DataFrame(res, columns = ['Camp name', 'First name', 'Last name', 'No. of family', 'Medical condition(s)', 'archived'])
+                    t = res[i][0]
+                    res[i] = tuple([t] + res[i][2:])
+                df = pd.DataFrame(res, columns = ['ID', 'Camp name', 'F. name', 'L. name', 'No. of family', 'Medical condition(s)', 'archived'])
                 df.index = ['']*len(df)
                 log_volunteer.info(f"\n{df}\n")
             else:
@@ -120,21 +121,24 @@ class volunteer:
         else:
             return True
 
-    def display_emergency_profile(self, camp_name, first_name ='*', last_name ='*', family_num = '*', medical_condition= '*'):
-        """method[30]"""
-        try:
-            sql_cmd = select_sql_generation('refugee_profile', '*', camp_name = camp_name, first_name = first_name, last_name = last_name, family_num = family_num, medical_condition = medical_condition)
-            res = self.cursor.execute(sql_cmd).fetchall()
-            if len(res) != 0:
-                df = pd.DataFrame(res, columns = ['Camp name', 'First name', 'Last name', 'Number of family members', 'Medical condition(s)'])
-                df.index = ['']*len(df)
-                log_volunteer.info(f'\n{df}\n')
-            else:
-                log_volunteer.info(f'No profiles found.')
-        except sqlite3.Error as e:
-                log_volunteer.error(e)
-        else:
-            return True
+    # def display_emergency_profile(self, camp_name, first_name ='*', last_name ='*', family_num = '*', medical_condition= '*'):
+    #     """method[30]"""
+    #     try:
+    #         sql_cmd = select_sql_generation('refugee_profile', '*', camp_name = camp_name, first_name = first_name, last_name = last_name, family_num = family_num, medical_condition = medical_condition)
+    #         res = self.cursor.execute(sql_cmd).fetchall()
+    #         if len(res) != 0:
+    #             for i in range(len(res)):
+    #                 res[i] = list(res[i])
+    #                 res[i] = tuple(res[i][2:])
+    #             df = pd.DataFrame(res, columns = ['Camp name', 'First name', 'Last name', 'Number of family members', 'Medical condition(s)', 'archived'])
+    #             df.index = ['']*len(df)
+    #             log_volunteer.info(f'\n{df}\n')
+    #         else:
+    #             log_volunteer.info(f'No profiles found.')
+    #     except sqlite3.Error as e:
+    #             log_volunteer.error(e)
+    #     else:
+    #         return True
 
     def display_personal_profile(self, username_: str, logger=log_volunteer, no_extra=False) -> bool:
         """method[32]"""
