@@ -269,17 +269,28 @@ class admin(volunteer):
     # A method to be implemented
     def create_volunteer(self, *attr)-> bool:
         """
-        Method[11]: with all infor collected, create a volunteer account and insert into database
+        method[11]
         Create a new personal profile
         :param *attr: the new volunteer information, with the order as: 
                     $plan_name, $camp_name, $first_name, $last_name, $phone_num, $availability, $username, $password, $activated, $reassignable
         NOTE: if you would like to specify availability, make sure that the string
-              is formatted as "$which_day,$start_time-$end_time" without any space
-              like "Monday,8-16"
-        :return boolean value
+              is formatted as "1,2,3", which is translated to "Monday, Tuesday, Wednesday"
+              in database. Split the string with comma and no space!
         """
         try:
-            self.cursor.execute(insert_sql_generation("volunteer", *attr))
+            if not self.raise_error_for_existence("volunteer", username=attr[6]):
+                return False
+            attr_list = list(attr)
+            t = attr[5].split(',')
+            res = ''
+            matched = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+            for ch in t:
+                res += matched[int(ch) - 1] + ','
+            attr_list[5] = res[0:-1]
+            attr = tuple(attr_list)
+            # print(attr)
+            sql = insert_sql_generation("volunteer", *attr)
+            res = self.cursor.execute(sql)
             self.connection.commit()
         except sqlite3.Error as e:
             log_admin.error(e)
@@ -532,3 +543,4 @@ class admin(volunteer):
 if __name__ == "__main__":
     ad = admin()
     ad.display_messages_from_a_camp('plan1', 'camp2')
+    ad.create_volunteer('plan1', 'camp1', 'bill', 'liu', '123', '1,2,3', 'vol9', '111', 'TRUE', "FALSE")

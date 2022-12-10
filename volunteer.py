@@ -11,7 +11,6 @@ from exceptions import *
 # 3. display all information about certain camp name - list_emergency_profile
 # 4. display all information about certain refugee - display_emergency_profile
 # 5. edit volunteer's personal profile - edit_personal_profile
-# 6. create volunteer's personal profiel - create_personal_profile
 # 7. check availability over certain period and certain camp or plan (if possible) - availability
 # 8. send message as a volunteer (to other vols or to the admin) - vols_send_message
 # 9. display message of other vols or announcements of admin - vols_display_message
@@ -131,37 +130,6 @@ class volunteer:
                 log_volunteer.info(f'No profiles found.')
         except sqlite3.Error as e:
                 log_volunteer.error(e)
-        else:
-            return True
-
-    def create_personal_profile(self, *attr):
-        """
-        method[31]
-        Create a new personal profile
-        :param *attr: the new volunteer information, with the order as: 
-                    $plan_name, $camp_name, $first_name, $last_name, $phone_num, $availability, $username, $password, $activated, $reassignable
-        NOTE: if you would like to specify availability, make sure that the string
-              is formatted as "1,2,3", which is translated to "Monday, Tuesday, Wednesday"
-              in database. Split the string with comma and no space!
-        """
-        try:
-            if not self.raise_error_for_existence("volunteer", username=attr[6]):
-                return False
-            attr_list = list(attr)
-            t = attr[5].split(',')
-            res = ''
-            matched = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-            for ch in t:
-                res += matched[int(ch) - 1] + ','
-            attr_list[5] = res[0:-1]
-            attr = tuple(attr_list)
-            # print(attr)
-            sql = insert_sql_generation("volunteer", *attr)
-            res = self.cursor.execute(sql)
-            self.connection.commit()
-        except sqlite3.Error as e:
-            log_volunteer.error(e)
-            return False
         else:
             return True
 
@@ -306,11 +274,9 @@ if __name__ == "__main__":
     connection = sqlite3.connect('db.db')
     cursor = connection.cursor()
     vol1 = volunteer()
-    vol1.create_personal_profile('plan1', 'camp1', 'bill', 'liu', '123', '1,2,3', 'vol8', '111', 'TRUE', "FALSE")
     vol1.edit_personal_profile('vol8', availability="1,2,5")
     vol1.availability_(1)
     # vol1.create_refugee_profile(plan_name="plan1", camp_name="camp2", first_name="art", last_name="wang", family_num="999", medical_condition="cold", archived="TRUE")
-    # vol1.create_personal_profile("plan1", "camp1", "bill", "liu", "1234567", "Monday,1-12", "vol111", "111", "TRUE", "FALSE")
     # vol1.vols_send_message('vol1', "i love you too", True)
     # vol1.vols_send_message('vol9', "Art is a rolling king", plan_name="plan1", camp_name="camp2")
     # vol1.display_personal_profile("vol1")
