@@ -280,14 +280,14 @@ class admin(volunteer):
         try:
             if not self.raise_error_for_existence("volunteer", username=attr[6]):
                 return False
-            attr_list = list(attr)
-            t = attr[5].split(',')
-            res = ''
-            matched = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-            for ch in t:
-                res += matched[int(ch) - 1] + ','
-            attr_list[5] = res[0:-1]
-            attr = tuple(attr_list)
+            # attr_list = list(attr)
+            # t = attr[5].split(',')
+            # res = ''
+            # matched = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+            # for ch in t:
+            #     res += matched[int(ch) - 1] + ','
+            # attr_list[5] = res[0:-1]
+            # attr = tuple(attr_list)
             # print(attr)
             sql = insert_sql_generation("volunteer", *attr)
             res = self.cursor.execute(sql)
