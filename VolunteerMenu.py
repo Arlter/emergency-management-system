@@ -255,15 +255,17 @@ Please select an option: """)
         self.messaging_system_dict = {
             "1": "self.display_admin_announcements()",
             "2": "self.send_message_to_admin()",
-            "3": "self.display_camp_messages()",
-            "4": "self.send_message_to_camp()"}
+            "3": "self.display_plan_messages()",
+            "4": "self.display_camp_messages()",
+            "5": "self.send_message_to_camp()"}
         
         user_input = input("""
 Messaging System
 [1] Display admin announcements
 [2] Send message to admin
-[3] Display messages from your camp
-[4] Send message to your camp
+[3] Display messages from your plan
+[4] Display messages from your camp
+[5] Send message to your camp
 [b] Go back to previous page
 [q] Quit
 
@@ -288,7 +290,7 @@ Please select an option: """)
         while userinput != "b":
             log_volunteer.error(f"{colors.fg.red}Invalid input, please try again{colors.reset}")
             userinput = input("Enter b to go back to Messaging System menu: ")
-        else: 
+        else:
             self.queue.append('self.messaging_system()')
         
     # 3.2 Send message to admin
@@ -309,8 +311,17 @@ Please enter your message for the admin: """)
                 pass
             self.queue.append('self.messaging_system()')
 
+    # 3.3 Display messages from your plan
+    def display_plan_messages(self):
+        self.vol_instance.vols_display_message(plan_name = self.plan)
+        userinput = input("Enter b to go back to Messaging System menu: ")
+        while userinput != "b":
+            log_volunteer.error(f"{colors.fg.red}Invalid input, please try again{colors.reset}")
+            userinput = input("Enter b to go back to Messaging System menu: ")
+        else:
+            self.queue.append('self.messaging_system()')
 
-    # 3.3 Display messages from your camp
+    # 3.4 Display messages from your camp
     def display_camp_messages(self):
         self.vol_instance.vols_display_message(plan_name = self.plan, camp_name = self.camp)
         # insert "press b to go back" to avoid menu automatically popping up when displaying message
@@ -321,12 +332,10 @@ Please enter your message for the admin: """)
         else: 
             self.queue.append('self.messaging_system()')
 
-
-    # 3.4 Send message to your camp
+    # 3.5 Send message to your camp
     def send_message_to_camp(self):
 
         # verify existence of camp
-        
 
         message_to_camp = input("""
 Send message to your camp
