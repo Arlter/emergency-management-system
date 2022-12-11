@@ -220,13 +220,15 @@ class volunteer:
         """
         # print(not admin_anno)
         if not admin_anno:
-            sql = select_sql_generation("message", "message_id", "time", "username", "content", **kwargs)
-        elif admin_anno and len(kwargs) == 0:
-            sql = select_sql_generation("message", "message_id", "time", "username", "content", admin_announced="TRUE", admin_exclusive="FALSE")
-        elif admin_anno and len(kwargs) != 0:
-            log_volunteer.error("Please do not specify the camp_name (or plan_name) and the admin_anno at the same time!")
-            return False
+            sql = select_sql_generation("message", "message_id", "time", "username", "content", admin_announced="FALSE", admin_exclusive="FALSE", **kwargs)
+        elif ('plan_name' in kwargs.keys()) and ('camp_name' not in kwargs.keys()):
+            sql = "SELECT message_id,time,username,content FROM message WHERE admin_announced='TRUE' and admin_exclusive='FALSE' and plan_name='plan1' and camp_name IS NULL"
+            # print(sql
+        else:
+            # print(1)
+            sql = select_sql_generation("message", "message_id", "time", "username", "content", admin_announced="TRUE", admin_exclusive="FALSE", **kwargs)
         try:
+            # print(sql)
             result = self.cursor.execute(sql).fetchall()
             self.connection.commit()
         except sqlite3.Error as e:
@@ -258,10 +260,9 @@ class volunteer:
         if not admin_excl and not self.raise_error_for_inexistence("emergency_plan", edit_check=True, plan_name=planname):
             return False
         if not admin_excl:
-            sql = f"""INSERT INTO message(plan_name,camp_name,username,admin_announced,admin_exclusive,content) 
-                      VALUES('{kwargs['plan_name'] if 'plan_name' in kwargs.keys() else 'null'}', '{kwargs['camp_name'] if 'camp_name' in kwargs.keys() else 'null'}','{vol_usrname}','FALSE', 'FALSE','{content}')"""     
+            sql = f"INSERT INTO message(plan_name,camp_name,username,admin_announced,admin_exclusive,content) VALUES('{kwargs['plan_name']}', '{kwargs['camp_name']}','{vol_usrname}','FALSE', 'FALSE','{content}')"   
         elif admin_excl and len(kwargs) == 0:
-            sql = f"INSERT INTO message(plan_name,camp_name,username,admin_announced,admin_exclusive,content) VALUES(null, null, '{vol_usrname}', 'FALSE', 'TRUE', '{content}')"  
+            sql = f"INSERT INTO message(plan_name,camp_name,username,admin_announced,admin_exclusive,content) VALUES('NULL', 'NULL', '{vol_usrname}', 'FALSE', 'TRUE', '{content}')"  
         elif admin_excl and len(kwargs) != 0:
             log_volunteer.error("Please do not specify the camp_name (or plan_name) and the admin_excl at the same time!")
             return False
@@ -282,8 +283,10 @@ if __name__ == "__main__":
     connection = sqlite3.connect('db.db')
     cursor = connection.cursor()
     vol1 = volunteer()
-    vol1.edit_personal_profile('vol8', first_name="123")
-    vol1.list_emergency_profile("camp1")
+    # vol1.edit_personal_profile('vol8', first_name="123")
+    # vol1.list_emergency_profile("camp1")
+    # vol1.vols_send_message("vol8", "plan1", "hello", plan_name='plan2', camp_name='camp1')
+    vol1.vols_display_message(True, plan_name='plan1')
     # vol1.availability_(1)
     # vol1.create_refugee_profile(plan_name="plan1", camp_name="camp2", first_name="art", last_name="wang", family_num="999", medical_condition="cold", archived="TRUE")
     # vol1.vols_send_message('vol1', "i love you too", True)

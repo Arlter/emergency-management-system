@@ -287,10 +287,10 @@ def test_initiate(connection,cursor):
         cursor.executemany("INSERT INTO camp VALUES(?,?,0,0,'FALSE')", camp_list)
         connection.commit()
         volunter_list = [
-            ("plan1", "camp1", "lily", "h", "12124124", "Monday to Friday", "vol1", "111", "TRUE", "FALSE"),
-            ("plan2", "camp1", "tom", "y", "12124124", "Monday to Friday", "vol2", "111", "TRUE", "FALSE"),
-            ("plan1", "camp2", "eat", "f", "12124124", "Monday to Friday", "vol3", "111", "TRUE", "FALSE"),
-            ("plan1", "camp1", "sfw", "fas", "12124124", "Monday to Friday", "vol4", "111", "TRUE", "FALSE")
+            ("plan1", "camp1", "lily", "h", "12124124", "Monday", "vol1", "111", "TRUE", "FALSE"),
+            ("plan2", "camp1", "tom", "y", "12124124", "Tuesday", "vol2", "111", "TRUE", "FALSE"),
+            ("plan1", "camp2", "eat", "f", "12124124", "Thursday", "vol3", "111", "TRUE", "FALSE"),
+            ("plan1", "camp1", "sfw", "fas", "12124124", "Friday", "vol4", "111", "TRUE", "FALSE")
         ]
         cursor.executemany("INSERT INTO volunteer VALUES(?,?,?,?,?,?,?,?,?,?)", volunter_list)
         connection.commit()
@@ -307,7 +307,7 @@ def test_initiate(connection,cursor):
         connection.commit()
         message_list = [
             (None, None, "guest", "FALSE","TRUE", "[I FORGET MY PASSWORD, MY ACCOUNT NAME IS 'HEY'.]"),
-            (None, None, "admin", "TRUE","TRUE","[WELCOME TO THIS PROGRAM, VOLUNTEERS]"),
+            (None, None, "admin", "TRUE","FALSE","[WELCOME TO THIS PROGRAM, VOLUNTEERS]"),
             ("plan1", "camp2", "vol3", "FALSE", "TRUE","[COULD YOU HELP ME REMOVE TO ANOTHER PLAN, admin]"),
             ("plan1", "camp2", "vol3", "FALSE", "FALSE","[nice to see you guys]"),
         ]
