@@ -1,8 +1,7 @@
 from color_utilities import *
-import re
-from UI.Admin_and_Volun.admin import *
-from UI.Admin_and_Volun.exceptions import *
-from UI.Admin_and_Volun.logging_configure import *
+from admin import *
+from exceptions import *
+from logging_configure import *
 
 class AdminMenu:
     def __init__(self):
