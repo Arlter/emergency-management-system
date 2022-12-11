@@ -88,7 +88,6 @@ class volunteer:
             self.connection.commit()
         except sqlite3.Error as e:
             log_volunteer.error(e)
-            return False
         else:
             return True
 
@@ -99,7 +98,6 @@ class volunteer:
             self.connection.commit()
         except sqlite3.Error as e:
             log_volunteer.error(e)
-            return False
         else:
             return True
 
@@ -109,39 +107,31 @@ class volunteer:
             sql_cmd = select_sql_generation('refugee_profile', '*', camp_name = camp_name)
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res) != 0:
-                for i in range(len(res)):
-                    res[i] = list(res[i])
-                    t = res[i][0]
-                    res[i] = tuple([t] + res[i][2:])
-                df = pd.DataFrame(res, columns = ['ID', 'Camp name', 'F. name', 'L. name', 'No. of family', 'Medical condition(s)', 'archived'])
+                df = pd.DataFrame(res, columns = ['Camp name', 'First name', 'Last name', 'Number of family members', 'Medical condition(s)'])
                 df.index = ['']*len(df)
                 log_volunteer.info(f"\n{df}\n")
             else:
                 log_volunteer.info(f'*No refugee profiles found in the current camp {camp_name}')
         except sqlite3.Error as e:
             log_volunteer.error(e)
-            return False
         else:
             return True
 
-    # def display_emergency_profile(self, camp_name, first_name ='*', last_name ='*', family_num = '*', medical_condition= '*'):
-    #     """method[30]"""
-    #     try:
-    #         sql_cmd = select_sql_generation('refugee_profile', '*', camp_name = camp_name, first_name = first_name, last_name = last_name, family_num = family_num, medical_condition = medical_condition)
-    #         res = self.cursor.execute(sql_cmd).fetchall()
-    #         if len(res) != 0:
-    #             for i in range(len(res)):
-    #                 res[i] = list(res[i])
-    #                 res[i] = tuple(res[i][2:])
-    #             df = pd.DataFrame(res, columns = ['Camp name', 'First name', 'Last name', 'Number of family members', 'Medical condition(s)', 'archived'])
-    #             df.index = ['']*len(df)
-    #             log_volunteer.info(f'\n{df}\n')
-    #         else:
-    #             log_volunteer.info(f'No profiles found.')
-    #     except sqlite3.Error as e:
-    #             log_volunteer.error(e)
-    #     else:
-    #         return True
+    def display_emergency_profile(self, camp_name, first_name ='*', last_name ='*', family_num = '*', medical_condition= '*'):
+        """method[30]"""
+        try:
+            sql_cmd = select_sql_generation('refugee_profile', '*', camp_name = camp_name, first_name = first_name, last_name = last_name, family_num = family_num, medical_condition = medical_condition)
+            res = self.cursor.execute(sql_cmd).fetchall()
+            if len(res) != 0:
+                df = pd.DataFrame(res, columns = ['Camp name', 'First name', 'Last name', 'Number of family members', 'Medical condition(s)'])
+                df.index = ['']*len(df)
+                log_volunteer.info(f'\n{df}\n')
+            else:
+                log_volunteer.info(f'No profiles found.')
+        except sqlite3.Error as e:
+                log_volunteer.error(e)
+        else:
+            return True
 
     def display_personal_profile(self, username_: str, logger=log_volunteer, no_extra=False) -> bool:
         """method[32]"""
@@ -187,7 +177,7 @@ class volunteer:
                 args.append(key)
                 args.append(value)
         # print(args)
-            elif 'availability' in kwargs.keys():
+            else:
                 t = kwargs['availability'].split(',')
                 res = ''
                 matched = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -285,9 +275,8 @@ if __name__ == "__main__":
     connection = sqlite3.connect('db.db')
     cursor = connection.cursor()
     vol1 = volunteer()
-    vol1.edit_personal_profile('vol8', first_name="123")
-    vol1.list_emergency_profile("camp1")
-    # vol1.availability_(1)
+    vol1.edit_personal_profile('vol8', availability="1,2,5")
+    vol1.availability_(1)
     # vol1.create_refugee_profile(plan_name="plan1", camp_name="camp2", first_name="art", last_name="wang", family_num="999", medical_condition="cold", archived="TRUE")
     # vol1.vols_send_message('vol1', "i love you too", True)
     # vol1.vols_send_message('vol9', "Art is a rolling king", plan_name="plan1", camp_name="camp2")

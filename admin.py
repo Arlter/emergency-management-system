@@ -308,7 +308,7 @@ class admin(volunteer):
 
     def list_all_volunteers(self) -> bool:
         """
-        Method[x]: list all volunteers including accounts which have been deactivated.
+        Method[x]: list all volunteers including accounts which have been decativated.
         """
         try:
             sql = select_sql_generation("volunteer", "*")

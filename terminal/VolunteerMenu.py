@@ -102,9 +102,10 @@ class VolunteerMenu:
 
 
         self.volunteer_menu_dict = {
-            "1": "self.manage_refugee_profile()",
-            "2": "self.messaging_system()",
-            "3": "self.manage_personal_profile()"}
+            "1": "self.check_volunteer_availability()",
+            "2": "self.manage_refugee_profile()",
+            "3": "self.messaging_system()",
+            "4": "self.manage_personal_profile()"}
 
         self.queue.append('self.volunteer_menu()')
 
@@ -121,9 +122,10 @@ class VolunteerMenu:
         # print(type(self.camp),self.camp)
         user_input = input("""
 Volunteer Menu
-[1] Manage refugee profile
-[2] Messaging System
-[3] Personal profile
+[1] Check available volunteers on a given day
+[2] Manage refugee profile
+[3] Messaging System
+[4] Personal profile
 [b] Go back to login menu
 [q] Quit
 
@@ -141,12 +143,36 @@ Please select an option: """)
             log_volunteer.error(f"{colors.bg.red}Invalid option, please try again{colors.reset}")
             self.queue.append('self.volunteer_menu()')
 
-    # Tim: manage refugee profile
+    # Tim: display camp information, manage refugee profile
+    def check_volunteer_availability(self):
+        """self.vol_instance.raise_error_for_inexistence("camp", True, self.camp)"""
+        weekday = input("""
+[1] Monday
+[2] Tuesday
+[3] Wednesday
+[4] Thursday
+[5] Friday
+[6] Saturday
+[7] Sunday
+Please select the day to check: """)
+        if weekday in ('1','2','3','4', '5', '6', '7'):
+            self.vol_instance.availability(int(weekday), plan_name=self.plan, camp_name=self.camp)
+            # insert "press b to go back" to avoid menu automatically popping up
+            userinput = input("Enter b to go back to Volunteer menu: ")
+            while userinput != "b":
+                log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
+                userinput = input("Enter b to go back to Volunteer menu: ")
+            else:
+                self.queue.append("self.volunteer_menu()")
+        else:
+            log_volunteer.error(f"{colors.bg.red}Invalid option, please try again{colors.reset}")
+            self.queue.append("self.check_volunteer_availability()")
     def manage_refugee_profile(self):
         option = input("""
 [1] List all refugee profiles in your camp
-[2] Create refugee profile
-[3] Update refugee profile
+[2] Find refugee profile
+[3] Create refugee profile
+[4] Update refugee profile
 [b] Back
 Please select an option: """)
 
@@ -157,7 +183,7 @@ Please select an option: """)
             # List all refugee profiles in the camp
             self.vol_instance.list_emergency_profile(self.camp)
             # insert "press b to go back" to avoid menu automatically popping up
-            userinput = input("Enter b to go back to Manage refugee profile menu: ")
+            userinput = input("Enter b to go back to Volunteer menu: ")
             while userinput != "b":
                 log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
                 userinput = input("Enter b to go back to Manage refugee profile menu: ")
@@ -165,6 +191,36 @@ Please select an option: """)
                 self.queue.append('self.manage_refugee_profile()')
 
         elif option == "2":
+            '''Display a refugee profile according to chosen conditions'''
+            # Verify that the camp exists
+            '''self.vol_instance.__raise_error_for_inexistence("camp", True, self.camp)'''
+
+            # Display the refugee profile with the chosen conditions
+            first_name = input("Please input the refugee's first name (optional): ")
+            last_name = input("Please input the refugee's last name (optional): ")
+            family_num = input("Please input number of family members in refugee's family (optional): ")
+            medical_condition = input("Please input medical conditions (optional): ")
+
+            display_string = f"self.vol_instance.display_emergency_profile({self.camp}"
+            if len(first_name) != 0:
+                display_string += f",first_name = {first_name}"
+            if len(last_name) != 0:
+                display_string += f",last_name = {last_name}"
+            if len(family_num) != 0:
+                display_string += f",family_num = {family_num}"
+            if len(medical_condition) != 0:
+                display_string += f",{medical_condition}"
+            display_string += ")"
+            eval(display_string)
+            # insert "press b to go back" to avoid menu automatically popping up
+            userinput = input("Enter b to go back to Volunteer menu: ")
+            while userinput != "b":
+                log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
+                userinput = input("Enter b to go back to Manage refugee profile menu: ")
+            else:
+                self.queue.append('self.manage_refugee_profile()')
+
+        elif option == "3":
             '''Create a refugee profile'''
             # Verify that the camp and plan exists}
             '''self.vol_instance.__raise_error_for_inexistence("camp", True, self.camp)'''
@@ -175,48 +231,38 @@ Please select an option: """)
             last_name = input("Enter the refugee's last name: ")
             family_num = input("Enter the number of family members: ")
             medical_condition = input("Enter a description of any medical health conditions: ")
-            create_string = f"self.vol_instance.create_refugee_profile(plan_name = self.plan, camp_name = self.camp"
+            create_string = f"self.vol_instance.create_refugee_profile({self.plan}, {self.camp}"
             if len(first_name) != 0:
-                create_string += f", first_name = first_name"
+                create_string += f", first_name = {first_name}"
             if len(last_name) != 0:
-                create_string += f", last_name = last_name"
+                create_string += f", last_name = {last_name}"
             if len(family_num) != 0:
-                create_string += f", family_num = family_num"
+                create_string += f", family_num = {family_num}"
             if len(medical_condition) != 0:
-                create_string += f", medical_condition = medical_condition"
+                create_string += f", medical_condition = {medical_condition}"
             create_string += ")"
             eval(create_string)
             # insert "press b to go back" to avoid menu automatically popping up
-            userinput = input("Enter b to go back to Manage refugee profile menu: ")
+            userinput = input("Enter b to go back to Volunteer menu: ")
             while userinput != "b":
                 log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
                 userinput = input("Enter b to go back to Manage refugee profile menu: ")
             else:
                 self.queue.append('self.manage_refugee_profile()')
 
-        elif option == "3":
+        elif option == "4":
             '''Update a refugee profile'''
             # Verify that the refugee profile exists
             ref_ID = input("Please input the refugee's ID: ")
             '''self.vol_instance.__raise_error_for_inexistence("profile", True, ref_ID)'''
 
             # Update a refugee profile
-            while True:
-                attr_to_update = input("""
-    [1] Update first name
-    [2] Update last name
-    [3] Update number of family members
-    [4] Update medical condition(s)
-    Please select an option: """)
-                if attr_to_update in ('1','2','3','4'):
-                    break
-                else:
-                    log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
-            possible_attrs = ['first_name','last_name','family_num','medical_condition']
+
+            attr_to_update = input("Please input the attribute you want updated: ")
             new_value = input("Please provide the updated value: ")
-            self.vol_instance.update_refugee_profile(possible_attrs[int(attr_to_update)-1], new_value, ref_ID)
+            eval(f"self.vol_instance.update_refugee_profile({attr_to_update},{new_value},{ref_ID})")
             # insert "press b to go back" to avoid menu automatically popping up
-            userinput = input("Enter b to go back to Manage refugee profile menu: ")
+            userinput = input("Enter b to go back to Volunteer menu: ")
             while userinput != "b":
                 log_volunteer.error(f"{colors.bg.red}Invalid input, please try again{colors.reset}")
                 userinput = input("Enter b to go back to Manage refugee profile menu: ")
@@ -224,7 +270,7 @@ Please select an option: """)
                 self.queue.append('self.manage_refugee_profile()')
 
         elif option == "b":
-            self.queue.append('self.volunteer_menu()')
+            pass
 
         else:
             log_volunteer.error("Invalid input to Manage refugee profile menu")
