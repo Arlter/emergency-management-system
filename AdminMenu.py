@@ -1009,7 +1009,7 @@ class AdminMenu:
     def create_regional_announcements(self):
         where_publish = input("________________________________________\n"
                                    "Please complete the following information or Input b to back\n"
-                                   "1: plan announcemnt\n"
+                                   "1: plan announcement\n"
                               "2: camp announcement\n"
                               "Select the type of announcement:")
 
@@ -1018,7 +1018,7 @@ class AdminMenu:
                 return
 
 
-            # plan annoucement
+            # plan announcement
             elif where_publish == '1':
 
                 plan_selection_loop = True
@@ -1040,13 +1040,13 @@ class AdminMenu:
 
 
 
-            # camp annoucement
+            # camp announcement
             elif where_publish == '2':
 
                 plan_selection_loop = True
                 while plan_selection_loop:
                     self.Admin.list_existing_plans()
-                    plan_selected = input("Please choose the plan to publish Camp Announcement: ")
+                    plan_selected = input("Please choose the plan to publish camp announcement: ")
                     if self.back(plan_selected, 'self.manage_messaging_system()'):
                         return
                     elif self.Admin.raise_error_for_inexistence('emergency_plan', edit_check=True,plan_name=plan_selected):
