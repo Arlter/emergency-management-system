@@ -4,7 +4,7 @@ from database_utilities import *
 from logging_configure import log_admin
 import pandas as pd
 from exceptions import *
-from terminal.color_utilities import  *
+from color_utilities import  *
 from volunteer import volunteer
 class admin(volunteer):
 

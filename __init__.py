@@ -1,11 +1,9 @@
-import logging
-
 from admin import *
 from database import  *
 import pandas as pd
 from logging_configure import log_general
 import sys
-from terminal.log_in import *
+from log_in import *
 
 if __name__ == "__main__":
     if '-h' in sys.argv:

@@ -3,7 +3,7 @@ from volunteer import *
 from exceptions import *
 from logging_configure import *
 import database_utilities
-from terminal.color_utilities import *
+from color_utilities import *
 
 
 """

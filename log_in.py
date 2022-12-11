@@ -1,8 +1,8 @@
-from terminal.color_utilities import *
+from color_utilities import *
 from admin import admin
-from terminal.AdminMenu import *
-from terminal.VolunteerMenu import *
-from terminal.deactivated import *
+from AdminMenu import *
+from VolunteerMenu import *
+from deactivated import *
 import sqlite3
 
 class login():
