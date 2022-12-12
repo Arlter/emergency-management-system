@@ -1,6 +1,6 @@
 class already_exists(Exception):
     def __init__(self, table_name, **kwargs):
-        self.message = f"* The tuple with the value {','.join([str(kwargs[key]) for key in kwargs])} has existed in the table {table_name}. Please enter another."
+        self.message = f"The tuple with the value {','.join([str(kwargs[key]) for key in kwargs])} has existed in the table {table_name}. Please enter another."
         super().__init__(self.message)
 
 class absent(Exception):
