@@ -25,6 +25,8 @@ class deactivatedMenu:
             self.queue = self.queue[1:]
 
 
+    def quit(self):
+        self.vol_instance.connection.close()
     def deactivated(self):
         message = input("Send a message to admin, or enter b to go back: ")
         if message == "b":
@@ -32,4 +34,5 @@ class deactivatedMenu:
         else:
             if self.vol_instance.vols_send_message(self.username, self.plan, message, admin_excl=True):
                 log_volunteer.info(f"{colors.bg.green}Success! Message sent to admin{colors.reset}")
+            self.queue.append('self.quit()')
             self.Ifback = True
