@@ -120,7 +120,7 @@ class AdminMenu:
             else:
                 raise option_not_existed
         except option_not_existed as e:
-            log_admin.error(e)
+            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
             self.queue.append('self.admin_menu()')
 
 
@@ -145,7 +145,7 @@ class AdminMenu:
             else:
                 raise option_not_existed
         except option_not_existed as e:
-            log_admin.error(e)
+            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
             self.queue.append('self.account_management()')
 
 ### change password ###
@@ -161,7 +161,6 @@ class AdminMenu:
             new_password = input("Please enter the new password: ")
             if new_password != "b":
                 self.Admin.password_change(user_input1,new_password)
-                print("password changed successfully!")
                 self.queue.append('self.account_management()')
             else:
                 self.queue.append('self.account_management()')
@@ -173,6 +172,7 @@ class AdminMenu:
     def manage_emergency_plan_system(self):
         user_input = input("________________________________________\n"
                            "      Manage emergency plan system\n"
+                           "\n"
               "(1) Create a plan\n"
               "(2) List existing plans\n"
               "(3) View a plan\n"
@@ -194,7 +194,7 @@ class AdminMenu:
             else:
                 raise option_not_existed
         except option_not_existed as e:
-            log_admin.error(e)
+            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
             self.queue.append('self.manage_emergency_plan_system()')
 
 ### create a plan ###
@@ -275,7 +275,7 @@ class AdminMenu:
             while selection_loop:
                 for i in range(len(plan_dict)):
                     print(list(plan_dict.keys())[i], ": ", list(plan_dict.values())[i].replace("_", ' '))
-                index_selected = input("_____________________________\n"
+                index_selected = input("\n"
                                        "Select from the above options: ")
 
                 try:
@@ -311,7 +311,7 @@ class AdminMenu:
                         raise option_not_existed
 
                 except option_not_existed as e:
-                    log_admin.error(e)
+                    log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
 
             self.queue.append('self.manage_emergency_plan_system()')
         else:
@@ -332,8 +332,9 @@ class AdminMenu:
             self.queue.append('self.close_a_plan()')
 ### Manage camps ###
     def manage_camps(self):
-        user_input = input("________________________________________"
+        user_input = input("________________________________________\n"
                            "             Manage camps\n"
+                           "\n"
                            "(1) Add camps\n"
                            "(2) Change camp names\n"
                            "(b) back to last menu\n"
@@ -350,13 +351,14 @@ class AdminMenu:
             else:
                 raise option_not_existed
         except option_not_existed as e:
-            log_admin.error(e)
+            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
             self.queue.append('self.manage_camps()')
 
     ### add camps ###
     def add_camps(self):
-        plan_selected = input("\n"
-                           "Please complete the following information or Input b to back\n"
+        print('\n')
+        self.Admin.list_existing_plans(prompt=False)
+        plan_selected = input("Please complete the following information or Input b to back\n"
                                      "Plan name: ")
         if self.back(plan_selected,'self.manage_camps()'):
             return
@@ -391,7 +393,7 @@ class AdminMenu:
                         else:
                             raise option_not_existed
                     except option_not_existed as e:
-                        log_admin.error(e)
+                        log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
 
             for j in new_camp:
                 if self.Admin.add_camp(plan_selected,j):
@@ -406,8 +408,9 @@ class AdminMenu:
 
     ### change camp names ###
     def change_camp_names(self):
-        plan_selected = input("\n"
-                              "Please complete the following information or Input b to back\n"
+        print('\n')
+        self.Admin.list_existing_plans(prompt=False)
+        plan_selected = input("Please complete the following information or Input b to back\n"
                               "Plan name: ")
 
         if self.back(plan_selected,'self.manage_camps()'):
@@ -445,6 +448,7 @@ class AdminMenu:
     def manage_volunteer_system(self):
         user_input = input("__________________________________________\n"
                            "          Manage volunteer system\n"
+                           "\n"
               "(1) Create a volunteer\n"
               "(2) List existing volunteers\n"
               "(3) view a volunteer\n"
@@ -468,7 +472,7 @@ class AdminMenu:
             else:
                 raise option_not_existed
         except option_not_existed as e:
-            log_admin.error(e)
+            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
             self.queue.append('self.manage_volunteer_system()')
 
 ### create a volunteer ###
@@ -512,7 +516,7 @@ class AdminMenu:
                     return
                 elif self.Admin.raise_error_for_inexistence('camp',edit_check= False,camp_name=camp_selected,plan_name=plan_selected):
 
-                    print('________________________\n'
+                    print('\n'
                           "Now complete the profile for new volunteer: ")
                     new_volun_firstname = input("First name: ")
                     if self.back(new_volun_firstname, 'self.manage_volunteer_system()'):
@@ -541,7 +545,7 @@ class AdminMenu:
                                     new_volun_availability = ','.join(new_volun_availability)
                                     availability_loop = False
                             except Invalid_value as e:
-                                log_admin.error(e)
+                                log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
 
 
                     '''Check if username existed already'''
@@ -580,12 +584,12 @@ class AdminMenu:
                             else:
                                 raise option_not_existed
                         except option_not_existed as e:
-                            log_admin.error(e)
+                            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
 
                     new_volun_profile=[plan_selected,camp_selected,new_volun_firstname,new_volun_lastname,new_volun_phone_num,new_volun_availability,new_volun_username,new_volun_password,new_volun_activated,"FALSE"]
 
                     '''DoubleCheck the new_camp input'''
-                    print('________________________\n'
+                    print('\n'
                         "Is this the volunteer profile you would like to create?")
                     for i in range(len(new_volun_profile)-1):
                         print(new_volun_profile_dict[f'[{i+1}]'], new_volun_profile[i])
@@ -605,10 +609,9 @@ class AdminMenu:
                             else:
                                 raise option_not_existed
                         except option_not_existed as e:
-                            log_admin.error(e)
+                            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
 
             self.Admin.create_volunteer(*new_volun_profile)
-            log_admin.info('* The new volunteer has been created successfully!')
             self.queue.append('self.manage_volunteer_system()')
 
         else:
@@ -707,7 +710,7 @@ class AdminMenu:
                                     else:
                                         raise unable_change_plan
                                 except unable_change_plan as e:
-                                    log_admin.error(e)
+                                    log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
                                     continue
                             else:
                                 continue
@@ -736,7 +739,7 @@ class AdminMenu:
                                     else:
                                         raise unable_change_camp
                                 except unable_change_camp as e:
-                                    log_admin.error(e)
+                                    log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
                                     continue
                             else:
                                 continue
@@ -767,7 +770,7 @@ class AdminMenu:
                                         updated_inf = ','.join(updated_inf)
                                         self.Admin.edit_volunteer_details(username=volunteer_selected,availability=updated_inf)
                                 except Invalid_value as e:
-                                    log_admin.error(e)
+                                    log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
                                     continue
 
 
@@ -781,7 +784,7 @@ class AdminMenu:
                     else:
                         raise option_not_existed
                 except option_not_existed as e:
-                    log_admin.error(e)
+                    log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
 
 
             self.queue.append('self.manage_volunteer_system()')
@@ -790,7 +793,7 @@ class AdminMenu:
 
 ### deactivate a volunteer account ###
     def deactivate_a_volunteer_account(self):
-        volunteer_selected = input("________________________________________\n"
+        volunteer_selected = input("\n"
                                    "Please complete the following information or Input b to back\n"
                                    "Volunteer name: ")
         if self.back(volunteer_selected, 'self.manage_volunteer_system()'):
@@ -814,7 +817,7 @@ class AdminMenu:
                     else:
                         raise option_not_existed
                 except option_not_existed as e:
-                    log_admin.error(e)
+                    log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
 
             self.queue.append('self.manage_volunteer_system()')
         else:
@@ -822,7 +825,7 @@ class AdminMenu:
 
 ### activate a volunteer account ###
     def activate_a_volunteer_account(self):
-        volunteer_selected = input("________________________________________\n"
+        volunteer_selected = input("\n"
                                    "Please complete the following information or Input b to back\n"
                                    "Volunteer name: ")
         if self.back(volunteer_selected, 'self.manage_volunteer_system()'):
@@ -846,7 +849,7 @@ class AdminMenu:
                     else:
                         raise option_not_existed
                 except option_not_existed as e:
-                    log_admin.error(e)
+                    log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
 
             self.queue.append('self.manage_volunteer_system()')
         else:
@@ -854,7 +857,7 @@ class AdminMenu:
 
 ### delete a volunteer ###
     def delete_a_volunteer(self):
-        volunteer_selected = input("________________________________________\n"
+        volunteer_selected = input("\n"
                                    "Please complete the following information or Input b to back\n"
                                    "Volunteer name: ")
         if self.back(volunteer_selected, 'self.manage_volunteer_system()'):
@@ -877,7 +880,7 @@ class AdminMenu:
                     else:
                         raise option_not_existed
                 except option_not_existed as e:
-                    log_admin.error(e)
+                    log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
 
             self.queue.append('self.manage_volunteer_system()')
 
@@ -888,7 +891,7 @@ class AdminMenu:
     def check_availability(self):
         try:
             try:
-                slot_check = input("________________________________________\n"
+                slot_check = input("\n"
                                        "Please complete the following information or Input b to back\n"
                                            "Input the time slot to check availability(in the form of int 1-7 as Monday-Sunday): ")
 
@@ -921,7 +924,7 @@ class AdminMenu:
             except:
                 raise Invalid_value
         except Invalid_value as e:
-            log_admin.error(e)
+            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
             self.queue.append('self.check_availability()')
 
 
@@ -929,6 +932,7 @@ class AdminMenu:
     def manage_messaging_system(self):
         user_input = input("________________________________________\n"
                            "         Manage messaging system\n"
+                           "\n"
               "(1) Create a public announcement\n"
               "(2) Create a regional announcement\n"
               "(3) Display a plan message\n"
@@ -950,24 +954,23 @@ class AdminMenu:
             else:
                 raise option_not_existed
         except option_not_existed as e:
-            log_admin.error(e)
+            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
             self.queue.append('self.manage_messaging_system()')
 
 ### Create a public announcement ###
     def create_public_announcements(self):
-        announce = input("________________________________________\n"
+        announce = input("\n"
                                    "Please complete the following information or Input b to back\n"
                                    "New announcement: ")
         if self.back(announce,'self.manage_messaging_system()'):
             return
         else:
             self.Admin.create_admin_announcement(announce)
-            log_admin.info("* The public announcement created successfully.")
         self.queue.append('self.manage_messaging_system()')
 
 ### Create a reginal announcement ###
     def create_regional_announcements(self):
-        where_publish = input("________________________________________\n"
+        where_publish = input("\n"
                                    "Please complete the following information or Input b to back\n"
                                    "1: plan announcement\n"
                               "2: camp announcement\n"
@@ -983,7 +986,7 @@ class AdminMenu:
 
                 plan_selection_loop = True
                 while plan_selection_loop:
-                    self.Admin.list_existing_plans()
+                    self.Admin.list_existing_plans(prompt=False)
                     plan_selected = input("Please choose the plan to publish announcement: ")
                     if self.back(plan_selected,'self.manage_messaging_system()'):
                         return
@@ -993,7 +996,6 @@ class AdminMenu:
                             return
                         else:
                             self.Admin.create_admin_announcement(announce,plan_name=plan_selected)
-                            log_admin.info("* The Plan Announcement created successfully.")
                     else:
                         continue
                     plan_selection_loop = False
@@ -1005,7 +1007,7 @@ class AdminMenu:
 
                 plan_selection_loop = True
                 while plan_selection_loop:
-                    self.Admin.list_existing_plans()
+                    self.Admin.list_existing_plans(prompt=False)
                     plan_selected = input("Please choose the plan to publish camp announcement: ")
                     if self.back(plan_selected, 'self.manage_messaging_system()'):
                         return
@@ -1013,7 +1015,7 @@ class AdminMenu:
 
                         camp_selection_loop = True
                         while camp_selection_loop:
-                            self.Admin.display_plan_summary(plan_selected)
+                            self.Admin.display_plan_summary(plan_selected,prompt=False)
                             camp_selected = input("Please choose the camp to publish announcement: ")
                             if self.back(camp_selected,'self.manage_messaging_system()'):
                                 return
@@ -1025,7 +1027,6 @@ class AdminMenu:
                                     return
                                 else:
                                     self.Admin.create_admin_announcement(announce, plan_name=plan_selected,camp_name=camp_selected)
-                                    log_admin.info("* The Camp Announcement created successfully.")
                             else:
                                 continue
                             camp_selection_loop = False
@@ -1040,13 +1041,13 @@ class AdminMenu:
             self.queue.append('self.manage_messaging_system()')
 
         except option_not_existed as e:
-            log_admin.error(e)
+            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
             self.queue.append('self.create_regional_announcements()')
 
 ### Display a plan message ###
     def display_plan_messages(self):
-        print("________________________________________\n")
-        self.Admin.list_existing_plans()
+        print("\n")
+        self.Admin.list_existing_plans(prompt=False)
         plan_selected = input(
                                    "Please complete the following information or Input b to back\n"
                                    "Plan name: ")
@@ -1061,8 +1062,8 @@ class AdminMenu:
 
 ### Display a camp message ###
     def display_camp_messages(self):
-        print("________________________________________\n")
-        self.Admin.list_existing_plans()
+        print("\n")
+        self.Admin.list_existing_plans(prompt=False)
         plan_selected = input(
                                    "Please complete the following information or Input b to back\n"
                                    "Plan name: ")
@@ -1074,7 +1075,7 @@ class AdminMenu:
 
             camp_selection_loop = True
             while camp_selection_loop:
-                self.Admin.display_plan_summary(plan_selected)
+                self.Admin.display_plan_summary(plan_selected,prompt=False)
                 camp_selected = input("Camp name: ")
                 if self.back(camp_selected,'self.manage_messaging_system()'):
                     return
@@ -1092,41 +1093,23 @@ class AdminMenu:
 
 ### Display admin exclusive message ###
     def display_admin_exclusive_messages(self):
-        if self.Admin.display_admin_exclusive_messages():
-            log_admin.info("* The messages to admin are displayed. ")
+        print('\n')
+        self.Admin.display_admin_exclusive_messages()
         self.queue.append('self.manage_messaging_system()')
 
 ### Delete admin exclusisve message ###
     def delete_admin_exclusive_messages(self):
-        if self.Admin.delete_admin_exclusive_messages():
-            log_admin.info("* The messages to admin have been deleted.")
+        print('\n')
+        self.Admin.delete_admin_exclusive_messages()
         self.queue.append('self.manage_messaging_system()')
 
 
 ################################################# Manage logging system ################################################
-    # def manage_logging_system(self):
-    #     user_input = input("________________________________________\n"
-    #           "(1) Display the log\n"
-    #           "(2) Reset the log\n"
-    #           "(3) back to last menu\n"
-    #           "(4) quit\n"
-    #           "Please select an option:  "
-    #     )
-    #
-    #     try:
-    #         if user_input == "4":
-    #             print("Goodbye!")
-    #             # always pass
-    #         elif user_input in list(self.manage_logging_system_dict.keys()):
-    #             self.queue.append(self.manage_logging_system_dict[user_input])
-    #         else:
-    #             raise option_not_existed
-    #     except option_not_existed as e:
-    #         log_admin.error(e)
-    #         self.queue.append('self.manage_logging_system()')
+
 
 ### display the log ###
     def display_log(self):
+        print('\n')
         self.Admin.display_logs()
         self.queue.append('self.admin_menu()')
 
