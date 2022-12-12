@@ -2,7 +2,7 @@ import sqlite3
 from database_utilities import *
 from logging_configure import log_volunteer
 import pandas as pd
-import logging
+from color_utilities import  *
 from exceptions import *
 
 # functions available: (name - corresponding function)
@@ -25,6 +25,9 @@ class volunteer:
         self.connection = sqlite3.connect('db.db', detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
         self.cursor = self.connection.cursor()
         self.cursor.execute("PRAGMA foreign_keys = 1")
+
+    def bi_color_text(self, content, font_color='g'):
+        return f"{colors.fg.green}✔ {content}{colors.reset}" if font_color == 'g' else f"{colors.fg.red}❌{content}{colors.reset}"
     def raise_error_for_existence(self, table_name,logger = log_volunteer, **kwargs) -> bool:
         """
         method [25]
@@ -40,10 +43,10 @@ class volunteer:
             if res != 0:  # exists, raise an exception
                 raise already_exists(table_name, **kwargs)
         except already_exists as e:
-            logger.error(e)
+            logger.error(self.bi_color_text(f"{e}", font_color='r'))
             return False
         except sqlite3.Error as e:
-            logger.error(e)
+            logger.error(self.bi_color_text(f"{e}", font_color='r'))
             return False
         else:
             return True
@@ -70,13 +73,13 @@ class volunteer:
             if res == 0:  # does not exist, raise an exception
                 raise absent(table_name, **kwargs)
         except closed_plan as e:
-            log_volunteer.error(e)
+            log_volunteer.error(self.bi_color_text(f"{e}", font_color='r'))
             return False
         except absent as e:
-            log_volunteer.error(e)
+            log_volunteer.error(self.bi_color_text(f"{e}", font_color='r'))
             return False
         except sqlite3.Error as e:
-            log_volunteer.error(e)
+            log_volunteer.error(self.bi_color_text(f"{e}", font_color='r'))
             return False
         else:
             return True
@@ -156,10 +159,11 @@ class volunteer:
             else:
                 df = pd.DataFrame(res, columns = ['Plan name', 'Camp name', 'First name', 'Last name', 'Phone number', 'availability', 'username', 'password'])
             df.index = ['']*len(df)
+            logger.info(self.bi_color_text("The operation is successful and here are the results: "))
             logger.info(f'\n{df}\n')
-            # print(result)
+
         except sqlite3.Error as e:
-            logger.error(e)
+            logger.error(self.bi_color_text(f"{e}", font_color='r'))
             return False
         else:
             return True
@@ -196,16 +200,13 @@ class volunteer:
         # print(sql)
         try:
             self.cursor.execute(sql).fetchall()
-            # print(result)
             self.connection.commit()
         except sqlite3.Error as e:
-            logger.error(e)
+            logger.error(self.bi_color_text(f"{e}", font_color='r'))
             return False
         else:
+            logger.info(self.bi_color_text("The edition is successful."))
             return True
-
-        # self.cursor.execute(sql)
-        # self.connection.commit()
 
     def vols_display_message(self, admin_anno = False, **kwargs) -> bool:
         """

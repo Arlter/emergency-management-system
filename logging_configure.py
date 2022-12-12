@@ -9,7 +9,7 @@ def logger_creator(name,level,writelog=True):
     # create console handler and set level to debug
     ch = logging.StreamHandler(sys.stdout)
     ch.setLevel(level)
-    ch.setFormatter(logging.Formatter('%(levelname)s : %(message)s'))
+    ch.setFormatter(logging.Formatter('%(message)s'))
         # add ch to logger
     logger.addHandler(ch)
     if writelog:
