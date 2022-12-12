@@ -27,7 +27,7 @@ class volunteer:
         self.cursor.execute("PRAGMA foreign_keys = 1")
 
     def bi_color_text(self, content, font_color='g'):
-        return f"{colors.fg.green}✔ {content}{colors.reset}" if font_color == 'g' else f"{colors.fg.red}❌{content}{colors.reset}"
+        return f"{colors.fg.green}✅ {content}{colors.reset}" if font_color == 'g' else f"{colors.fg.red}❌ {content}{colors.reset}"
     def raise_error_for_existence(self, table_name,logger = log_volunteer, **kwargs) -> bool:
         """
         method [25]

@@ -87,7 +87,7 @@ class admin(volunteer):
             return True
 
     # A method for plan management system.
-    def list_existing_plans(self) -> bool:
+    def list_existing_plans(self, prompt=True) -> bool:
         """
         Method[5] list all the plans including archived ones
         :return: existing plans in a good string form that can be just printed
@@ -100,7 +100,8 @@ class admin(volunteer):
                                   columns=['    Plan Name', '       Type', '     Description', '   Affected Area',
                                            '    Start Date ', '   Close Date'])
                 df.index = [''] * len(df)
-                log_admin.info(self.bi_color_text(f"The operation is successful and here are the results:"))
+                if prompt:
+                    log_admin.info(self.bi_color_text(f"The operation is successful and here are the results:"))
                 log_admin.info(f"\n{df}\n")
             else:
                 log_admin.info(self.bi_color_text("Successful search but no plans are found in the database."))
@@ -111,7 +112,7 @@ class admin(volunteer):
             return True
 
     # A method for plan management system
-    def display_plan_summary(self,pl_name:str) -> bool:
+    def display_plan_summary(self,pl_name:str, prompt=True) -> bool:
         """
         Method[6] used to display the details of a specific plan by entering its name
         :param pl_name: the name of plan
@@ -124,7 +125,8 @@ class admin(volunteer):
                 df = pd.DataFrame(res,
                              columns=['       Camp Name', '    Volunteers Number', '   Refugees Number'])
                 df.index = [''] * len(df)
-                log_admin.info(self.bi_color_text(f"The operation is successful and here are the results:"))
+                if prompt:
+                    log_admin.info(self.bi_color_text(f"The operation is successful and here are the results:"))
                 log_admin.info(f"\n{df}\n")
             else:
                 log_admin.info(self.bi_color_text(f"No details are found given the plan name {pl_name}."))
@@ -293,7 +295,7 @@ class admin(volunteer):
         """
         return super(admin,self).display_personal_profile(username,logger = log_admin)
 
-    def list_all_volunteers(self) -> bool:
+    def list_all_volunteers(self, prompt=True) -> bool:
         """
         Method[A]: list all volunteers including accounts which have been decativated.
         """
@@ -303,7 +305,8 @@ class admin(volunteer):
             if len(res) != 0:
                 df = pd.DataFrame(res,columns = ['Plan name','Camp name','First name','Last name','Phone number','availability', 'username', 'password','activated','reassignable'])
                 df.index = ['']*len(df)
-                log_admin.info(self.bi_color_text("The operation is successful and here are the results: "))
+                if prompt:
+                    log_admin.info(self.bi_color_text("The operation is successful and here are the results: "))
                 log_admin.info(f'\n{df}\n')
             else:
                 log_admin.info(self.bi_color_text("The operation is successful but no volunteers found."))
