@@ -16,7 +16,7 @@ class AdminMenu:
             "2": "self.manage_emergency_plan_system()",
             "3": "self.manage_volunteer_system()",
             "4": "self.manage_messaging_system()",
-            "5": "self.manage_logging_system()",
+            "5": "self.display_log()",
             "6": "logout",
             "7": "self.quit()"
         }
@@ -72,12 +72,12 @@ class AdminMenu:
             "8": "self.quit()"
         }
 
-        self.manage_logging_system_dict = {
-            "1": "self.display_log()",
-            "2": "self.reset_log()",
-            "3": "self.admin_menu()",
-            "4": "self.quit()"
-        }
+        # self.manage_logging_system_dict = {
+        #     "1": "self.display_log()",
+        #     "2": "self.reset_log()",
+        #     "3": "self.admin_menu()",
+        #     "4": "self.quit()"
+        # }
 
 
         self.queue.append('self.admin_menu()')
@@ -105,7 +105,7 @@ class AdminMenu:
               "(2) Manage emergency plan system\n"
               "(3) Manage volunteer system\n"
               "(4) Manage messaging system\n"            
-              "(5) Manage logging system\n"
+              "(5) Display the log\n"
               "(6) log out\n"
               "(7) quit\n"
               "Please select an option:  "
@@ -1144,34 +1144,34 @@ class AdminMenu:
 
 
 ################################################# Manage logging system ################################################
-    def manage_logging_system(self):
-        user_input = input("________________________________________\n"
-              "(1) Display the log\n"
-              "(2) Reset the log\n"
-              "(3) back to last menu\n"
-              "(4) quit\n"
-              "Please select an option:  "
-        )
-
-        try:
-            if user_input == "4":
-                print("Goodbye!")
-                # always pass
-            elif user_input in list(self.manage_logging_system_dict.keys()):
-                self.queue.append(self.manage_logging_system_dict[user_input])
-            else:
-                raise option_not_existed
-        except option_not_existed as e:
-            log_admin.error(e)
-            self.queue.append('self.manage_logging_system()')
+    # def manage_logging_system(self):
+    #     user_input = input("________________________________________\n"
+    #           "(1) Display the log\n"
+    #           "(2) Reset the log\n"
+    #           "(3) back to last menu\n"
+    #           "(4) quit\n"
+    #           "Please select an option:  "
+    #     )
+    #
+    #     try:
+    #         if user_input == "4":
+    #             print("Goodbye!")
+    #             # always pass
+    #         elif user_input in list(self.manage_logging_system_dict.keys()):
+    #             self.queue.append(self.manage_logging_system_dict[user_input])
+    #         else:
+    #             raise option_not_existed
+    #     except option_not_existed as e:
+    #         log_admin.error(e)
+    #         self.queue.append('self.manage_logging_system()')
 
 ### display the log ###
     def display_log(self):
         self.Admin.display_logs()
-        self.queue.append('self.manage_logging_system()')
+        self.queue.append('self.admin_menu()')
 
 
 ### Reset the log ###
-    def reset_log(self):
-        pass
-        self.queue.append('self.manage_logging_system()')
+    # def reset_log(self):
+    #     pass
+    #     self.queue.append('self.manage_logging_system()')
