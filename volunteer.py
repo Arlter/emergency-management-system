@@ -143,7 +143,7 @@ class volunteer:
     #     else:
     #         return True
 
-    def display_personal_profile(self, username_: str, logger=log_volunteer, no_extra=False) -> bool:
+    def display_personal_profile(self, username_: str, logger=log_volunteer, no_extra=False,prompt = True) -> bool:
         """method[32]"""
         if not self.raise_error_for_inexistence("volunteer", username=username_):
             return False
@@ -159,7 +159,8 @@ class volunteer:
             else:
                 df = pd.DataFrame(res, columns = ['Plan name', 'Camp name', 'First name', 'Last name', 'Phone number', 'availability', 'username', 'password'])
             df.index = ['']*len(df)
-            logger.info(self.bi_color_text("The operation is successful and here are the results: "))
+            if prompt:
+                logger.info(self.bi_color_text("The operation is successful and here are the results: "))
             logger.info(f'\n{df}\n')
 
         except sqlite3.Error as e:

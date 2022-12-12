@@ -2,6 +2,7 @@ from color_utilities import *
 from admin import *
 from exceptions import *
 from logging_configure import *
+from title import *
 
 class AdminMenu:
     def __init__(self):
@@ -17,15 +18,15 @@ class AdminMenu:
             "3": "self.manage_volunteer_system()",
             "4": "self.manage_messaging_system()",
             "5": "self.display_log()",
-            "6": "logout",
-            "7": "self.quit()"
+            "b": "logout",
+            "q": "self.quit()"
         }
 
 
         self.account_management_dict = {
             "1": "self.change_password()",
-            "2": "self.admin_menu()",
-            "3": "self.quit()"
+            "b": "self.admin_menu()",
+            "q": "self.quit()"
         }
 
 
@@ -36,14 +37,14 @@ class AdminMenu:
             "4": "self.edit_a_plan()",
             "5": "self.close_a_plan()",
             "6": "self.manage_camps()",
-            "7": "self.admin_menu()",
-            "8": "self.quit()"
+            "b": "self.admin_menu()",
+            "q": "self.quit()"
         }
         self.manage_camps_dict = {
             "1": "self.add_camps()",
             "2": "self.change_camp_names()",
-            "3": "self.manage_emergency_plan_system()",
-            "4": "self.quit()"
+            "b": "self.manage_emergency_plan_system()",
+            "q": "self.quit()"
         }
 
 
@@ -57,8 +58,8 @@ class AdminMenu:
             "6": "self.activate_a_volunteer_account()",
             "7": "self.delete_a_volunteer()",
             "8": "self.check_availability()",
-            "9": "self.admin_menu()",
-            "10": "self.quit()"
+            "b": "self.admin_menu()",
+            "q": "self.quit()"
         }
 
         self.manage_messaging_system_dict = {
@@ -68,16 +69,9 @@ class AdminMenu:
             "4": "self.display_camp_messages()",
             "5": "self.display_admin_exclusive_messages()",
             "6": "self.delete_admin_exclusive_messages()",
-            "7": "self.admin_menu()",
-            "8": "self.quit()"
+            "b": "self.admin_menu()",
+            "q": "self.quit()"
         }
-
-        # self.manage_logging_system_dict = {
-        #     "1": "self.display_log()",
-        #     "2": "self.reset_log()",
-        #     "3": "self.admin_menu()",
-        #     "4": "self.quit()"
-        # }
 
 
         self.queue.append('self.admin_menu()')
@@ -100,22 +94,25 @@ class AdminMenu:
 
 ###################################################### admin menu ######################################################
     def admin_menu(self):
-        user_input = input("________________________________________\n"
+        user_input = input("========================================\n"
+                           "               Admin Menu\n"
+                           "\n"
               "(1) Account management\n"
               "(2) Manage emergency plan system\n"
               "(3) Manage volunteer system\n"
               "(4) Manage messaging system\n"            
               "(5) Display the log\n"
-              "(6) log out\n"
-              "(7) quit\n"
-              "Please select an option:  "
+              "(b) Log out\n"
+              "(q) Quit\n"
+              "\n---➤ "
         )
 
         try:
-            if user_input == "7":
-                print("Goodbye!")
+            if user_input == "q":
+                goodbye()
+                self.queue.append(self.admin_menu_dict[user_input])
                 # always pass
-            elif user_input == '6':
+            elif user_input == 'b':
                 self.Ifback = True
 
             elif user_input in list(self.admin_menu_dict.keys()):
@@ -130,15 +127,18 @@ class AdminMenu:
 ################################################## account management ##################################################
     def account_management(self):
         user_input = input("________________________________________\n"
+                           "            Account account\n"
+                           "\n"
               "(1) Change the password\n"
-              "(2) back to last menu\n"
-              "(3) quit\n"
-              "Please select an option:  "
+              "(b) back to last menu\n"
+              "(q) quit\n"
+              "\n---➤ "
         )
 
         try:
-            if user_input == "3":
-                print("Goodbye!")
+            if user_input == "q":
+                goodbye()
+                self.queue.append(self.account_management_dict[user_input])
                 # always pass
             elif user_input in list(self.account_management_dict.keys()):
                 self.queue.append(self.account_management_dict[user_input])
@@ -150,8 +150,9 @@ class AdminMenu:
 
 ### change password ###
     def change_password(self):
-        user_input1 = input("________________________________________\n"
-                            "Please complete the following information or Input b to back\n"
+        print('\n')
+        self.Admin.list_all_volunteers(prompt=False)
+        user_input1 = input("Please complete the following information or Input b to back\n"
             "Input the username: ")
         if self.back(user_input1,'self.account_management()'):
             return
@@ -171,20 +172,22 @@ class AdminMenu:
 ############################################# manage emergency plan system #############################################
     def manage_emergency_plan_system(self):
         user_input = input("________________________________________\n"
+                           "      Manage emergency plan system\n"
               "(1) Create a plan\n"
               "(2) List existing plans\n"
               "(3) View a plan\n"
               "(4) Edit a plan\n"
               "(5) Close a plan\n"
               "(6) Manage camps\n"
-              "(7) back to last menu\n"
-              "(8) quit\n"
-              "Please select an option:  "
+              "(b) back to last menu\n"
+              "(q) quit\n"
+              "\n---➤ "
         )
 
         try:
-            if user_input == "8":
-                print("Goodbye!")
+            if user_input == "q":
+                goodbye()
+                self.queue.append(self.manage_emergency_system_dict[user_input])
                 # always pass
             elif user_input in list(self.manage_emergency_system_dict.keys()):
                 self.queue.append(self.manage_emergency_system_dict[user_input])
@@ -196,14 +199,13 @@ class AdminMenu:
 
 ### create a plan ###
     def create_a_plan(self):
-        new_plan_name = input("________________________________________\n"
-                           "Please complete the following information or Input b to back\n"
+        print('\n')
+        self.Admin.list_existing_plans(prompt=False)
+        new_plan_name = input("Please complete the following information or Input b to back\n"
                                      "Plan name: ")
-
         '''check existence of new plan'''
         if self.back(new_plan_name,'self.manage_emergency_plan_system()'):
             return
-
 
         elif self.Admin.raise_error_for_existence("emergency_plan", plan_name=new_plan_name):
             new_plan_type = input("Type: ")
@@ -227,13 +229,14 @@ class AdminMenu:
 
 ### List existing plans ###
     def list_existing_plans(self):
+        print('\n')
         self.Admin.list_existing_plans()
         self.queue.append('self.manage_emergency_plan_system()')
 
 ### View a plan ###
     def view_a_plan(self):
-        print("________________________________________\n")
-        self.Admin.list_existing_plans()
+        print("\n")
+        self.Admin.list_existing_plans(prompt=False)
         plan_viewed = input(
                             "Please complete the following information or Input b to back\n"
                            "Please enter the plan name to be viewed: " )
@@ -250,15 +253,15 @@ class AdminMenu:
 
 ### Edit a plan ###
     def edit_a_plan(self):
-        print("________________________________________\n")
-        self.Admin.list_existing_plans()
+        print("\n")
+        self.Admin.list_existing_plans(prompt=False)
 
         plan_edited = input("Please complete the following information or Input b to back\n"
                            "Please select a plan: ")
         if self.back(plan_edited,'self.manage_emergency_plan_system()'):
             return
         elif self.Admin.raise_error_for_inexistence("emergency_plan",edit_check=True,plan_name=plan_edited):
-            self.Admin.display_plan_summary(plan_edited)
+            self.Admin.display_plan_summary(plan_edited,prompt=False)
 
             plan_dict = {
                 '1': "plan_name",
@@ -316,7 +319,8 @@ class AdminMenu:
 
 ### close a plan ###
     def close_a_plan(self):
-        print("________________________________________\n")
+        print("\n")
+        self.Admin.list_existing_plans(prompt=False)
         plan_closed = input("Please select a plan or Input b to back:  ")
 
         if self.back(plan_closed,'self.manage_emergency_plan_system()'):
@@ -328,17 +332,18 @@ class AdminMenu:
             self.queue.append('self.close_a_plan()')
 ### Manage camps ###
     def manage_camps(self):
-        user_input = input("________________________________________\n"
+        user_input = input("________________________________________"
+                           "             Manage camps\n"
                            "(1) Add camps\n"
                            "(2) Change camp names\n"
-                           "(3) back to last menu\n"
-                           "(4) quit\n"
-                           "Please select an option:  "
-                           )
+                           "(b) back to last menu\n"
+                           "(q) quit\n"
+                           "\n---➤ ")
 
         try:
-            if user_input == "4":
-                print("Goodbye!")
+            if user_input == "q":
+                goodbye()
+                self.queue.append(self.manage_camps_dict[user_input])
                 # always pass
             elif user_input in list(self.manage_camps_dict.keys()):
                 self.queue.append(self.manage_camps_dict[user_input])
@@ -350,13 +355,13 @@ class AdminMenu:
 
     ### add camps ###
     def add_camps(self):
-        plan_selected = input("________________________________________\n"
+        plan_selected = input("\n"
                            "Please complete the following information or Input b to back\n"
                                      "Plan name: ")
         if self.back(plan_selected,'self.manage_camps()'):
             return
         elif self.Admin.raise_error_for_inexistence('emergency_plan',edit_check= True,plan_name=plan_selected):
-            self.Admin.display_plan_summary(plan_selected)
+            self.Admin.display_plan_summary(plan_selected,prompt=False)
 
             newcamp_inputloop = True
             while newcamp_inputloop:
@@ -401,14 +406,14 @@ class AdminMenu:
 
     ### change camp names ###
     def change_camp_names(self):
-        plan_selected = input("________________________________________\n"
+        plan_selected = input("\n"
                               "Please complete the following information or Input b to back\n"
                               "Plan name: ")
 
         if self.back(plan_selected,'self.manage_camps()'):
             return
         elif self.Admin.raise_error_for_inexistence('emergency_plan',edit_check= True,plan_name=plan_selected):
-            self.Admin.display_plan_summary(plan_selected)
+            self.Admin.display_plan_summary(plan_selected,prompt=False)
 
 
             campselect_loop = True
@@ -438,7 +443,8 @@ class AdminMenu:
 
 ############################################### manage volunteer system ################################################
     def manage_volunteer_system(self):
-        user_input = input("________________________________________\n"
+        user_input = input("__________________________________________\n"
+                           "          Manage volunteer system\n"
               "(1) Create a volunteer\n"
               "(2) List existing volunteers\n"
               "(3) view a volunteer\n"
@@ -447,14 +453,15 @@ class AdminMenu:
               "(6) Activate a volunteer account\n"
               "(7) Delete a volunteer\n"
               "(8) Check availability of volunteers\n"
-              "(9) back to last menu\n"
-              "(10) quit\n"
-              "Please select an option:  "
+              "(b) back to last menu\n"
+              "(q) quit\n"
+              "\n---➤ "
         )
 
         try:
-            if user_input == "10":
-                print("Goodbye!")
+            if user_input == "q":
+                goodbye()
+                self.queue.append(self.manage_volunteer_system_dict[user_input])
                 # always pass
             elif user_input in list(self.manage_volunteer_system_dict.keys()):
                 self.queue.append(self.manage_volunteer_system_dict[user_input])
@@ -488,15 +495,14 @@ class AdminMenu:
             '6': "Saturday",
             '7': "Sunday",
         }
-        print("________________________________________\n"
-                           "Please complete the following information or Input b to back"
-                                     )
-        self.Admin.list_existing_plans()
+        print("\n"
+              "Please complete the following information or Input b to back")
+        self.Admin.list_existing_plans(prompt=False)
         plan_selected = input(new_volun_profile_dict['[1]'])
         if self.back(plan_selected, 'self.manage_volunteer_system()'):
             return
         elif self.Admin.raise_error_for_inexistence('emergency_plan',edit_check= True,plan_name=plan_selected):
-            self.Admin.display_plan_summary(plan_selected)
+            self.Admin.display_plan_summary(plan_selected,prompt=False)
 
             pd.options.display.max_columns = None
             campselect_loop = True
@@ -519,31 +525,6 @@ class AdminMenu:
                         return
 
                     '''availability is in particular form'''
-                    # availability_loop = True
-                    # while availability_loop:
-                    #     new_volun_availability = input("Availability(In the form of 'Monday,0-24'): ")
-                    #     if self.back(new_volun_availability,'self.manage_volunteer_system()'):
-                    #         return
-                    #     else:
-                    #         try:
-                    #             try:
-                    #                 m = re.match(r'(.+),(.+)-(.+)', new_volun_availability)
-                    #                 if m.group():
-                    #                     M = re.split(r'(.+),(.+)-(.+)', new_volun_availability)
-                    #                 try:
-                    #                     if M[1].capitalize() in day_dict.values() and 0 <= int(M[2]) < int(M[3]) <= 24:
-                    #                         new_volun_availability = M[1].capitalize() +','+ M[2] + '-' + M[3]
-                    #                         new_volun_availability = new_volun_availability.replace(' ','')
-                    #                         availability_loop = False
-                    #                     else:
-                    #                         raise Invalid_value
-                    #                 except:
-                    #                     raise Invalid_value
-                    #             except:
-                    #                 raise Invalid_value
-                    #         except Invalid_value as e:
-                    #             log_admin.error(e)
-
                     availability_loop = True
                     while availability_loop:
                         new_volun_availability = input("Availability(Weekday number 1-7 splitted by comma e.g.'1,2' for 'Monday,Tuesday' ): ")
@@ -601,10 +582,6 @@ class AdminMenu:
                         except option_not_existed as e:
                             log_admin.error(e)
 
-                    # '''Resassignable is in particular form'''
-                    # print("Reassignable: False (by Default)")
-                    # new_volun_reassignable = "FALSE"
-
                     new_volun_profile=[plan_selected,camp_selected,new_volun_firstname,new_volun_lastname,new_volun_phone_num,new_volun_availability,new_volun_username,new_volun_password,new_volun_activated,"FALSE"]
 
                     '''DoubleCheck the new_camp input'''
@@ -639,13 +616,14 @@ class AdminMenu:
 
 ### list existing volunteers ###
     def list_existing_volunteers(self):
+        print('\n')
         self.Admin.list_all_volunteers()
         self.queue.append('self.manage_volunteer_system()')
 
 ### view a volunteer ###
     def view_a_volunteer(self):
-        print("________________________________________\n")
-        self.Admin.list_all_volunteers()
+        print("\n")
+        self.Admin.list_all_volunteers(prompt=False)
         volunteer_selected = input(
                               "Please complete the following information or Input b to back\n"
                               "Volunteer name: ")
@@ -663,15 +641,15 @@ class AdminMenu:
     '''change of username and reassignable is not allowed'''
     '''change of activated status is not in this section'''
     def edit_a_volunteer(self):
-        print("________________________________________\n")
-        self.Admin.list_all_volunteers()
+        print("\n")
+        self.Admin.list_all_volunteers(prompt=False)
         volunteer_selected = input(
                               "Please complete the following information or Input b to back\n"
                               "Volunteer name: ")
         if self.back(volunteer_selected,'self.manage_volunteer_system()'):
             return
         elif self.Admin.raise_error_for_inexistence('volunteer',edit_check=True,username=volunteer_selected):
-            self.Admin.view_volunteer_details(volunteer_selected)
+            self.Admin.view_volunteer_details(volunteer_selected,prompt=False)
 
             profile_dict = {
                 '1': "plan_name",
@@ -689,7 +667,7 @@ class AdminMenu:
             while selection_inputloop:
                 for i in range(len(profile_dict)):
                     print(list(profile_dict.keys())[i], ": ", list(profile_dict.values())[i].replace("_", ' '))
-                index_selected = input("_____________________________\n"
+                index_selected = input("\n"
                                            "Select from the above options: ")
                 try:
                     if self.back(index_selected,'self.manage_volunteer_system()'):
@@ -706,7 +684,7 @@ class AdminMenu:
 
                         #plan check
                         elif index_selected == '1':
-                            self.Admin.list_existing_plans()
+                            self.Admin.list_existing_plans(prompt=False)
                             updated_inf = input(
                                 "Input the new " + profile_dict[index_selected].replace("_", ' ') + ": ")
                             if self.back(updated_inf, 'self.manage_volunteer_system()'):
@@ -716,7 +694,7 @@ class AdminMenu:
                                 try:
                                     '''to check if volunteer is reassignable'''
                                     if self.Admin.raise_error_for_inexistence('volunteer',edit_check=False,username=volunteer_selected,reassignable="TRUE"):
-                                        self.Admin.display_plan_summary(updated_inf)
+                                        self.Admin.display_plan_summary(updated_inf,prompt=False)
 
                                         camp_updated = input("Which camp in "+updated_inf+" you would like to assign this volunteer to: ")
                                         if self.back(camp_updated,'self.manage_volunteer_system()'):
@@ -742,7 +720,7 @@ class AdminMenu:
                             cursor.execute(query)
                             a = cursor.fetchone()
                             planname_selected_volun = a[0]
-                            self.Admin.display_plan_summary(planname_selected_volun)
+                            self.Admin.display_plan_summary(planname_selected_volun,prompt=False)
                             connection.close()
 
                             updated_inf = input(
@@ -778,26 +756,6 @@ class AdminMenu:
                                 "Input the new " + profile_dict[index_selected].replace("_", ' ') +" (Weekday number 1-7 splitted by comma e.g.'1,2' for 'Monday,Tuesday')"+ ": ")
                             if self.back(updated_inf, 'self.manage_volunteer_system()'):
                                 return
-                            # try:
-                            #     try:
-                            #         m = re.match(r'(.+),(.+)-(.+)', updated_inf)
-                            #         if m.group():
-                            #             M = re.split(r'(.+),(.+)-(.+)', updated_inf)
-                            #         try:
-                            #             if M[1].capitalize() in day_dict.values() and 0 <= int(M[2]) < int(
-                            #                     M[3]) <= 24:
-                            #                 updated_inf = M[1].capitalize() + ',' + M[2] + '-' + M[3]
-                            #                 updated_inf = updated_inf.replace(' ', '')
-                            #                 self.Admin.edit_volunteer_details(username=volunteer_selected,availability=updated_inf)
-                            #             else:
-                            #                 raise Invalid_value
-                            #         except:
-                            #             raise Invalid_value
-                            #     except:
-                            #         raise Invalid_value
-                            # except Invalid_value as e:
-                            #     log_admin.error(e)
-                            #     continue
                             else:
                                 updated_inf = updated_inf.split(',')
                                 try:
@@ -815,7 +773,7 @@ class AdminMenu:
 
                         ###display the profile again
                         elif index_selected == '8':
-                            self.Admin.view_volunteer_details(volunteer_selected)
+                            self.Admin.view_volunteer_details(volunteer_selected,prompt=False)
                             continue
 
 
@@ -838,7 +796,7 @@ class AdminMenu:
         if self.back(volunteer_selected, 'self.manage_volunteer_system()'):
             return
         elif self.Admin.raise_error_for_inexistence('volunteer',edit_check=True,username=volunteer_selected):
-            self.Admin.view_volunteer_details(volunteer_selected)
+            self.Admin.view_volunteer_details(volunteer_selected,prompt=False)
 
             doublecheck_loop = True
             while doublecheck_loop:
@@ -870,7 +828,7 @@ class AdminMenu:
         if self.back(volunteer_selected, 'self.manage_volunteer_system()'):
             return
         elif self.Admin.raise_error_for_inexistence('volunteer', edit_check=True, username=volunteer_selected):
-            self.Admin.view_volunteer_details(volunteer_selected)
+            self.Admin.view_volunteer_details(volunteer_selected,prompt=False)
 
             doublecheck_loop = True
             while doublecheck_loop:
@@ -902,7 +860,7 @@ class AdminMenu:
         if self.back(volunteer_selected, 'self.manage_volunteer_system()'):
             return
         elif self.Admin.raise_error_for_inexistence('volunteer', edit_check=True, username=volunteer_selected):
-            self.Admin.view_volunteer_details(volunteer_selected)
+            self.Admin.view_volunteer_details(volunteer_selected,prompt=False)
             doublecheck_loop = True
             while doublecheck_loop:
                 doublecheck = input("Do you want to activate this volunteer?: \n"
@@ -970,20 +928,22 @@ class AdminMenu:
 ################################################ Manage messaging system ###############################################
     def manage_messaging_system(self):
         user_input = input("________________________________________\n"
+                           "         Manage messaging system\n"
               "(1) Create a public announcement\n"
               "(2) Create a regional announcement\n"
               "(3) Display a plan message\n"
               "(4) Display a camp message\n"
               "(5) Display admin exclusive messages\n"
               "(6) Delete admin exclusive messages\n"
-              "(7) back to last menu\n"
-              "(8) quit\n"
-              "Please select an option:  "
+              "(b) back to last menu\n"
+              "(q) quit\n"
+              "\n---➤ "
         )
 
         try:
-            if user_input == "8":
-                print("Goodbye!")
+            if user_input == "q":
+                goodbye()
+                self.queue.append(self.manage_messaging_system_dict[user_input])
                 # always pass
             elif user_input in list(self.manage_messaging_system_dict.keys()):
                 self.queue.append(self.manage_messaging_system_dict[user_input])

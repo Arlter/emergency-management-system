@@ -288,12 +288,12 @@ class admin(volunteer):
             return True
 
     # A method to be implemented
-    def view_volunteer_details(self, username: str)-> bool:
+    def view_volunteer_details(self, username: str,prompt=True)-> bool:
         """
         Method[12]: with all infor collected, view a volunteer's details. Consider the usage of pandas
         :return:
         """
-        return super(admin,self).display_personal_profile(username,logger = log_admin)
+        return super(admin,self).display_personal_profile(username,logger = log_admin,prompt = prompt)
 
     def list_all_volunteers(self, prompt=True) -> bool:
         """
