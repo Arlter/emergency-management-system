@@ -263,7 +263,7 @@ class volunteer:
         if not admin_excl:
             sql = f"INSERT INTO message(plan_name,camp_name,username,admin_announced,admin_exclusive,content) VALUES('{kwargs['plan_name']}', '{kwargs['camp_name']}','{vol_usrname}','FALSE', 'FALSE','{content}')"   
         elif admin_excl and len(kwargs) == 0:
-            sql = f"INSERT INTO message(plan_name,camp_name,username,admin_announced,admin_exclusive,content) VALUES('NULL', 'NULL', '{vol_usrname}', 'FALSE', 'TRUE', '{content}')"  
+            sql = f"INSERT INTO message(username,admin_announced,admin_exclusive,content) VALUES('{vol_usrname}', 'FALSE', 'TRUE', '{content}')"
         elif admin_excl and len(kwargs) != 0:
             log_volunteer.error("Please do not specify the camp_name (or plan_name) and the admin_excl at the same time!")
             return False
