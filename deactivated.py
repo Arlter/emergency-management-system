@@ -32,7 +32,6 @@ class deactivatedMenu:
         if message == "b":
             self.Ifback = True
         else:
-            if self.vol_instance.vols_send_message(self.username, self.plan, message, admin_excl=True):
-                log_volunteer.info(f"{colors.bg.green}Success! Message sent to admin{colors.reset}")
+            self.vol_instance.vols_send_message(self.username, self.plan, message, admin_excl=True)
             self.queue.append('self.quit()')
             self.Ifback = True
