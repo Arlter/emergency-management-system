@@ -127,11 +127,11 @@ class AdminMenu:
 ################################################## account management ##################################################
     def account_management(self):
         user_input = input("________________________________________\n"
-                           "            Account account\n"
+                           "         Account Management\n"
                            "\n"
               "(1) Change the password\n"
-              "(b) back to last menu\n"
-              "(q) quit\n"
+              "(b) Back to Admin Menu\n"
+              "(q) Quit\n"
               "\n---➤ "
         )
 
@@ -179,8 +179,8 @@ class AdminMenu:
               "(4) Edit a plan\n"
               "(5) Close a plan\n"
               "(6) Manage camps\n"
-              "(b) back to last menu\n"
-              "(q) quit\n"
+              "(b) Back to Admin Menu\n"
+              "(q) Quit\n"
               "\n---➤ "
         )
 
@@ -457,8 +457,8 @@ class AdminMenu:
               "(6) Activate a volunteer account\n"
               "(7) Delete a volunteer\n"
               "(8) Check availability of volunteers\n"
-              "(b) back to last menu\n"
-              "(q) quit\n"
+              "(b) Back to Admin Menu\n"
+              "(q) Quit\n"
               "\n---➤ "
         )
 
@@ -939,8 +939,8 @@ class AdminMenu:
               "(4) Display a camp message\n"
               "(5) Display admin exclusive messages\n"
               "(6) Delete admin exclusive messages\n"
-              "(b) back to last menu\n"
-              "(q) quit\n"
+              "(b) Back to Admin Menu\n"
+              "(q) Quit\n"
               "\n---➤ "
         )
 
@@ -972,8 +972,8 @@ class AdminMenu:
     def create_regional_announcements(self):
         where_publish = input("\n"
                                    "Please complete the following information or Input b to back\n"
-                                   "1: plan announcement\n"
-                              "2: camp announcement\n"
+                                   "(1) Plan announcement\n"
+                              "(2) Camp announcement\n"
                               "Select the type of announcement:")
 
         try:

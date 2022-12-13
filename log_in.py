@@ -18,7 +18,6 @@ class login():
                 '2': "GuestMenu()",
                 '3': "deactivatedMenu(self.volunteer_username)"}
 
-
         self.logqueue.append('self.trylogin()')
 
         while len(self.logqueue)!= 0:
@@ -28,7 +27,8 @@ class login():
                     self.logqueue.append('self.trylogin()')
             self.logqueue = self.logqueue[1:]
 
-
+    def bi_color_text(self, content, font_color='g'):
+        return f"{colors.fg.green}✅ {content}{colors.reset}" if font_color == 'g' else f"{colors.fg.red}❌ {content}{colors.reset}"
 
     def trylogin(self):
         connection = sqlite3.connect('db.db', detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
@@ -74,11 +74,9 @@ class login():
                             SuccessLog = True
 
                 else:
-                    log_general.error(f"{colors.fg.red}Invalid login{colors.reset}")
-                    raise option_not_existed
+                    raise invalid_login
 
-            except option_not_existed as e:
-                log_admin.error(e)
-
+            except invalid_login as e:
+                log_general.error(self.bi_color_text(f"{e}", font_color='r'))
 
         self.logqueue.append(self.afterlogin[CurrentRole])

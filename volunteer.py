@@ -28,6 +28,7 @@ class volunteer:
 
     def bi_color_text(self, content, font_color='g'):
         return f"{colors.fg.green}✅ {content}{colors.reset}" if font_color == 'g' else f"{colors.fg.red}❌ {content}{colors.reset}"
+
     def raise_error_for_existence(self, table_name,logger = log_volunteer, **kwargs) -> bool:
         """
         method [25]
@@ -90,8 +91,10 @@ class volunteer:
             self.cursor.execute(insert_sql_generation("refugee_profile", **kwargs))
             self.connection.commit()
         except sqlite3.Error as e:
-            log_volunteer.error(e)
+            log_volunteer.error(self.bi_color_text(f"{e}", font_color='r'))
+            return False
         else:
+            log_volunteer.info(self.bi_color_text("The creation is successful."))
             return True
 
     def update_refugee_profile(self, attribute_name, new_val, refugee_ID):
@@ -100,8 +103,10 @@ class volunteer:
             self.cursor.execute(update_sql_generation("refugee_profile", attribute_name, new_val, refugee_ID))
             self.connection.commit()
         except sqlite3.Error as e:
-            log_volunteer.error(e)
+            log_volunteer.error(self.bi_color_text(f"{e}", font_color='r'))
+            return False
         else:
+            log_volunteer.info(self.bi_color_text("The update is successful."))
             return True
 
     def list_emergency_profile(self, camp_name):
@@ -116,13 +121,16 @@ class volunteer:
                     res[i] = tuple([t] + res[i][2:])
                 df = pd.DataFrame(res, columns = ['ID', 'Camp name', 'F. name', 'L. name', 'No. of family', 'Medical condition(s)', 'archived'])
                 df.index = ['']*len(df)
+                log_volunteer.info(self.bi_color_text("The operation is successful and here are the results: "))
                 log_volunteer.info(f"\n{df}\n")
+                return True
             else:
-                log_volunteer.info(f'*No refugee profiles found in the current camp {camp_name}')
+                log_volunteer.info(f'No refugee profiles found in the current camp {camp_name}.')
+                return True
         except sqlite3.Error as e:
-            log_volunteer.error(e)
-        else:
-            return True
+            log_volunteer.error(self.bi_color_text(f"{e}", font_color='r'))
+            return False
+
 
     # def display_emergency_profile(self, camp_name, first_name ='*', last_name ='*', family_num = '*', medical_condition= '*'):
     #     """method[30]"""
@@ -162,12 +170,10 @@ class volunteer:
             if prompt:
                 logger.info(self.bi_color_text("The operation is successful and here are the results: "))
             logger.info(f'\n{df}\n')
-
+            return True
         except sqlite3.Error as e:
             logger.error(self.bi_color_text(f"{e}", font_color='r'))
             return False
-        else:
-            return True
 
 
     def edit_personal_profile(self, username: str, logger= log_volunteer, **kwargs) -> bool:
@@ -206,7 +212,7 @@ class volunteer:
             logger.error(self.bi_color_text(f"{e}", font_color='r'))
             return False
         else:
-            logger.info(self.bi_color_text("The edition is successful."))
+            logger.info(self.bi_color_text("The edit is successful."))
             return True
 
     def vols_display_message(self, admin_anno = False, **kwargs) -> bool:
@@ -234,15 +240,17 @@ class volunteer:
             result = self.cursor.execute(sql).fetchall()
             self.connection.commit()
         except sqlite3.Error as e:
-            log_volunteer.error(e)
+            log_volunteer.error(self.bi_color_text(f"{e}", font_color='r'))
+            return False
         if len(result) != 0:
             df = pd.DataFrame(result,columns=['    Message ID','       Time','    username','    Message Content'])
             df.index = [''] * len(df)
+            log_volunteer.info(self.bi_color_text("The operation is successful and here are the results: "))
             log_volunteer.info(f"\n{df}\n")
             return True
         else:
-            log_volunteer.info("* No messages are found given specified information.")
-            return False
+            log_volunteer.info("No messages are found given specified information.")
+            return True  #?
     
     def vols_send_message(self, vol_usrname: str, planname, content: str, admin_excl=False, **kwargs) -> bool:
         """
@@ -266,19 +274,18 @@ class volunteer:
         elif admin_excl and len(kwargs) == 0:
             sql = f"INSERT INTO message(username,admin_announced,admin_exclusive,content) VALUES('{vol_usrname}', 'FALSE', 'TRUE', '{content}')"
         elif admin_excl and len(kwargs) != 0:
-            log_volunteer.error("Please do not specify the camp_name (or plan_name) and the admin_excl at the same time!")
+            log_volunteer.error(self.bi_color_text("Please do not specify the camp_name (or plan_name) and the admin_excl at the same time.", font_color='r'))
             return False
         # print(sql)
         try:
             result = self.cursor.execute(sql).fetchall()
             self.connection.commit()
+            log_volunteer.info(self.bi_color_text("Message sent successfully."))
             return True
         except sqlite3.Error as e:
-            log_volunteer.error(e)
+            log_volunteer.error(self.bi_color_text(f"{e}", font_color='r'))
             return False
         
-
-
 
 if __name__ == "__main__":
     # test for edit_personal_profile and availability

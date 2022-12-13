@@ -15,12 +15,12 @@ class closed_plan(Exception):
 
 class option_not_existed(Exception):
     def __init__(self):
-        self.message = f"Invalid option. Please select from the Menu."
+        self.message = f"Invalid option. Please select from the menu."
         super().__init__(self.message)
 
 class Invalid_value(Exception):
     def __init__(self):
-        self.message = f"Invalid value. Please input in particular form. "
+        self.message = f"Invalid value. Please input in the correct format."
         super().__init__(self.message)
 
 class unable_change_plan(Exception):
@@ -30,5 +30,10 @@ class unable_change_plan(Exception):
 
 class unable_change_camp(Exception):
     def __init__(self):
-        self.message = f"The volunteer can not be reassigned to  as his plan has been closed."
+        self.message = f"The volunteer can not be reassigned to as his plan has been closed."
+        super().__init__(self.message)
+
+class invalid_login(Exception):
+    def __init__(self):
+        self.message = f"Invalid login, please try again."
         super().__init__(self.message)
