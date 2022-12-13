@@ -23,7 +23,7 @@ class GuestMenu:
         self.Guest.connection.close()
 
     def Guest_request(self):
-        request = input("Send the message to admin: ")
+        request = input("Send the message to admin, or enter b to go back: ")
         if request == 'b':
             self.Ifback = True
         else:
