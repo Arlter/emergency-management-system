@@ -4,6 +4,7 @@ import pandas as pd
 from logging_configure import log_general
 import sys
 from log_in import *
+from title import welcome
 
 if __name__ == "__main__":
     if '-h' in sys.argv:
@@ -52,7 +53,7 @@ if __name__ == "__main__":
     # vol.vols_display_message(plan_name = 'plan4', camp_name = 'camp1')
     # vol.vols_display_message(plan_name = 'plan5', camp_name = 'camp1')
     # vol.display_personal_profile("test")
-
+    welcome()
     login()
 
     # following are just some tests

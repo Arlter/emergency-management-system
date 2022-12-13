@@ -4,7 +4,6 @@ from AdminMenu import *
 from VolunteerMenu import *
 from deactivated import *
 from GuestMenu import *
-from title import welcome
 import sqlite3
 
 class login():
@@ -58,20 +57,17 @@ class login():
                     else:
 
                         if UserNameinput == 'admin':
-                            welcome()
                             log_general.info(f"{colors.fg.green}Welcome! Your role is Admin{colors.reset}")
                             CurrentRole = '0'
                             SuccessLog = True
 
 
                         elif UserNameinput == 'guest':
-                            welcome()
                             log_general.info(f"{colors.fg.green}Welcome! Your role is Guest{colors.reset}")
                             CurrentRole = '2'
                             SuccessLog = True
 
                         else:
-                            welcome()
                             log_general.info(f"{colors.fg.green}Welcome! Your role is Volunteer{colors.reset}")
                             CurrentRole = '1'
                             self.volunteer_username = UserNameinput
