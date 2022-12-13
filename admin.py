@@ -5,6 +5,9 @@ from logging_configure import log_admin
 import pandas as pd
 from exceptions import *
 from volunteer import volunteer
+from utility import display_in_table
+
+
 class admin(volunteer):
 
 #################################The following two methods for general single-value check ##############################
@@ -96,13 +99,9 @@ class admin(volunteer):
             sql_cmd = select_sql_generation("emergency_plan","*")
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res) != 0:
-                df = pd.DataFrame(res,
-                                  columns=['    Plan Name', '       Type', '     Description', '   Affected Area',
-                                           '    Start Date ', '   Close Date'])
-                df.index = [''] * len(df)
                 if prompt:
                     log_admin.info(self.bi_color_text(f"The operation is successful and here are the results:"))
-                log_admin.info(f"\n{df}\n")
+                log_admin.info(f"\n{display_in_table(['Plan Name', 'Type', 'Description', 'Affected Area','Start Date ', 'Close Date'],res)}\n")
             else:
                 log_admin.info(self.bi_color_text("Successful search but no plans are found in the database."))
         except sqlite3.Error as e:
@@ -122,12 +121,9 @@ class admin(volunteer):
             sql_cmd = select_sql_generation("camp","camp_name, num_of_volunteers, num_of_refugees", plan_name=pl_name)
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res) != 0:
-                df = pd.DataFrame(res,
-                             columns=['       Camp Name', '    Volunteers Number', '   Refugees Number'])
-                df.index = [''] * len(df)
                 if prompt:
                     log_admin.info(self.bi_color_text(f"The operation is successful and here are the results:"))
-                log_admin.info(f"\n{df}\n")
+                log_admin.info(f"\n{display_in_table(['Camp Name', 'Volunteers Number', 'Refugees Number'],res)}\n")
             else:
                 log_admin.info(self.bi_color_text(f"No details are found given the plan name {pl_name}."))
         except sqlite3.Error as e:
@@ -304,11 +300,9 @@ class admin(volunteer):
             sql = select_sql_generation("volunteer", "*")
             res = self.cursor.execute(sql).fetchall()
             if len(res) != 0:
-                df = pd.DataFrame(res,columns = ['Plan name','Camp name','First name','Last name','Phone number','availability', 'username', 'password','activated','reassignable'])
-                df.index = ['']*len(df)
                 if prompt:
                     log_admin.info(self.bi_color_text("The operation is successful and here are the results: "))
-                log_admin.info(f'\n{df}\n')
+                log_admin.info(f"\n{display_in_table(['Plan name','Camp name','First name','Last name','Phone number','availability', 'username', 'password','activated','reassignable'],res)}\n")
             else:
                 log_admin.info(self.bi_color_text("The operation is successful but no volunteers found."))
         except sqlite3.Error as e:
@@ -424,11 +418,8 @@ class admin(volunteer):
             sql_cmd = f"{select_sql_generation('message', 'time','username','plan_name','content', plan_name = plan_name,admin_exclusive='FALSE')} ORDER BY message_id ASC"
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res) != 0:
-                df = pd.DataFrame(res,
-                                  columns=['    Post Time','    Account','       Plan Name', '                Message Content'])
-                df.index =[''] * len(df)
                 log_admin.info(self.bi_color_text("The operation is successful and here are the results: "))
-                log_admin.info(f"\n{df}\n")
+                log_admin.info(f"\n{display_in_table(['Post Time','Account','Plan Name', 'Message Content'],res)}\n")
             else:
                 log_admin.info(self.bi_color_text(f"The operation is successful but no messages are found given the plan name."))
         except sqlite3.Error as e:
@@ -450,11 +441,8 @@ class admin(volunteer):
             # print(sql_cmd)
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res)!=0:
-                df = pd.DataFrame(res,
-                                  columns=['    Post Time','    Account','      Plan Name','  Camp Name', '            Message Content'])
-                df.index = [''] * len(df)
                 log_admin.info(self.bi_color_text("The operation is successful and here are the results: "))
-                log_admin.info(f"\n{df}\n")
+                log_admin.info(f"\n{display_in_table(['Post Time','Account','Plan Name','Camp Name', 'Message Content'],res)}\n")
             else:
                 log_admin.info(self.bi_color_text(f"The operation is successful but no messages are found given the plan name and camp name."))
         except sqlite3.Error as e:
@@ -473,11 +461,8 @@ class admin(volunteer):
             sql_cmd = f"{select_sql_generation('message', 'message_id','time','username','content', admin_exclusive='TRUE', admin_announced='FALSE')} ORDER BY message_id ASC"
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res) != 0:
-                df = pd.DataFrame(res,
-                                  columns=['    Message ID','       time','    username','    Message Content'])
-                df.index = [''] * len(df)
                 log_admin.info(self.bi_color_text("The operation is successful and here are the results: "))
-                log_admin.info(f"\n{df}\n")
+                log_admin.info(f"\n{display_in_table(['Message ID','time','username','Message Content'],res)}\n")
             else:
                 log_admin.info(self.bi_color_text("No messages are found given the plan name and camp name."))
         except sqlite3.Error as e:
