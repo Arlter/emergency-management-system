@@ -306,8 +306,8 @@ def test_initiate(connection,cursor):
             refugee_profile_list)
         connection.commit()
         message_list = [
-            (None, None, "guest", "FALSE","TRUE", "[I FORGET MY PASSWORD, MY ACCOUNT NAME IS 'HEY'.]"),
-            (None, None, "admin", "TRUE","FALSE","[WELCOME TO THIS PROGRAM, VOLUNTEERS]"),
+            (None, None, "guest", "FALSE","TRUE", "I FORGET MY PASSWORD, MY ACCOUNT NAME IS 'HEY'."),
+            (None, None, "admin", "TRUE","FALSE","WELCOME TO THIS PROGRAM, VOLUNTEERS"),
             ("plan1", "camp2", "vol3", "FALSE", "TRUE","[COULD YOU HELP ME REMOVE TO ANOTHER PLAN, admin]"),
             ("plan1", "camp2", "vol3", "FALSE", "FALSE","[nice to see you guys]"),
         ]
