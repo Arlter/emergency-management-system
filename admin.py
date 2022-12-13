@@ -245,13 +245,14 @@ class admin(volunteer):
             dic['plan_name'] = plan_name
         if camp_name != None:
             dic['camp_name'] = camp_name
-        sql = select_sql_generation("volunteer", "username", "availability", *dic)
+        sql = select_sql_generation("volunteer", "username", "availability", **dic)
         # print(sql)
         try:
-            result = self.cursor.execute(sql).fetchall()[2:]  # [2:] is to exclude admin row
+            result = self.cursor.execute(sql).fetchall()[:]  # [2:] is to exclude admin and guest row
+            # print(result)
             self.connection.commit()
         except sqlite3.Error as e:
-            logger.error(self.bi_color_text(f"{e}",font_color='r'))
+            logger.error(self.bi_color_text(f"{e}", font_color='r'))
             return False
         for tuples in result:
             vol = tuples[0]
@@ -534,3 +535,13 @@ class admin(volunteer):
         #Method[23]  basically just remove all the content in the file logging.log
         with open('logging.log', 'w'):
             pass
+
+
+if __name__ == "__main__":
+    ad = admin()
+    # ad.display_messages_from_a_camp('plan1', 'camp2')
+    # ad.create_volunteer('plan1', 'camp1', 'bill', 'liu', '123', '1,2,3', 'vol9', '111', 'TRUE', "FALSE")
+    # ad.availability(1)
+    # ad.create_admin_announcement("hello1234", plan_name = "plan1")
+    ad.list_all_volunteers()
+    ad.availability(1, 'plan1', 'camp1')
