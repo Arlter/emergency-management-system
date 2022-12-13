@@ -2,7 +2,6 @@ import sqlite3
 from datetime import datetime
 from database_utilities import *
 from logging_configure import log_admin
-import pandas as pd
 from exceptions import *
 from volunteer import volunteer
 from utility import display_in_table
