@@ -257,7 +257,7 @@ class admin(volunteer):
         for tuples in result:
             vol = tuples[0]
             day = tuples[1]
-            if day_str in day:
+            if day is not None and day_str in day:
                 res.append(vol)
         if len(res) == 0:
             logger.info(self.bi_color_text("There is no satisfied volunteer in that period."))
@@ -544,4 +544,7 @@ if __name__ == "__main__":
     # ad.availability(1)
     # ad.create_admin_announcement("hello1234", plan_name = "plan1")
     ad.list_all_volunteers()
+    ad.availability(1)
+    ad.availability(1, 'plan1')
     ad.availability(1, 'plan1', 'camp1')
+    # wrong usage: ad.availability(1, 'camp1')
