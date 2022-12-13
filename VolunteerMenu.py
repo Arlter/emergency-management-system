@@ -4,6 +4,7 @@ from exceptions import *
 from logging_configure import *
 import database_utilities
 from color_utilities import *
+from title import *
 
 
 """
@@ -134,7 +135,7 @@ class VolunteerMenu:
 ---➤ """)
 
         if user_input == "q":
-            log_volunteer.info(f"{colors.fg.green}Goodbye!{colors.reset}")
+            goodbye()
             self.queue.append('self.quit()')
         elif user_input == "b": #used for relogin
             self.Ifback = True
@@ -203,7 +204,6 @@ Please select an option: """)
 (2) Update last name
 (3) Update number of family members
 (4) Update medical condition(s)
-(b) Back to Manage Refugee Profile menu
         
 Please select an option: """)
                 if attr_to_update in ('1','2','3','4'):
@@ -266,7 +266,7 @@ Please select an option: """)
 ---➤ """)
 
         if user_input == "q":
-            log_volunteer.info(f"{colors.fg.green}Goodbye!{colors.reset}")
+            goodbye()
             self.queue.append('self.quit()')
         elif user_input == "b":
             self.queue.append('self.volunteer_menu()')
@@ -353,7 +353,7 @@ Please enter your message for your camp: """)
 ---➤ """)
 
         if user_input == "q":
-            log_volunteer.info(f"{colors.fg.green}Goodbye!{colors.reset}")
+            goodbye()
             self.queue.append('self.quit()')
         elif user_input == "b":
             self.queue.append('self.volunteer_menu()')
@@ -393,7 +393,7 @@ Please choose a detail to edit (1-5), or any other options: """)
 
         
         if user_input == "q":
-            log_volunteer.info(f"{colors.fg.green}Goodbye!{colors.reset}")
+            goodbye()
             self.queue.append('self.quit()')
 
         elif user_input == "b":

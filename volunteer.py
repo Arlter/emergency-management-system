@@ -227,14 +227,16 @@ class volunteer:
         NOTE: please do not set true to admin_anno and specify **kwargs at the same time
         """
         # print(not admin_anno)
-        if not admin_anno:
-            sql = select_sql_generation("message", "message_id", "time", "username", "content", admin_announced="FALSE", admin_exclusive="FALSE", **kwargs)
-        elif ('plan_name' in kwargs.keys()) and ('camp_name' not in kwargs.keys()):
+        if ('plan_name' in kwargs.keys()) and ('camp_name' in kwargs.keys()): # camp announcements, from both admin and volunteer
+            sql = select_sql_generation("message", "message_id", "time", "username", "content", admin_exclusive="FALSE", **kwargs)
+        elif admin_anno and ('plan_name' not in kwargs.keys()) and ('camp_name' not in kwargs.keys()): # admin public announcements
+            sql = f"SELECT message_id,time,username,content FROM message WHERE admin_announced='TRUE' and admin_exclusive='FALSE' and plan_name IS NULL and camp_name IS NULL"
+        elif admin_anno and ('plan_name' in kwargs.keys()) and ('camp_name' not in kwargs.keys()): # admin plan announcements
             sql = f"SELECT message_id,time,username,content FROM message WHERE admin_announced='TRUE' and admin_exclusive='FALSE' and plan_name='{kwargs['plan_name']}' and camp_name IS NULL"
             # print(sql
-        else:
+        #else:
             # print(1)
-            sql = select_sql_generation("message", "message_id", "time", "username", "content", admin_announced="TRUE", admin_exclusive="FALSE", **kwargs)
+            #sql = select_sql_generation("message", "message_id", "time", "username", "content", admin_announced="TRUE", admin_exclusive="FALSE", **kwargs)
         try:
             # print(sql)
             result = self.cursor.execute(sql).fetchall()
