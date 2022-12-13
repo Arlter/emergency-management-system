@@ -224,7 +224,7 @@ class volunteer:
         if not admin_anno:
             sql = select_sql_generation("message", "message_id", "time", "username", "content", admin_announced="FALSE", admin_exclusive="FALSE", **kwargs)
         elif ('plan_name' in kwargs.keys()) and ('camp_name' not in kwargs.keys()):
-            sql = "SELECT message_id,time,username,content FROM message WHERE admin_announced='TRUE' and admin_exclusive='FALSE' and plan_name='plan1' and camp_name IS NULL"
+            sql = f"SELECT message_id,time,username,content FROM message WHERE admin_announced='TRUE' and admin_exclusive='FALSE' and plan_name='{kwargs['plan_name']}' and camp_name IS NULL"
             # print(sql
         else:
             # print(1)
