@@ -4,7 +4,7 @@ from database_utilities import *
 from logging_configure import log_admin
 from exceptions import *
 from volunteer import volunteer
-from utility import display_in_table
+from utility import display_in_table,bi_color_text
 
 
 class admin(volunteer):
@@ -36,13 +36,13 @@ class admin(volunteer):
             if res == 0: # does not exist, raise an exception
                 raise absent(table_name,**kwargs)
         except closed_plan as e:
-            log_admin.error(self.bi_color_text(f"{e}",font_color='r'))
+            log_admin.error(bi_color_text(f"{e}",font_color='r'))
             return False
         except absent as e:
-            log_admin.error(self.bi_color_text(f"{e}",font_color='r'))
+            log_admin.error(bi_color_text(f"{e}",font_color='r'))
             return False
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}",font_color='r'))
+            log_admin.error(bi_color_text(f"{e}",font_color='r'))
             return False
         else:
             return True
@@ -60,10 +60,10 @@ class admin(volunteer):
             sql = self.cursor.execute(update_sql_generation("volunteer", "password", password, username = username))
             self.connection.commit()
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}",font_color='r'))
+            log_admin.error(bi_color_text(f"{e}",font_color='r'))
             return False
         else:
-            log_admin.info(self.bi_color_text("Password successfully changed"))
+            log_admin.info(bi_color_text("Password successfully changed"))
             return True
 
 #################################The following Methods are for plan & camp management system############################
@@ -82,10 +82,10 @@ class admin(volunteer):
             self.cursor.execute(insert_sql_generation("emergency_plan",plan_name=plan_name,plan_type=type,plan_description=description,geo_area=geo_affected_area))
             self.connection.commit()
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}",font_color='r'))
+            log_admin.error(bi_color_text(f"{e}",font_color='r'))
             return False
         else:
-            log_admin.info(self.bi_color_text(f"The addition of the plan {plan_name} is successful."))
+            log_admin.info(bi_color_text(f"The addition of the plan {plan_name} is successful."))
             return True
 
     # A method for plan management system.
@@ -99,12 +99,12 @@ class admin(volunteer):
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res) != 0:
                 if prompt:
-                    log_admin.info(self.bi_color_text(f"The operation is successful and here are the results:"))
+                    log_admin.info(bi_color_text(f"The operation is successful and here are the results:"))
                 log_admin.info(f"\n{display_in_table(['Plan Name', 'Type', 'Description', 'Affected Area','Start Date ', 'Close Date'],res)}\n")
             else:
-                log_admin.info(self.bi_color_text("Successful search but no plans are found in the database."))
+                log_admin.info(bi_color_text("Successful search but no plans are found in the database."))
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
             return True
@@ -121,12 +121,12 @@ class admin(volunteer):
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res) != 0:
                 if prompt:
-                    log_admin.info(self.bi_color_text(f"The operation is successful and here are the results:"))
+                    log_admin.info(bi_color_text(f"The operation is successful and here are the results:"))
                 log_admin.info(f"\n{display_in_table(['Camp Name', 'Volunteers Number', 'Refugees Number'],res)}\n")
             else:
-                log_admin.info(self.bi_color_text(f"No details are found given the plan name {pl_name}."))
+                log_admin.info(bi_color_text(f"No details are found given the plan name {pl_name}."))
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
             return True
@@ -150,9 +150,9 @@ class admin(volunteer):
         try:
             self.cursor.execute(sql).fetchall()
             self.connection.commit()
-            logger.info(self.bi_color_text("The edition is successful."))
+            logger.info(bi_color_text("The edition is successful."))
         except sqlite3.Error as e:
-            logger.error(self.bi_color_text(f"{e}", font_color='r'))
+            logger.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
             return True
@@ -169,10 +169,10 @@ class admin(volunteer):
             self.cursor.execute(update_sql_generation("emergency_plan","close_date",datetime.today().strftime('%Y-%m-%d'),plan_name = pl_name))
             self.connection.commit()
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
-            log_admin.info(self.bi_color_text(f"The close operation of the plan {pl_name} is successful."))
+            log_admin.info(bi_color_text(f"The close operation of the plan {pl_name} is successful."))
             return True
 
 
@@ -191,13 +191,13 @@ class admin(volunteer):
                 self.cursor.execute(insert_sql_generation("camp",plan_name=plan_name,camp_name=name))
                 self.connection.commit()
         except sqlite3.IntegrityError as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
-            log_admin.info(self.bi_color_text(f"The addition of {', '.join([name for name in camp_names])} to the plan {plan_name} is successful."))
+            log_admin.info(bi_color_text(f"The addition of {', '.join([name for name in camp_names])} to the plan {plan_name} is successful."))
             return True
 
     # A method for camp management system
@@ -212,10 +212,10 @@ class admin(volunteer):
             sql = self.cursor.execute(update_sql_generation("camp", "camp_name", new_camp_name, plan_name = pl_name, camp_name = camp_name))
             self.connection.commit()
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
-            log_admin.info(self.bi_color_text(f"The camp name(s) are successfully changed."))
+            log_admin.info(bi_color_text(f"The camp name(s) are successfully changed."))
             return True
 
 ##########################The following Methods are for volunteer management system####################################
@@ -247,7 +247,7 @@ class admin(volunteer):
             # print(result)
             self.connection.commit()
         except sqlite3.Error as e:
-            logger.error(self.bi_color_text(f"{e}", font_color='r'))
+            logger.error(bi_color_text(f"{e}", font_color='r'))
             return False
         for tuples in result:
             vol = tuples[0]
@@ -255,10 +255,10 @@ class admin(volunteer):
             if day is not None and day_str in day:
                 res.append(vol)
         if len(res) == 0:
-            logger.info(self.bi_color_text("There is no satisfied volunteer in that period."))
+            logger.info(bi_color_text("There is no satisfied volunteer in that period."))
             return res
         else:
-            logger.info(self.bi_color_text(f"In that period, The satisfied volunteers are {res}."))
+            logger.info(bi_color_text(f"In that period, The satisfied volunteers are {res}."))
             return res
 
     # A method to be implemented
@@ -277,10 +277,10 @@ class admin(volunteer):
             res = self.cursor.execute(sql)
             self.connection.commit()
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
-            log_admin.info(self.bi_color_text(f"The creation of the volunteer {attr[6]}is successful."))
+            log_admin.info(bi_color_text(f"The creation of the volunteer {attr[6]}is successful."))
             return True
 
     # A method to be implemented
@@ -300,12 +300,12 @@ class admin(volunteer):
             res = self.cursor.execute(sql).fetchall()
             if len(res) != 0:
                 if prompt:
-                    log_admin.info(self.bi_color_text("The operation is successful and here are the results: "))
+                    log_admin.info(bi_color_text("The operation is successful and here are the results: "))
                 log_admin.info(f"\n{display_in_table(['Plan name','Camp name','First name','Last name','Phone number','availability', 'username', 'password','activated','reassignable'],res)}\n")
             else:
-                log_admin.info(self.bi_color_text("The operation is successful but no volunteers found."))
+                log_admin.info(bi_color_text("The operation is successful but no volunteers found."))
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
             return True
@@ -323,10 +323,10 @@ class admin(volunteer):
         try:
             super(admin, self).edit_personal_profile(username,logger=log_admin, **kwargs)
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
-            log_admin.info(self.bi_color_text(f"The edition is successful."))
+            log_admin.info(bi_color_text(f"The edition is successful."))
             return True
 
 
@@ -341,10 +341,10 @@ class admin(volunteer):
             self.cursor.execute(update_sql_generation("volunteer","activated","FALSE",username = vol_usrname))
             self.connection.commit()
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
-            log_admin.info(self.bi_color_text(f"The deactivation of the volunteer account {vol_usrname} is successful."))
+            log_admin.info(bi_color_text(f"The deactivation of the volunteer account {vol_usrname} is successful."))
             return True
 
     # A method for volunteer management system
@@ -358,10 +358,10 @@ class admin(volunteer):
             self.cursor.execute(update_sql_generation("volunteer","activated","TRUE",username = vol_usrname))
             self.connection.commit()
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
-            log_admin.info(self.bi_color_text(f"The activation of the volunteer account {vol_usrname} is successful."))
+            log_admin.info(bi_color_text(f"The activation of the volunteer account {vol_usrname} is successful."))
             return True
 
     # A method for volunteer management system
@@ -375,10 +375,10 @@ class admin(volunteer):
             self.cursor.execute(f"DELETE FROM volunteer WHERE username = '{vol_usrname}' ")
             self.connection.commit()
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
-            log_admin.info(self.bi_color_text(f"The deletion of the volunteer account '{vol_usrname}' is successful."))
+            log_admin.info(bi_color_text(f"The deletion of the volunteer account '{vol_usrname}' is successful."))
             return True
 ##################################The following Methods are for message management system###############################
 
@@ -400,10 +400,10 @@ class admin(volunteer):
             self.cursor.execute(sql_cmd)
             self.connection.commit()
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
-            log_admin.info(self.bi_color_text("The announcement is created successfully."))
+            log_admin.info(bi_color_text("The announcement is created successfully."))
             return True
 
     # A method for message management system:
@@ -417,12 +417,12 @@ class admin(volunteer):
             sql_cmd = f"{select_sql_generation('message', 'time','username','plan_name','content', plan_name = plan_name,admin_exclusive='FALSE')} ORDER BY message_id ASC"
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res) != 0:
-                log_admin.info(self.bi_color_text("The operation is successful and here are the results: "))
+                log_admin.info(bi_color_text("The operation is successful and here are the results: "))
                 log_admin.info(f"\n{display_in_table(['Post Time','Account','Plan Name', 'Message Content'],res)}\n")
             else:
-                log_admin.info(self.bi_color_text(f"The operation is successful but no messages are found given the plan name."))
+                log_admin.info(bi_color_text(f"The operation is successful but no messages are found given the plan name."))
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
             return True
@@ -440,12 +440,12 @@ class admin(volunteer):
             # print(sql_cmd)
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res)!=0:
-                log_admin.info(self.bi_color_text("The operation is successful and here are the results: "))
+                log_admin.info(bi_color_text("The operation is successful and here are the results: "))
                 log_admin.info(f"\n{display_in_table(['Post Time','Account','Plan Name','Camp Name', 'Message Content'],res)}\n")
             else:
-                log_admin.info(self.bi_color_text(f"The operation is successful but no messages are found given the plan name and camp name."))
+                log_admin.info(bi_color_text(f"The operation is successful but no messages are found given the plan name and camp name."))
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
             return True
@@ -460,12 +460,12 @@ class admin(volunteer):
             sql_cmd = f"{select_sql_generation('message', 'message_id','time','username','content', admin_exclusive='TRUE', admin_announced='FALSE')} ORDER BY message_id ASC"
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res) != 0:
-                log_admin.info(self.bi_color_text("The operation is successful and here are the results: "))
+                log_admin.info(bi_color_text("The operation is successful and here are the results: "))
                 log_admin.info(f"\n{display_in_table(['Message ID','Time','Username','Message Content'],res)}\n")
             else:
-                log_admin.info(self.bi_color_text("No messages are found given the plan name and camp name."))
+                log_admin.info(bi_color_text("No messages are found given the plan name and camp name."))
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
             return True
@@ -481,10 +481,10 @@ class admin(volunteer):
             self.cursor.execute(sql_cmd)
             self.connection.commit()
         except sqlite3.Error as e:
-            log_admin.error(self.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             return False
         else:
-            log_admin.info(self.bi_color_text(f"The deletion of admin exclusive messages is successful."))
+            log_admin.info(bi_color_text(f"The deletion of admin exclusive messages is successful."))
             return True
 
 
@@ -499,19 +499,19 @@ class admin(volunteer):
         try:
             f = open ("logging.log", 'r')
         except FileNotFoundError:
-            log_admin.error(self.bi_color_text(f"File  is not found.  Aborting", font_color='r'))
+            log_admin.error(bi_color_text(f"File  is not found.  Aborting", font_color='r'))
             return False
         except OSError:
-            log_admin.error(self.bi_color_text(f"OS error occurred trying to open 'logging.log'", font_color='r'))
+            log_admin.error(bi_color_text(f"OS error occurred trying to open 'logging.log'", font_color='r'))
             return False
         except Exception as err:
-            log_admin.error(self.bi_color_text(f"Unexpected error opening 'logging.log' is", font_color='r'))
+            log_admin.error(bi_color_text(f"Unexpected error opening 'logging.log' is", font_color='r'))
             return False
         else:
             with f:
                 logs = f.readlines()
-            log_admin.info(self.bi_color_text(f"The operation is successful. The logs will be displayed below: \n"))
-            log_admin.info(self.bi_color_text(f"{''.join(logs)}"))
+            log_admin.info(bi_color_text(f"The operation is successful. The logs will be displayed below: \n"))
+            log_admin.info(bi_color_text(f"{''.join(logs)}"))
             return True
 
     # A method for logging system to be implemented

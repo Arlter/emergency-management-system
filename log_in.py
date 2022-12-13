@@ -4,6 +4,7 @@ from AdminMenu import *
 from VolunteerMenu import *
 from deactivated import *
 from GuestMenu import *
+from utility import bi_color_text
 import sqlite3
 
 class login():
@@ -26,9 +27,6 @@ class login():
                 if temp.Ifback == True:
                     self.logqueue.append('self.trylogin()')
             self.logqueue = self.logqueue[1:]
-
-    def bi_color_text(self, content, font_color='g'):
-        return f"{colors.fg.green}✅ {content}{colors.reset}" if font_color == 'g' else f"{colors.fg.red}❌ {content}{colors.reset}"
 
     def trylogin(self):
         connection = sqlite3.connect('db.db', detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
@@ -77,6 +75,6 @@ class login():
                     raise invalid_login
 
             except invalid_login as e:
-                log_general.error(self.bi_color_text(f"{e}", font_color='r'))
+                log_general.error(bi_color_text(f"{e}", font_color='r'))
 
         self.logqueue.append(self.afterlogin[CurrentRole])

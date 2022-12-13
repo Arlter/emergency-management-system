@@ -1,4 +1,8 @@
 import datetime
+from color_utilities import colors
+def bi_color_text(content, font_color='g'):
+    return f"{colors.fg.green}✅ {content}{colors.reset}" if font_color == 'g' else f"{colors.fg.red}❌ {content}{colors.reset}"
+
 
 def form_content(col_name:list, db_res):
     content = [col_name]

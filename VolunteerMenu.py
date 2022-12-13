@@ -5,7 +5,7 @@ from logging_configure import *
 import database_utilities
 from color_utilities import *
 from title import *
-
+from utility import bi_color_text
 
 """
 Assumptions:
@@ -112,10 +112,6 @@ class VolunteerMenu:
         while len(self.queue) != 0:
             eval(self.queue[0])
             self.queue = self.queue[1:]
-
-    def bi_color_text(self, content, font_color='g'):
-        return f"{colors.fg.green}✅ {content}{colors.reset}" if font_color == 'g' else f"{colors.fg.red}❌ {content}{colors.reset}"
-
     def quit(self):
         self.vol_instance.connection.close()
 
@@ -142,7 +138,7 @@ class VolunteerMenu:
         elif user_input in self.volunteer_menu_dict:
             self.queue.append(self.volunteer_menu_dict[user_input])
         else:
-            log_volunteer.error(self.bi_color_text(f"Invalid option. Please select from the menu.", font_color='r'))
+            log_volunteer.error(bi_color_text(f"Invalid option. Please select from the menu.", font_color='r'))
             self.queue.append('self.volunteer_menu()')
 
     # Tim: manage refugee profile
@@ -209,7 +205,7 @@ Please select an option: """)
                 if attr_to_update in ('1','2','3','4'):
                     break
                 else:
-                    log_volunteer.error(self.bi_color_text(f"Invalid option. Please select from the menu.", font_color='r'))
+                    log_volunteer.error(bi_color_text(f"Invalid option. Please select from the menu.", font_color='r'))
             possible_attrs = ['first_name','last_name','family_num','medical_condition']
             new_value = input("Please provide the updated value: ")
             self.vol_instance.update_refugee_profile(possible_attrs[int(attr_to_update)-1], new_value, ref_ID)
@@ -219,7 +215,7 @@ Please select an option: """)
             self.queue.append('self.volunteer_menu()')
 
         else:
-            log_volunteer.error(self.bi_color_text(f"Invalid value. Please input in the correct format."))
+            log_volunteer.error(bi_color_text(f"Invalid value. Please input in the correct format."))
             self.queue.append('self.manage_refugee_profile()')
 
 
@@ -271,7 +267,7 @@ Please select an option: """)
         elif user_input == "b":
             self.queue.append('self.volunteer_menu()')
         elif user_input not in self.messaging_system_dict:
-            log_volunteer.error(self.bi_color_text(f"Invalid option. Please select from the menu.", font_color='r'))
+            log_volunteer.error(bi_color_text(f"Invalid option. Please select from the menu.", font_color='r'))
             self.queue.append('self.messaging_system()')
         else:
             self.queue.append(self.messaging_system_dict[user_input])
@@ -293,7 +289,7 @@ Please enter your message for the admin: """)
         if message_to_admin == "b":
             self.queue.append('self.messaging_system()')
         elif message_to_admin == "":
-            log_volunteer.error(self.bi_color_text(f"Message to admin cannot be empty, please try again.", font_color='r'))
+            log_volunteer.error(bi_color_text(f"Message to admin cannot be empty, please try again.", font_color='r'))
             self.queue.append('self.send_message_to_admin()')
         else:
             self.vol_instance.vols_send_message(self.username, self.plan, message_to_admin, admin_excl=True)
@@ -322,7 +318,7 @@ Please enter your message for your camp: """)
         if message_to_camp == "b":
             self.queue.append('self.messaging_system()')
         elif message_to_camp == "":
-            log_volunteer.error(self.bi_color_text(f"Message to camp cannot be empty, please try again.", font_color='r'))
+            log_volunteer.error(bi_color_text(f"Message to camp cannot be empty, please try again.", font_color='r'))
             self.queue.append('self.send_message_to_camp()')
         else:
             self.vol_instance.vols_send_message(self.username, self.plan, message_to_camp, plan_name = self.plan, camp_name = self.camp)
@@ -358,7 +354,7 @@ Please enter your message for your camp: """)
         elif user_input == "b":
             self.queue.append('self.volunteer_menu()')
         elif user_input not in self.personal_profile_dict:
-            log_volunteer.error(self.bi_color_text(f"Invalid option. Please select from the menu.", font_color='r'))
+            log_volunteer.error(bi_color_text(f"Invalid option. Please select from the menu.", font_color='r'))
             self.queue.append('self.manage_personal_profile()')
         else:
             self.queue.append(self.personal_profile_dict[user_input])
@@ -400,13 +396,13 @@ Please choose a detail to edit (1-5), or any other options: """)
             self.queue.append('self.manage_personal_profile()')
 
         elif user_input not in self.edit_vol_prof_dict:
-            log_volunteer.error(self.bi_color_text(f"Invalid option. Please select from the menu.", font_color='r'))
+            log_volunteer.error(bi_color_text(f"Invalid option. Please select from the menu.", font_color='r'))
             self.queue.append('self.edit_vol_profile()')
 
         elif user_input == "1":
             updated_data = input("Please input the new first name: ")
             while updated_data == "":
-                log_volunteer.error(self.bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
+                log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
                 updated_data = input("Please input the new first name: ")
             self.vol_instance.edit_personal_profile(self.username, first_name = updated_data)
             self.queue.append('self.edit_vol_profile()')
@@ -414,7 +410,7 @@ Please choose a detail to edit (1-5), or any other options: """)
         elif user_input == "2":
             updated_data = input("Please input the new last name: ")
             while updated_data == "":
-                log_volunteer.error(self.bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
+                log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
                 updated_data = input("Please input the new last name: ")
             self.vol_instance.edit_personal_profile(self.username, last_name = updated_data)
             self.queue.append('self.edit_vol_profile()')
@@ -422,10 +418,10 @@ Please choose a detail to edit (1-5), or any other options: """)
         elif user_input == "3":
             updated_data = input("Please input the new phone number: ")
             while updated_data == "":
-                log_volunteer.error(self.bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
+                log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
                 updated_data = input("Please input the new phone number: ")
             while not updated_data.isdigit():
-                log_volunteer.error(self.bi_color_text("Phone number can only consists of numbers, please try again.", font_color='r'))
+                log_volunteer.error(bi_color_text("Phone number can only consists of numbers, please try again.", font_color='r'))
                 updated_data = input("Please input the new phone number: ")
             else:
                 self.vol_instance.edit_personal_profile(self.username, phone_num = updated_data)
@@ -450,7 +446,7 @@ Please select your available week days. Input one at a time: """)
                 elif weekday == '8':
                     break
                 else:
-                    log_volunteer.error(self.bi_color_text(f"Invalid day input, please try again.", font_color='r'))
+                    log_volunteer.error(bi_color_text(f"Invalid day input, please try again.", font_color='r'))
             if len(weekdays) != 0:
                 self.vol_instance.edit_personal_profile(self.username, availability=','.join(sorted(list(set(weekdays)))))
             self.queue.append('self.edit_vol_profile()')
@@ -458,7 +454,7 @@ Please select your available week days. Input one at a time: """)
         elif user_input == "5":
             updated_data = input("Please input the new password: ")
             while updated_data == "":
-                log_volunteer.error(self.bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
+                log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
                 updated_data = input("Please input the new password: ")
             self.vol_instance.edit_personal_profile(self.username, password = updated_data)
             self.queue.append('self.edit_vol_profile()')
