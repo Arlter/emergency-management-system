@@ -461,7 +461,7 @@ class admin(volunteer):
             res = self.cursor.execute(sql_cmd).fetchall()
             if len(res) != 0:
                 log_admin.info(self.bi_color_text("The operation is successful and here are the results: "))
-                log_admin.info(f"\n{display_in_table(['Message ID','time','username','Message Content'],res)}\n")
+                log_admin.info(f"\n{display_in_table(['Message ID','Time','Username','Message Content'],res)}\n")
             else:
                 log_admin.info(self.bi_color_text("No messages are found given the plan name and camp name."))
         except sqlite3.Error as e:

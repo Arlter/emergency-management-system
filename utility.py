@@ -15,6 +15,8 @@ def make_table(content):
         for j in range(len(content[i])):
             if type(content[i][j]) == datetime.date:
                 content[i][j] = content[i][j].strftime("%Y-%m-%d")
+            if type(content[i][j]) == datetime.datetime:
+                content[i][j] = content[i][j].strftime("%Y-%m-%d")
             if type(content[i][j]) == type(None):
                 content[i][j] = "None"
     table = ""
