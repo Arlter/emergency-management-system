@@ -116,13 +116,11 @@ class volunteer:
                     res[i] = list(res[i])
                     t = res[i][0]
                     res[i] = tuple([t] + res[i][2:])
-                df = pd.DataFrame(res, columns = ['ID', 'Camp name', 'F. name', 'L. name', 'No. of family', 'Medical condition(s)', 'archived'])
-                df.index = ['']*len(df)
                 log_volunteer.info(bi_color_text("The operation is successful and here are the results: "))
-                log_volunteer.info(f"\n{df}\n")
+                log_volunteer.info(f"\n{display_in_table(['ID', 'Camp Name', 'FName', 'LName', 'Family Num', 'Medical Condition(s)', 'Archived'], res)}\n")
                 return True
             else:
-                log_volunteer.info(f'No refugee profiles found in the current camp {camp_name}.')
+                log_volunteer.info(bi_color_text(f'No refugee profiles found in the current camp {camp_name}.'))
                 return True
         except sqlite3.Error as e:
             log_volunteer.error(bi_color_text(f"{e}", font_color='r'))
@@ -159,14 +157,12 @@ class volunteer:
         try:
             res = self.cursor.execute(sql).fetchall()
             self.connection.commit()
-            if no_extra:
-                df = pd.DataFrame(res, columns = ['Plan name', 'Camp name', 'First name', 'Last name', 'Phone number', 'availability', 'username', 'password', 'activated', 'reassignable'])
-            else:
-                df = pd.DataFrame(res, columns = ['Plan name', 'Camp name', 'First name', 'Last name', 'Phone number', 'availability', 'username', 'password'])
-            df.index = ['']*len(df)
             if prompt:
                 logger.info(bi_color_text("The operation is successful and here are the results: "))
-            logger.info(f'\n{df}\n')
+            if no_extra:
+                logger.info(f"\n{display_in_table(['Plan name', 'Camp name', 'First name', 'Last name', 'Phone number', 'availability', 'username', 'password', 'activated', 'reassignable'], res)}\n")
+            else:
+                logger.info(f"\n{display_in_table(['Plan name', 'Camp name', 'First name', 'Last name', 'Phone number', 'availability', 'username', 'password'], res)}\n")
             return True
         except sqlite3.Error as e:
             logger.error(bi_color_text(f"{e}", font_color='r'))
@@ -236,20 +232,18 @@ class volunteer:
             #sql = select_sql_generation("message", "message_id", "time", "username", "content", admin_announced="TRUE", admin_exclusive="FALSE", **kwargs)
         try:
             # print(sql)
-            result = self.cursor.execute(sql).fetchall()
+            res = self.cursor.execute(sql).fetchall()
             self.connection.commit()
         except sqlite3.Error as e:
             log_volunteer.error(bi_color_text(f"{e}", font_color='r'))
             return False
-        if len(result) != 0:
-            df = pd.DataFrame(result,columns=['    Message ID','       Time','    username','    Message Content'])
-            df.index = [''] * len(df)
+        if len(res) != 0:
             log_volunteer.info(bi_color_text("The operation is successful and here are the results: "))
-            log_volunteer.info(f"\n{df}\n")
+            log_volunteer.info(f"\n{display_in_table(['Message ID','Time','username','Message Content'], res)}\n")
             return True
         else:
-            log_volunteer.info("No messages are found given specified information.")
-            return True  #?
+            log_volunteer.info(bi_color_text("No messages are found given specified information."))
+            return True
     
     def vols_send_message(self, vol_usrname: str, planname, content: str, admin_excl=False, **kwargs) -> bool:
         """
