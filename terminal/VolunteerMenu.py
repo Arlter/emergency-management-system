@@ -1,10 +1,7 @@
-import sqlite3
-from volunteer import *
-from exceptions import *
-from logging_configure import *
-from color_utilities import *
-from title import *
-from utility import bi_color_text
+from COMP0066.volunteer import *
+from COMP0066.logging_configure import log_volunteer
+from COMP0066.terminal.title import *
+from COMP0066.utility import bi_color_text
 
 """
 Assumptions:

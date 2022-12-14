@@ -1,13 +1,12 @@
-from color_utilities import *
-from admin import admin
-from AdminMenu import *
-from VolunteerMenu import *
-from deactivated import *
-from GuestMenu import *
-from utility import bi_color_text
+from COMP0066.utility import bi_color_text
+from COMP0066.terminal.color_utilities import colors
+from COMP0066.logging_configure import *
 import sqlite3
-
-class login():
+from COMP0066.terminal.AdminMenu import AdminMenu
+from COMP0066.terminal.VolunteerMenu import VolunteerMenu
+from COMP0066.terminal.GuestMenu import GuestMenu
+from COMP0066.terminal.Deactivated import DeactivatedMenu
+class login:
 
     def __init__(self):
         self.logqueue = []

@@ -1,4 +1,4 @@
-from logging_configure import log_general
+from COMP0066.logging_configure import log_general
 
 def welcome():
     log_general.info(

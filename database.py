@@ -1,5 +1,5 @@
 import sqlite3
-from logging_configure import log_general
+from COMP0066.logging_configure import log_general
 """
     Assumptions:
         one volunteer can only service one camp at a time.

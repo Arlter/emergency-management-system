@@ -1,10 +1,9 @@
 import sqlite3
 from datetime import datetime
 from utility import *
-from logging_configure import log_admin
+from COMP0066.logging_configure import log_admin
 from exceptions import *
 from volunteer import volunteer
-
 
 class admin(volunteer):
 
@@ -510,7 +509,7 @@ class admin(volunteer):
             with f:
                 logs = f.readlines()
             log_admin.info(bi_color_text(f"The operation is successful. The logs will be displayed below: \n"))
-            log_admin.info(bi_color_text(f"{''.join(logs)}"))
+            log_admin.info(f"{''.join(logs)}")
             return True
 
     # A method for logging system to be implemented

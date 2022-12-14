@@ -1,9 +1,5 @@
-import sqlite3
-from volunteer import *
-from exceptions import *
-from logging_configure import *
-import utility
-from color_utilities import *
+from COMP0066.volunteer import *
+
 
 class GuestMenu:
     def __init__(self):

@@ -1,8 +1,8 @@
-from color_utilities import *
-from admin import *
-from exceptions import *
-from logging_configure import *
-from title import *
+import sqlite3
+from COMP0066.admin import admin
+from COMP0066.exceptions import *
+from COMP0066.logging_configure import log_admin
+from COMP0066.terminal.title import *
 
 class AdminMenu:
     def __init__(self):

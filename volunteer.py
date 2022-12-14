@@ -1,6 +1,6 @@
 import sqlite3
 from utility import *
-from logging_configure import log_volunteer
+from COMP0066.logging_configure import log_volunteer
 from exceptions import *
 import pandas as pd
 
@@ -295,11 +295,11 @@ class volunteer:
         elif admin_excl and len(kwargs) != 0:
             log_volunteer.error(bi_color_text("Please do not specify the camp_name (or plan_name) and the admin_excl at the same time.", font_color='r'))
             return False
-        # print(sql)
+
         try:
-            result = self.cursor.execute(sql).fetchall()
+            self.cursor.execute(sql).fetchall()
             self.connection.commit()
-            log_volunteer.info(bi_color_text("Message sent successfully."))
+            log_volunteer.info(bi_color_text("The message is sent successfully."))
             return True
         except sqlite3.Error as e:
             log_volunteer.error(bi_color_text(f"{e}", font_color='r'))

@@ -1,5 +1,5 @@
 import datetime
-from color_utilities import colors
+from COMP0066.terminal.color_utilities import colors
 
 ##########################################database utility methods#######################################################
 def insert_sql_generation(table_name, *attr, **kwargs):
@@ -43,8 +43,6 @@ def select_sql_generation(table_name,*coulmn,**kwargs):
     else:
         constraint =  ' and '.join([f"{key}='{kwargs[key]}'" for key in kwargs.keys()])
         return f"SELECT {attribute} FROM {table_name} WHERE {constraint}"
-
-
 
 
 

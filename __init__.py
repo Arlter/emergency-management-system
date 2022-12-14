@@ -1,10 +1,9 @@
-from admin import *
 from database import  *
 import pandas as pd
-from logging_configure import log_general
+from COMP0066.logging_configure import log_general
 import sys
-from log_in import *
-from title import welcome
+from COMP0066.terminal.log_in import login
+from COMP0066.terminal.title import welcome
 
 if __name__ == "__main__":
     if '-h' in sys.argv:
@@ -22,6 +21,7 @@ if __name__ == "__main__":
     initiate(connection,cursor)
     test_initiate(connection,cursor)
     connection.close()
+
 
     # TESTS, delete later
     # admin = admin()
