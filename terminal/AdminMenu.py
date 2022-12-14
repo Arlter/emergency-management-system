@@ -1,4 +1,5 @@
 import sqlite3
+from COMP0066.utility import bi_color_text
 from COMP0066.admin import admin
 from COMP0066.exceptions import *
 from COMP0066.logging_configure import log_admin
@@ -120,7 +121,7 @@ class AdminMenu:
             else:
                 raise option_not_existed
         except option_not_existed as e:
-            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             self.queue.append('self.admin_menu()')
 
 
@@ -145,7 +146,7 @@ class AdminMenu:
             else:
                 raise option_not_existed
         except option_not_existed as e:
-            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             self.queue.append('self.account_management()')
 
 ### change password ###
@@ -194,7 +195,7 @@ class AdminMenu:
             else:
                 raise option_not_existed
         except option_not_existed as e:
-            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             self.queue.append('self.manage_emergency_plan_system()')
 
 ### create a plan ###
@@ -311,7 +312,7 @@ class AdminMenu:
                         raise option_not_existed
 
                 except option_not_existed as e:
-                    log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+                    log_admin.error(bi_color_text(f"{e}", font_color='r'))
 
             self.queue.append('self.manage_emergency_plan_system()')
         else:
@@ -351,7 +352,7 @@ class AdminMenu:
             else:
                 raise option_not_existed
         except option_not_existed as e:
-            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             self.queue.append('self.manage_camps()')
 
     ### add camps ###
@@ -393,7 +394,7 @@ class AdminMenu:
                         else:
                             raise option_not_existed
                     except option_not_existed as e:
-                        log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+                        log_admin.error(bi_color_text(f"{e}", font_color='r'))
 
             for j in new_camp:
                 if self.Admin.add_camp(plan_selected,j):
@@ -472,7 +473,7 @@ class AdminMenu:
             else:
                 raise option_not_existed
         except option_not_existed as e:
-            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             self.queue.append('self.manage_volunteer_system()')
 
 ### create a volunteer ###
@@ -508,7 +509,6 @@ class AdminMenu:
         elif self.Admin.raise_error_for_inexistence('emergency_plan',edit_check= True,plan_name=plan_selected):
             self.Admin.display_plan_summary(plan_selected,prompt=False)
 
-            pd.options.display.max_columns = None
             campselect_loop = True
             while campselect_loop:
                 camp_selected = input(new_volun_profile_dict['[2]'])
@@ -545,7 +545,7 @@ class AdminMenu:
                                     new_volun_availability = ','.join(new_volun_availability)
                                     availability_loop = False
                             except Invalid_value as e:
-                                log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+                                log_admin.error(bi_color_text(f"{e}", font_color='r'))
 
 
                     '''Check if username existed already'''
@@ -584,7 +584,7 @@ class AdminMenu:
                             else:
                                 raise option_not_existed
                         except option_not_existed as e:
-                            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+                            log_admin.error(bi_color_text(f"{e}", font_color='r'))
 
                     new_volun_profile=[plan_selected,camp_selected,new_volun_firstname,new_volun_lastname,new_volun_phone_num,new_volun_availability,new_volun_username,new_volun_password,new_volun_activated,"FALSE"]
 
@@ -609,7 +609,7 @@ class AdminMenu:
                             else:
                                 raise option_not_existed
                         except option_not_existed as e:
-                            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+                            log_admin.error(bi_color_text(f"{e}", font_color='r'))
 
             self.Admin.create_volunteer(*new_volun_profile)
             self.queue.append('self.manage_volunteer_system()')
@@ -710,7 +710,7 @@ class AdminMenu:
                                     else:
                                         raise unable_change_plan
                                 except unable_change_plan as e:
-                                    log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+                                    log_admin.error(bi_color_text(f"{e}", font_color='r'))
                                     continue
                             else:
                                 continue
@@ -739,7 +739,7 @@ class AdminMenu:
                                     else:
                                         raise unable_change_camp
                                 except unable_change_camp as e:
-                                    log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+                                    log_admin.error(bi_color_text(f"{e}", font_color='r'))
                                     continue
                             else:
                                 continue
@@ -770,7 +770,7 @@ class AdminMenu:
                                         updated_inf = ','.join(updated_inf)
                                         self.Admin.edit_volunteer_details(username=volunteer_selected,availability=updated_inf)
                                 except Invalid_value as e:
-                                    log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+                                    log_admin.error(bi_color_text(f"{e}", font_color='r'))
                                     continue
 
 
@@ -784,7 +784,7 @@ class AdminMenu:
                     else:
                         raise option_not_existed
                 except option_not_existed as e:
-                    log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+                    log_admin.error(bi_color_text(f"{e}", font_color='r'))
 
 
             self.queue.append('self.manage_volunteer_system()')
@@ -817,7 +817,7 @@ class AdminMenu:
                     else:
                         raise option_not_existed
                 except option_not_existed as e:
-                    log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+                    log_admin.error(bi_color_text(f"{e}", font_color='r'))
 
             self.queue.append('self.manage_volunteer_system()')
         else:
@@ -849,7 +849,7 @@ class AdminMenu:
                     else:
                         raise option_not_existed
                 except option_not_existed as e:
-                    log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+                    log_admin.error(bi_color_text(f"{e}", font_color='r'))
 
             self.queue.append('self.manage_volunteer_system()')
         else:
@@ -880,7 +880,7 @@ class AdminMenu:
                     else:
                         raise option_not_existed
                 except option_not_existed as e:
-                    log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+                    log_admin.error(bi_color_text(f"{e}", font_color='r'))
 
             self.queue.append('self.manage_volunteer_system()')
 
@@ -924,7 +924,7 @@ class AdminMenu:
             except:
                 raise Invalid_value
         except Invalid_value as e:
-            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             self.queue.append('self.check_availability()')
 
 
@@ -954,7 +954,7 @@ class AdminMenu:
             else:
                 raise option_not_existed
         except option_not_existed as e:
-            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             self.queue.append('self.manage_messaging_system()')
 
 ### Create a public announcement ###
@@ -1041,7 +1041,7 @@ class AdminMenu:
             self.queue.append('self.manage_messaging_system()')
 
         except option_not_existed as e:
-            log_admin.error(self.Admin.bi_color_text(f"{e}", font_color='r'))
+            log_admin.error(bi_color_text(f"{e}", font_color='r'))
             self.queue.append('self.create_regional_announcements()')
 
 ### Display a plan message ###

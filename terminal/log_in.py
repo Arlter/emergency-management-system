@@ -1,6 +1,7 @@
 from COMP0066.utility import bi_color_text
 from COMP0066.terminal.color_utilities import colors
 from COMP0066.logging_configure import *
+from COMP0066.exceptions import *
 import sqlite3
 from COMP0066.terminal.AdminMenu import AdminMenu
 from COMP0066.terminal.VolunteerMenu import VolunteerMenu
@@ -54,18 +55,18 @@ class login:
                     else:
 
                         if UserNameinput == 'admin':
-                            log_general.info(f"{colors.fg.green}Welcome! Your role is Admin{colors.reset}")
+                            log_general.info(f"\n{colors.fg.green} 🙌 Welcome! Your role is Admin 🙌{colors.reset}\n")
                             CurrentRole = '0'
                             SuccessLog = True
 
 
                         elif UserNameinput == 'guest':
-                            log_general.info(f"{colors.fg.green}Welcome! Your role is Guest{colors.reset}")
+                            log_general.info(f"\n{colors.fg.green} 🙌 Welcome! Your role is Guest 🙌{colors.reset}\n")
                             CurrentRole = '2'
                             SuccessLog = True
 
                         else:
-                            log_general.info(f"{colors.fg.green}Welcome! Your role is Volunteer{colors.reset}")
+                            log_general.info(f"\n{colors.fg.green} 🙌 Welcome! Your role is Volunteer 🙌{colors.reset}\n")
                             CurrentRole = '1'
                             self.volunteer_username = UserNameinput
                             SuccessLog = True

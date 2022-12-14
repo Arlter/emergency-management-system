@@ -1,5 +1,4 @@
-from COMP0066.volunteer import *
-
+from COMP0066.volunteer import volunteer
 
 class GuestMenu:
     def __init__(self):
