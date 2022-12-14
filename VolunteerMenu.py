@@ -431,31 +431,35 @@ Please choose a detail to edit (1-6), or any other options: """)
             self.queue.append('self.edit_vol_profile()')
 
         elif user_input == "2":
-            updated_data = input("Please input the new first name: ")
-            while updated_data == "":
-                log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
+            while True:
                 updated_data = input("Please input the new first name: ")
+                if updated_data == "":
+                    log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
+                else:
+                    break
             self.vol_instance.edit_personal_profile(self.username, first_name = updated_data)
             self.queue.append('self.edit_vol_profile()')
 
         elif user_input == "3":
-            updated_data = input("Please input the new last name: ")
-            while updated_data == "":
-                log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
+            while True:
                 updated_data = input("Please input the new last name: ")
+                if updated_data == "":
+                    log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
+                else:
+                    break
             self.vol_instance.edit_personal_profile(self.username, last_name = updated_data)
             self.queue.append('self.edit_vol_profile()')
 
         elif user_input == "4":
-            updated_data = input("Please input the new phone number: ")
-            while updated_data == "":
-                log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
+            while True:
                 updated_data = input("Please input the new phone number: ")
-            while not updated_data.isdigit():
-                log_volunteer.error(bi_color_text("Phone number can only consists of numbers, please try again.", font_color='r'))
-                updated_data = input("Please input the new phone number: ")
-            else:
-                self.vol_instance.edit_personal_profile(self.username, phone_num = updated_data)
+                if updated_data == "":
+                    log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
+                elif not updated_data.isdigit():
+                    log_volunteer.error(bi_color_text("Phone number can only consists of numbers, please try again.", font_color='r'))
+                else:
+                    break
+            self.vol_instance.edit_personal_profile(self.username, phone_num = updated_data)
             self.queue.append('self.edit_vol_profile()')
 
         elif user_input == "5":
@@ -483,10 +487,12 @@ Please select your available week days. Input one at a time: """)
             self.queue.append('self.edit_vol_profile()')
             
         elif user_input == "6":
-            updated_data = input("Please input the new password: ")
-            while updated_data == "":
-                log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
+            while True:
                 updated_data = input("Please input the new password: ")
+                if updated_data == "":
+                    log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
+                else:
+                    break
             self.vol_instance.edit_personal_profile(self.username, password = updated_data)
             self.queue.append('self.edit_vol_profile()')
         
