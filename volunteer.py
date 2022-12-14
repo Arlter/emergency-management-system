@@ -1,7 +1,6 @@
 import sqlite3
 from utility import *
 from logging_configure import log_volunteer
-import pandas as pd
 from exceptions import *
 
 # functions available: (name - corresponding function)
