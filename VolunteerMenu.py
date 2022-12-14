@@ -252,7 +252,7 @@ Please select an option: """)
             
 (1) Display admin public announcements
 (2) Display admin plan announcements
-(3) Display all camp messages
+(3) Display all messages from your camp
 (4) Send message to admin
 (5) Send message to your camp
 (b) Back to Volunteer Menu
@@ -365,26 +365,28 @@ Please enter your message for your camp: """)
     def edit_vol_profile(self):
 
         self.edit_vol_prof_dict = {
-            "1": "first_name",
-            "2": "last_name",
-            "3": "phone_num",
-            "4": "availability",
-            "5": "password",
-            "6": "display_personal_profile"}
+            "1": "camp",
+            "2": "first_name",
+            "3": "last_name",
+            "4": "phone_num",
+            "5": "availability",
+            "6": "password",
+            "7": "display_personal_profile"}
         
         user_input = input("""========================================
          Edit personal profile
          
-(1) First name
-(2) Last name
-(3) Phone number
-(4) Availability
-(5) Account password
-(6) Display personal profile
+(1) Camp
+(2) First name
+(3) Last name
+(4) Phone number
+(5) Availability
+(6) Account password
+(7) Display personal profile
 (b) Back to Personal Profile menu
 (q) Quit
 
-Please choose a detail to edit (1-5), or any other options: """)
+Please choose a detail to edit (1-6), or any other options: """)
 
         
         if user_input == "q":
@@ -399,6 +401,36 @@ Please choose a detail to edit (1-5), or any other options: """)
             self.queue.append('self.edit_vol_profile()')
 
         elif user_input == "1":
+            # print all current camps
+            self.vol_instance.display_plan_summary(self.plan, prompt=False)
+            while True:
+                updated_data = input("Please input the new camp: ")
+                #check if input is empty
+                if updated_data == "":
+                    log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
+                # check if camp exists in plan
+                elif not self.vol_instance.raise_error_for_inexistence("camp", edit_check=False, plan_name = self.plan, camp_name = updated_data):
+                    continue
+                # check if plan is closed
+                elif not self.vol_instance.raise_error_for_inexistence("emergency_plan", edit_check=True, plan_name = self.plan):
+                    break
+                # check if updated camp is the same as current one
+                elif self.camp == updated_data:
+                    log_volunteer.info(bi_color_text(f"This is your current camp."))
+                    break
+                else:
+                    self.vol_instance.edit_personal_profile(self.username, camp_name=updated_data)
+                    self.camp = updated_data
+                    break
+            # while updated_data == "":
+            #     log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
+            #     updated_data = input("Please input the new camp: ")
+            # print(valid)
+            # while not valid:
+            #     updated_data = input("Please input the new camp: ")
+            self.queue.append('self.edit_vol_profile()')
+
+        elif user_input == "2":
             updated_data = input("Please input the new first name: ")
             while updated_data == "":
                 log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
@@ -406,7 +438,7 @@ Please choose a detail to edit (1-5), or any other options: """)
             self.vol_instance.edit_personal_profile(self.username, first_name = updated_data)
             self.queue.append('self.edit_vol_profile()')
 
-        elif user_input == "2":
+        elif user_input == "3":
             updated_data = input("Please input the new last name: ")
             while updated_data == "":
                 log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
@@ -414,7 +446,7 @@ Please choose a detail to edit (1-5), or any other options: """)
             self.vol_instance.edit_personal_profile(self.username, last_name = updated_data)
             self.queue.append('self.edit_vol_profile()')
 
-        elif user_input == "3":
+        elif user_input == "4":
             updated_data = input("Please input the new phone number: ")
             while updated_data == "":
                 log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
@@ -426,7 +458,7 @@ Please choose a detail to edit (1-5), or any other options: """)
                 self.vol_instance.edit_personal_profile(self.username, phone_num = updated_data)
             self.queue.append('self.edit_vol_profile()')
 
-        elif user_input == "4":
+        elif user_input == "5":
             weekdays = []
             while True:
                 weekday = input("""
@@ -450,7 +482,7 @@ Please select your available week days. Input one at a time: """)
                 self.vol_instance.edit_personal_profile(self.username, availability=','.join(sorted(list(set(weekdays)))))
             self.queue.append('self.edit_vol_profile()')
             
-        elif user_input == "5":
+        elif user_input == "6":
             updated_data = input("Please input the new password: ")
             while updated_data == "":
                 log_volunteer.error(bi_color_text(f"Input cannot be empty, please try again.", font_color='r'))
@@ -458,5 +490,5 @@ Please select your available week days. Input one at a time: """)
             self.vol_instance.edit_personal_profile(self.username, password = updated_data)
             self.queue.append('self.edit_vol_profile()')
         
-        elif user_input == "6":
+        elif user_input == "7":
             self.queue.append('self.display_vol_profile()')

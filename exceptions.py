@@ -10,7 +10,7 @@ class absent(Exception):
 
 class closed_plan(Exception):
     def __init__(self):
-        self.message = f"The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable.   "
+        self.message = f"The associated emergency plan has been closed and archived. Modifications to the pertinent data are not applicable."
         super().__init__(self.message)
 
 class option_not_existed(Exception):
@@ -25,12 +25,12 @@ class Invalid_value(Exception):
 
 class unable_change_plan(Exception):
     def __init__(self):
-        self.message = f"The volunteer can not be reassigned as his plan is ongoing."
+        self.message = f"The volunteer can not be reassigned as their plan is ongoing."
         super().__init__(self.message)
 
 class unable_change_camp(Exception):
     def __init__(self):
-        self.message = f"The volunteer can not be reassigned to as his plan has been closed."
+        self.message = f"The volunteer can not be reassigned to as their plan has been closed."
         super().__init__(self.message)
 
 class invalid_login(Exception):

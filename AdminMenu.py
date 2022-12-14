@@ -451,7 +451,7 @@ class AdminMenu:
                            "\n"
               "(1) Create a volunteer\n"
               "(2) List existing volunteers\n"
-              "(3) view a volunteer\n"
+              "(3) View a volunteer\n"
               "(4) Edit a volunteer\n"
               "(5) Deactivate a volunteer account\n"
               "(6) Activate a volunteer account\n"

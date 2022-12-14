@@ -2,6 +2,7 @@ import sqlite3
 from utility import *
 from logging_configure import log_volunteer
 from exceptions import *
+import pandas as pd
 
 # functions available: (name - corresponding function)
 # 1. create refugee profile - create_refugee_profile
@@ -65,6 +66,7 @@ class volunteer:
                 raise closed_plan()
             if edit_check and table_name == "emergency_plan" and "plan_name" in kwargs.keys() and self.cursor.execute(f"SELECT COUNT(*) FROM emergency_plan WHERE close_date <> '{'null'}' and plan_name = '{kwargs['plan_name']}'").fetchall()[0][0] > 0 :
                 raise closed_plan()
+
             sql_cmd = select_sql_generation(table_name, "COUNT(*)", **kwargs)
             res = self.cursor.execute(sql_cmd).fetchall()[0][0]
             if res == 0:  # does not exist, raise an exception
@@ -124,6 +126,31 @@ class volunteer:
         except sqlite3.Error as e:
             log_volunteer.error(bi_color_text(f"{e}", font_color='r'))
             return False
+
+    def display_plan_summary(self,pl_name:str, prompt = True) -> bool:
+        """
+        Method[6] used to display the details of a specific plan by entering its name
+        :param pl_name: the name of plan
+        :param prompt: default true, prints out successful message
+        :return: True if the operation encounters no error, false otherwise
+        """
+        try:
+            sql_cmd = select_sql_generation("camp","camp_name, num_of_volunteers, num_of_refugees", plan_name=pl_name)
+            res = self.cursor.execute(sql_cmd).fetchall()
+            if len(res) != 0:
+                df = pd.DataFrame(res,
+                             columns=['       Camp Name', '    Volunteers Number', '   Refugees Number'])
+                df.index = [''] * len(df)
+                if prompt:
+                    log_volunteer.info(self.bi_color_text(f"The operation is successful and here are the results:"))
+                log_volunteer.info(f"\n{display_in_table(['Camp name', 'Volunteers Number', 'Refugees Number'], res)}\n")
+            else:
+                log_volunteer.info(self.bi_color_text(f"No details are found given the plan name {pl_name}."))
+        except sqlite3.Error as e:
+            log_volunteer.error(self.bi_color_text(f"{e}", font_color='r'))
+            return False
+        else:
+            return True
 
 
     # def display_emergency_profile(self, camp_name, first_name ='*', last_name ='*', family_num = '*', medical_condition= '*'):
