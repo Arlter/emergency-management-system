@@ -2,7 +2,7 @@ import sqlite3
 from volunteer import *
 from exceptions import *
 from logging_configure import *
-import database_utilities
+import utility
 from color_utilities import *
 
 class deactivatedMenu:

@@ -2,7 +2,6 @@ import sqlite3
 from volunteer import *
 from exceptions import *
 from logging_configure import *
-import database_utilities
 from color_utilities import *
 from title import *
 from utility import bi_color_text

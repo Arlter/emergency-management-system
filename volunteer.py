@@ -1,8 +1,7 @@
 import sqlite3
-from database_utilities import *
+from utility import *
 from logging_configure import log_volunteer
 import pandas as pd
-from utility import  display_in_table,bi_color_text
 from exceptions import *
 
 # functions available: (name - corresponding function)

@@ -1,10 +1,9 @@
 import sqlite3
 from datetime import datetime
-from database_utilities import *
+from utility import *
 from logging_configure import log_admin
 from exceptions import *
 from volunteer import volunteer
-from utility import display_in_table,bi_color_text
 
 
 class admin(volunteer):
