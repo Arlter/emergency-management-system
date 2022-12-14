@@ -1,22 +1,17 @@
-from database import  *
-import pandas as pd
-from COMP0066.logging_configure import log_general
+from src.database import  *
+from src.logging_configure import log_general
 import sys
-from COMP0066.terminal.log_in import login
-from COMP0066.terminal.title import welcome
+from src.terminal.log_in import login
+from src.terminal.title import welcome
 
 if __name__ == "__main__":
     if '-h' in sys.argv:
-        with open('help_info.txt', 'r') as f:
+        with open('src/datafiles/help_info.txt', 'r') as f:
             contents = f.readlines()
         log_general.info(''.join(contents))
-    # set up pandas for display
-    pd.options.display.max_columns = None
-    pd.options.display.width = 1000
-    pd.options.display.max_colwidth = 115
 
     # initialize database
-    connection = sqlite3.connect('db.db', detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+    connection = sqlite3.connect('src/datafiles/db.db', detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
     cursor = connection.cursor()
     initiate(connection,cursor)
     test_initiate(connection,cursor)
